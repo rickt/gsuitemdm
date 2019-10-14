@@ -11,10 +11,9 @@ import (
 
 // G Suite MDM Service main struct type
 type GSuiteMDMService struct {
-	C     GSuiteMDMConfig // Configuration
-	Ctx   context.Context // Context
-	SDLog *logging.Client // Stackdriver (GCP) log
-	Log   *logging.Logger // CLI log
+	C   GSuiteMDMConfig // Configuration
+	Ctx context.Context // Context
+	Log *logging.Client // Stackdriver (GCP) log
 }
 
 // G Suite MDM Service config struct type
