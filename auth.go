@@ -1,7 +1,7 @@
 package gsuitemdm
 
 //
-// GSuiteMDM domain-specific funcs
+// GSuiteMDM authentication-specific funcs
 //
 
 import (
