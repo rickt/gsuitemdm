@@ -10,8 +10,8 @@ import (
 
 // G Suite MDM Service main struct type
 type GSuiteMDMService struct {
-	Config Config
-	Ctx    context.Context
+	c   Config          // Configuration
+	ctx context.Context // Context
 }
 
 // G Suite MDM Service config struct type

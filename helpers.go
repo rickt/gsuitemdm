@@ -79,7 +79,7 @@ func getEmailDomain(email string) string {
 	return components[1]
 }
 
-// Helper func to track how long a func takes to execute
+// Helper func to track how long a func takes to execute (found on StackExchange I think!)
 func TimeTrack(start time.Time) {
 	elapsed := time.Since(start)
 
