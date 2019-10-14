@@ -15,14 +15,14 @@ func New(ctx context.Context, file string) *GSuiteMDMService {
 	cf := loadConfig(file)
 
 	// Logging (Stackdriver)
-	logsd, err := logging.NewClient(ctx, cf.ProjectID)
+	log, err := logging.NewClient(ctx, cf.ProjectID)
 	checkError(err)
 
 	// Return a new G Suite MDM service
 	return &GSuiteMDMService{
 		C:   cf,
 		Ctx: ctx,
-		Log: logsd,
+		Log: log,
 	}
 }
 
