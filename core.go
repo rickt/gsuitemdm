@@ -9,7 +9,7 @@ import (
 )
 
 // Create a new G Suite MDM Service
-func (mdms *GSuiteMDMService) New(ctx context.Context) *GSuiteMDMService {
+func New(ctx context.Context) *GSuiteMDMService {
 	return &GSuiteMDMService{
 		ctx: ctx,
 	}
