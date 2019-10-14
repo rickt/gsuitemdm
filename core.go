@@ -14,8 +14,8 @@ func New(ctx context.Context, file string) *GSuiteMDMService {
 	cf := loadConfig(file)
 
 	return &GSuiteMDMService{
-		c:   cf,
-		ctx: ctx,
+		C:   cf,
+		Ctx: ctx,
 	}
 }
 

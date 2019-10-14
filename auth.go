@@ -18,12 +18,12 @@ import (
 
 // Authenticate with a domain, get an admin.Service
 func (mdms *GSuiteMDMService) authenticateWithDomain(customerid string, domain string, scope string) *admin.Service {
-	if mdms.c.GlobalDebug {
+	if mdms.C.GlobalDebug {
 		defer TimeTrack(time.Now())
 	}
 
 	// Range through slice of configured domains until we find the domain we're looking for
-	for _, d := range mdms.c.Domains {
+	for _, d := range mdms.C.Domains {
 		switch {
 		// Domain found!
 		case d.DomainName == domain:
@@ -53,7 +53,7 @@ func (mdms *GSuiteMDMService) authenticateWithDomain(customerid string, domain s
 
 // Create an authenticated http(s) client
 func (mdms *GSuiteMDMService) httpClient(creds string) (*http.Client, error) {
-	if mdms.c.GlobalDebug {
+	if mdms.C.GlobalDebug {
 		defer TimeTrack(time.Now())
 	}
 
@@ -62,12 +62,12 @@ func (mdms *GSuiteMDMService) httpClient(creds string) (*http.Client, error) {
 	checkError(err)
 
 	// Get a nice juicy JWT config struct using that credentials file
-	conf, err := google.JWTConfigFromJSON(data, mdms.c.SheetScope)
+	conf, err := google.JWTConfigFromJSON(data, mdms.C.SheetScope)
 	checkError(err)
 
 	// Since we are using a service account's JSON credentials to write, we need to specify
 	// an actual G Suite user (required by Google)
-	conf.Subject = mdms.c.SheetWho
+	conf.Subject = mdms.C.SheetWho
 
 	// Return the authenticated http client
 	return conf.Client(oauth2.NoContext), nil
