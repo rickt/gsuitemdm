@@ -1,17 +1,20 @@
 package gsuitemdm
 
 //
-// GSuiteMDM basic types
+// GSuiteMDM types
 //
 
 import (
+	"cloud.google.com/go/logging"
 	"context"
 )
 
 // G Suite MDM Service main struct type
 type GSuiteMDMService struct {
-	C   GSuiteMDMConfig // Configuration
-	Ctx context.Context // Context
+	C     GSuiteMDMConfig // Configuration
+	Ctx   context.Context // Context
+	SDLog *logging.Client // Stackdriver (GCP) log
+	Log   *logging.Logger // CLI log
 }
 
 // G Suite MDM Service config struct type
