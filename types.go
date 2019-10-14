@@ -4,7 +4,18 @@ package gsuitemdm
 // GSuiteMDM basic types
 //
 
+import (
+	"context"
+)
+
+// G Suite MDM Service main struct type
 type GSuiteMDMService struct {
+	Config Config
+	Ctx    context.Context
+}
+
+// G Suite MDM Service config struct type
+type Config struct {
 	// Required G Suite Admin API scope to perform ACTION operations (delete, wipe, block, etc).
 	// See SearchScope for more details
 	ActionScope string `json:"actionscope"`
