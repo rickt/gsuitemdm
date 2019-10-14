@@ -6,6 +6,7 @@ package gsuitemdm
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -77,6 +78,23 @@ func getEmailDomain(email string) string {
 	components := strings.Split(email, "@")
 
 	return components[1]
+}
+
+// Load main configuration file and return a config struct
+func loadConfig(file string) GSuiteMDMConfig {
+
+	var c GSuiteMDMConfig
+
+	// Open the main mdmtool configuration file
+	cf, err := os.Open(file)
+	defer cf.Close()
+	checkError(err)
+
+	// Decode the JSON
+	jp := json.NewDecoder(cf)
+	jp.Decode(&c)
+
+	return c
 }
 
 // Helper func to track how long a func takes to execute (found on StackExchange I think!)
