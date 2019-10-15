@@ -67,6 +67,56 @@ func (mdms *GSuiteMDMService) GetDatastoreDevices() error {
 
 	// Return
 	return nil
+}
+
+// Merge Datastore mobile device data & Google Sheet mobile device data
+func (mdms *GSuiteMDMService) MergeDatastoreAndSheetData() []DatastoreMobileDevice {
+	if mdms.C.Debug {
+		defer TimeTrack(time.Now())
+	}
+
+	var mergeddata []DatastoreMobileDevice
+
+	// Merge the data
+	for _, dsv := range mdms.DatastoreData {
+		// Create a temporary mobile device using data from datastore
+		var d DatastoreMobileDevice
+
+		// Merge the data
+		d.CompromisedStatus = dsv.CompromisedStatus
+		d.Domain = dsv.Domain
+		d.DeveloperMode = dsv.DeveloperMode
+		d.Email = dsv.Email
+		d.IMEI = dsv.IMEI
+		d.Model = dsv.Model
+		d.Name = dsv.Name
+		d.OS = dsv.OS
+		d.OSBuild = dsv.OSBuild
+		d.SN = dsv.SN
+		d.Status = dsv.Status
+		d.SyncFirst = dsv.SyncFirst
+		d.SyncLast = dsv.SyncLast
+		d.Type = dsv.Type
+		d.UnknownSources = dsv.UnknownSources
+		d.USBADB = dsv.USBADB
+		d.WifiMac = dsv.WifiMac
+
+		// Add the local-to-sheet data for this specific mobile device (if it exists)
+		for _, shv := range mdms.SheetData {
+			if (strings.Replace(d.IMEI, " ", "", -1) == strings.Replace(shv.IMEI, " ", "", -1)) ||
+				(strings.Replace(d.SN, " ", "", -1) == strings.Replace(shv.SN, " ", "", -1)) {
+				d.Color = shv.Color
+				d.RAM = shv.RAM
+				d.Notes = shv.Notes
+				d.PhoneNumber = shv.PhoneNumber
+			}
+		}
+
+		// Append this mobile device to the slice of mobile devices
+		mergeddata = append(mergeddata, d)
+	}
+
+	return mergeddata
 
 }
 
