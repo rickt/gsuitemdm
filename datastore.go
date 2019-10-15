@@ -63,6 +63,7 @@ func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevic
 	// Range through the slice of devices from Datastore, and when found, return it
 	for k := range dsd {
 		if nimei == strings.Replace(dsd[k].IMEI, " ", "", -1) {
+			// Found!
 			d = &dsd[k]
 			break
 		}
