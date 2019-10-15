@@ -27,7 +27,7 @@ func (mdms *GSuiteMDMService) BuildFullDomainList() []string {
 }
 
 // Get a CustomerID for a given domain
-func (mdms *GSuiteMDMService) GetDomainCustomerID(domain string) string {
+func (mdms *GSuiteMDMService) GetDomainCustomerID(domain string) (string, error) {
 	if mdms.C.GlobalDebug {
 		defer TimeTrack(time.Now())
 	}
@@ -37,11 +37,11 @@ func (mdms *GSuiteMDMService) GetDomainCustomerID(domain string) string {
 		switch d.DomainName {
 		case domain:
 			// Domain found, return the domain's CustomerID
-			return d.CustomerID
+			return d.CustomerID, nil
 		}
 	}
 
-	return ""
+	return "", errors.New(fmt.Sprintf("Could not find CustomerID for domain %s", domain))
 }
 
 // Check to see if a domain is configured
