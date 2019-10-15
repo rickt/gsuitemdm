@@ -146,8 +146,7 @@ func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevic
 }
 
 // Update all Datastore devices for a given domain with device data from the Admin SDK
-func (mdms *GSuiteMDMService) UpdateAllDevices(domain string) (int, error) {
-
+func (mdms *GSuiteMDMService) UpdateAllDatastoreDevices(domain string) (int, error) {
 	if mdms.C.Debug {
 		defer TimeTrack(time.Now())
 	}
