@@ -10,7 +10,6 @@ import (
 	"golang.org/x/oauth2/google"
 	admin "google.golang.org/api/admin/directory/v1"
 	"io/ioutil"
-
 	"log"
 	"net/http"
 	"time"
@@ -51,7 +50,7 @@ func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid string, domain s
 	return nil
 }
 
-// Create an authenticated http(s) client
+// Create an authenticated http(s) client, used to read/write the Google Sheet
 func (mdms *GSuiteMDMService) HttpClient(creds string) (*http.Client, error) {
 	if mdms.C.GlobalDebug {
 		defer TimeTrack(time.Now())
