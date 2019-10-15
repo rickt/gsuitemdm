@@ -6,7 +6,6 @@ package gsuitemdm
 
 import (
 	"bufio"
-	"cloud.google.com/go/logging"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -31,25 +30,6 @@ func (s DatastoreMobileDevices) Swap(i, j int) {
 	s.Mobiledevices[i], s.Mobiledevices[j] = s.Mobiledevices[j], s.Mobiledevices[i]
 }
 
-// Helper function to check errors
-func checkError(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-// Helper function to check errors, Cloud Logging Edition (tm)
-func CheckErrorCTX(err error, log *logging.Logger) {
-	if err != nil {
-		// TODO: remove this
-		fmt.Printf("%s\n", err)
-		log.Log(logging.Entry{
-			Payload:  err,
-			Severity: logging.Error,
-		})
-	}
-}
-
 // Helper function to ask for user confirmation in the CLI
 func checkUserConfirmation(s string) bool {
 	reader := bufio.NewReader(os.Stdin)
@@ -58,7 +38,9 @@ func checkUserConfirmation(s string) bool {
 		fmt.Printf("%s [y/n]: ", s)
 
 		response, err := reader.ReadString('\n')
-		checkError(err)
+		if err != nil {
+			// TODO: fix this
+		}
 
 		response = strings.ToLower(strings.TrimSpace(response))
 
