@@ -85,20 +85,22 @@ func getEmailDomain(email string) string {
 }
 
 // Load main configuration file and return a config struct
-func loadConfig(file string) GSuiteMDMConfig {
+func loadConfig(file string) (GSuiteMDMConfig, error) {
 
 	var c GSuiteMDMConfig
 
 	// Open the main mdmtool configuration file
 	cf, err := os.Open(file)
 	defer cf.Close()
-	checkError(err)
+	if err != nil {
+		return c, err
+	}
 
 	// Decode the JSON
 	jp := json.NewDecoder(cf)
 	jp.Decode(&c)
 
-	return c
+	return c, nil
 }
 
 // Helper func to track how long a func takes to execute (found on StackExchange I think!)

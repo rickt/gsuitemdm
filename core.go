@@ -10,20 +10,26 @@ import (
 )
 
 // Create a new G Suite MDM Service
-func New(ctx context.Context, file string) *GSuiteMDMService {
+func New(ctx context.Context, file string) (*GSuiteMDMService, error) {
 	// Load in main configuration file and get a config struct
-	cf := loadConfig(file)
+	cf, err := loadConfig(file)
+	if err != nil {
+		return nil, err
+	}
 
 	// Logging (Stackdriver)
 	log, err := logging.NewClient(ctx, cf.ProjectID)
-	checkError(err)
-
-	// Return a new G Suite MDM service
-	return &GSuiteMDMService{
-		C:   cf,
-		Ctx: ctx,
-		Log: log,
+	if err != nil {
+		return nil, err
 	}
+
+	// Create a new G Suite MDM service and populate it
+	var s *GSuiteMDMService
+	s.C = cf
+	s.Ctx = ctx
+	s.Log = log
+
+	return s, nil
 }
 
 // EOF
