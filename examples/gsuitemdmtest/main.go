@@ -28,10 +28,18 @@ import (
 //		3) TODO
 //
 //	Instructions:
-//		1) add your own app name to the appname const
-//		2) add the FQDN of your G Suite domain to the testdomain const
-//		3) add the ID of the Google sheet to the testsheetid const
-//			note: the part after https://docs.google.com/spreadsheets/d/ but before /edit
+//		1) add your own app name to the 'appname' var
+//		2) add the FQDN of your G Suite domain to the 'testdomain' var
+//		3) edit the 'configfile', making sure to change the following vars to suit:
+//			'globaldebug': if you want debug messages (bool)
+//			'projectid': set to the name of the GCP project you want to run gsuitemdm inside
+//			'sheetcreds': set to the path of the JSON credentials file of the user with
+//				appropriate permissions to write the test Google sheet
+//			'sheetid': set to the ID of the test Google sheet. Note this is the part
+//				after https://docs.google.com/spreadsheets/d/ but before /edit
+//			'sheetwho': set to the email address of the G Suite user who has permissions
+//				to write the test Google sheet
+//			'domains': setup this JSON array as per your G Suite domain setup
 //		4) set the folowing environment variables to suit your specific needs:
 //			export TESTAPP="gsuitemdmtest"
 //			export TESTDOMAIN="yourdomain.com"
@@ -42,10 +50,9 @@ import (
 //		7) ./gsuitemdmtest
 
 var (
-	appname     string = os.Getenv("TESTAPP")
-	testdomain  string = os.Getenv("TESTDOMAIN")
-	testsheetid string = os.Getenv("TESTSHEETID")
-	configfile  string = "gsuitemdmtest_conf.json"
+	appname    string = os.Getenv("TESTAPP")
+	testdomain string = os.Getenv("TESTDOMAIN")
+	configfile string = "gsuitemdmtest_conf.json"
 )
 
 func main() {
