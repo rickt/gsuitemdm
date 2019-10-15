@@ -6,8 +6,60 @@ package gsuitemdm
 
 import (
 	admin "google.golang.org/api/admin/directory/v1"
+	"strings"
 	"time"
 )
+
+// Convert an Admin API mobile device to a Datastore mobile device
+func (mdms *GSuiteMDMService) ConvertSDKDeviceToDatastore(device *admin.MobileDevice) (*DatastoreMobileDevice, error) {
+	if mdms.C.Debug {
+		defer TimeTrack(time.Now())
+	}
+
+	var d, y DatastoreMobileDevice
+	var err error
+	var x = new(DatastoreMobileDevice)
+
+	// Convert the basics
+	d.CompromisedStatus = device.DeviceCompromisedStatus
+	d.DeveloperMode = device.DeveloperOptionsStatus
+	d.Domain = getEmailDomain(device.Email[0])
+	d.Email = device.Email[0]
+	d.IMEI = strings.Replace(device.Imei, " ", "", -1)
+	d.Model = device.Model
+	d.Name = device.Name[0]
+	d.OS = device.Os
+	d.OSBuild = device.BuildNumber
+	d.SN = strings.Replace(device.SerialNumber, " ", "", -1)
+	d.Status = device.Status
+	d.SyncFirst = device.FirstSync
+	d.SyncLast = device.LastSync
+	d.Type = device.Type
+	d.UnknownSources = device.UnknownSourcesStatus
+	d.USBADB = device.AdbStatus
+	d.WifiMac = device.WifiMacAddress
+
+	// If Datastore has local data for this device, we need to retain them
+	x, err = mdms.SearchDatastoreForDevice(device)
+	if err != nil {
+		return &d, err
+	}
+
+	d.Color = x.Color
+	d.Notes = x.Notes
+	d.PhoneNumber = x.PhoneNumber
+	d.RAM = x.RAM
+
+	// However, if the Google Sheet also has local data for this device, we will use it (and it will override Datastore local data)
+	y = mdms.SearchSheetForDevice(device)
+
+	d.Color = y.Color
+	d.Notes = y.Notes
+	d.PhoneNumber = y.PhoneNumber
+	d.RAM = y.RAM
+
+	return &d, nil
+}
 
 // Get the list of devices for a G Suite domain from the Admin SDK
 func (mdms *GSuiteMDMService) GetAdminSDKDevices(domain string) (*admin.MobileDevices, error) {

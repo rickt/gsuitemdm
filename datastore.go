@@ -73,4 +73,38 @@ func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevic
 	return d, nil
 }
 
+// Update a specific device in Google Cloud Datastore
+func (mdms *GSuiteMDMService) UpdateDeviceInDatastore(device *admin.MobileDevice) error {
+	if mdms.C.Debug {
+		defer TimeTrack(time.Now())
+	}
+
+	var d = new(DatastoreMobileDevice)
+	var err error
+
+	// Create a Datastore client
+	client, err := datastore.NewClient(mdms.Ctx, mdms.C.ProjectID)
+	if err != nil {
+		return err
+	}
+
+	// We were passed an Admin SDK mobile device object. We need to convert it to
+	// a Datastore mobile device object
+	d, err = mdms.ConvertSDKDeviceToDatastore(device)
+	if err != nil {
+		return err
+	}
+
+	// Setup the datastore key
+	key := datastore.NameKey(mdms.C.DSNamekey, d.SN, nil)
+
+	// Save the device in Datastore
+	_, err = client.Put(mdms.Ctx, key, d)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // EOF

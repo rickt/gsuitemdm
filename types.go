@@ -11,9 +11,11 @@ import (
 
 // G Suite MDM Service main struct type
 type GSuiteMDMService struct {
-	C   GSuiteMDMConfig // Configuration
-	Ctx context.Context // Context
-	Log *logging.Client // Stackdriver (GCP) log
+	C             GSuiteMDMConfig         // Main configuration
+	Ctx           context.Context         // Context
+	Log           *logging.Client         // Stackdriver (GCP) log
+	SheetData     []DatastoreMobileDevice // Google Sheet mobile device data
+	DatastoreData []DatastoreMobileDevice // Datastore mobile device data
 }
 
 // G Suite MDM Service config struct type
@@ -24,6 +26,9 @@ type GSuiteMDMConfig struct {
 
 	// Global debug mode?
 	Debug bool `json:"globaldebug"`
+
+	// Datastore namekey
+	DSNamekey string `json:"dsnamekey"`
 
 	// Required G Suite Admin API scope to perform SEARCH operations. Since we are using the
 	// Mobiledevices: list method of the G Suite Admin API, refer to
