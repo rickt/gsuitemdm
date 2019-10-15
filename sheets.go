@@ -6,7 +6,11 @@ package gsuitemdm
 
 import (
 	"github.com/Iwark/spreadsheet"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
 	admin "google.golang.org/api/admin/directory/v1"
+	"io/ioutil"
+	"net/http"
 	"strconv"
 	"strings"
 	"time"
@@ -67,6 +71,32 @@ func (mdms *GSuiteMDMService) GetSheetData() error {
 	}
 
 	return nil
+}
+
+// Create an authenticated http(s) client, used to read/write the Google Sheet
+func (mdms *GSuiteMDMService) HttpClient(creds string) (*http.Client, error) {
+	if mdms.C.Debug {
+		defer TimeTrack(time.Now())
+	}
+
+	// Read in the JSON credentials file for the domain/user we will write the Google Sheet as
+	data, err := ioutil.ReadFile(creds)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get a nice juicy JWT config struct using that credentials file
+	conf, err := google.JWTConfigFromJSON(data, mdms.C.SheetScope)
+	if err != nil {
+		return nil, err
+	}
+
+	// Since we are using a service account's JSON credentials to write, we need to specify
+	// an actual G Suite user (required by Google)
+	conf.Subject = mdms.C.SheetWho
+
+	// Return the authenticated http client
+	return conf.Client(oauth2.NoContext), nil
 }
 
 // Search the Google Sheet for a specific device

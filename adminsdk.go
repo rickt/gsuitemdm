@@ -5,10 +5,56 @@ package gsuitemdm
 //
 
 import (
+	"context"
+	"errors"
+	"fmt"
+	"golang.org/x/oauth2/google"
 	admin "google.golang.org/api/admin/directory/v1"
+	"io/ioutil"
 	"strings"
 	"time"
 )
+
+// Authenticate with a domain, get an admin.Service
+func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid, domain string) (*admin.Service, error) {
+	if mdms.C.Debug {
+		defer TimeTrack(time.Now())
+	}
+
+	// Range through slice of configured domains until we find the domain we're looking for
+	for _, d := range mdms.C.Domains {
+		switch {
+		// Domain found!
+		case d.DomainName == domain:
+			// Read in this domain's service account JSON credentials file
+			creds, err := ioutil.ReadFile(d.CredentialsFile)
+			if err != nil {
+				return nil, err
+			}
+
+			// create JWT config using the credentials file
+			jwt, err := google.JWTConfigFromJSON(creds, mdms.C.SearchScope)
+			if err != nil {
+				return nil, err
+			}
+
+			// Specify which admin user the API calls should "run as"
+			jwt.Subject = d.AdminUser
+
+			// Make the API client using our JWT config
+			as, err := admin.New(jwt.Client(context.Background()))
+			if err != nil {
+				return nil, err
+			}
+
+			// We've made it all the way through (w00t!), so return the admin.Service
+			return as, nil
+		}
+	}
+
+	// trombone.wav
+	return nil, errors.New(fmt.Sprintf("Could not authenticate with domain %s", domain))
+}
 
 // Convert an Admin SDK mobile device object to a Datastore mobile device object
 func (mdms *GSuiteMDMService) ConvertSDKDeviceToDatastore(device *admin.MobileDevice) (*DatastoreMobileDevice, error) {
