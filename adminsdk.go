@@ -83,7 +83,7 @@ func (mdms *GSuiteMDMService) GetAdminSDKDevices(domain string) error {
 			}
 
 			// Authenticate with this domain
-			as, err = mdms.AuthenticateWithDomain(cid, domain, mdms.C.SearchScope)
+			as, err = mdms.AuthenticateWithDomain(cid, domain)
 			if err != nil {
 				return err
 			}
