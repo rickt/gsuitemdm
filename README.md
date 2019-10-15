@@ -1,8 +1,9 @@
 # gsuitemdm
-golang package for G Suite MDM 
+A go package to ease management & operations of G Suite MDM-protected corporate mobile devices. If you:
 
-still in development; do not use!
+* manage 1+ G Suite domains
+* and manage your corporate mobile devices using G Suite MDM
 
-docs to come
+then gsuitemdm might be right up your alley. 
 
 
