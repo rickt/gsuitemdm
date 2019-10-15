@@ -87,7 +87,7 @@ type GSuiteMDMConfig struct {
 	ProjectID string `json:"projectid"`
 }
 
-// Struct used for configured domains. Just an array of the domain-specific configuration struct
+// Struct used for configured domains. Just a slice of the domain-specific configuration struct
 type Domains []DomainConf
 
 // Specific G Suite domain configuration
