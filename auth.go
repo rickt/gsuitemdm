@@ -17,7 +17,7 @@ import (
 )
 
 // Authenticate with a domain, get an admin.Service
-func (mdms *GSuiteMDMService) authenticateWithDomain(customerid string, domain string, scope string) *admin.Service {
+func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid string, domain string, scope string) *admin.Service {
 	if mdms.C.GlobalDebug {
 		defer TimeTrack(time.Now())
 	}
@@ -52,7 +52,7 @@ func (mdms *GSuiteMDMService) authenticateWithDomain(customerid string, domain s
 }
 
 // Create an authenticated http(s) client
-func (mdms *GSuiteMDMService) httpClient(creds string) (*http.Client, error) {
+func (mdms *GSuiteMDMService) HttpClient(creds string) (*http.Client, error) {
 	if mdms.C.GlobalDebug {
 		defer TimeTrack(time.Now())
 	}

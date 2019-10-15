@@ -11,7 +11,7 @@ import (
 )
 
 // Build a list of all configured domains
-func (mdms *GSuiteMDMService) buildFullDomainList() []string {
+func (mdms *GSuiteMDMService) BuildFullDomainList() []string {
 	if mdms.C.GlobalDebug {
 		defer TimeTrack(time.Now())
 	}
@@ -27,7 +27,7 @@ func (mdms *GSuiteMDMService) buildFullDomainList() []string {
 }
 
 // Get a CustomerID for a given domain
-func (mdms *GSuiteMDMService) getDomainCustomerID(domain string) string {
+func (mdms *GSuiteMDMService) GetDomainCustomerID(domain string) string {
 	if mdms.C.GlobalDebug {
 		defer TimeTrack(time.Now())
 	}
@@ -45,7 +45,7 @@ func (mdms *GSuiteMDMService) getDomainCustomerID(domain string) string {
 }
 
 // Check to see if a domain is configured
-func (mdms *GSuiteMDMService) isDomainConfigured(domain string) bool {
+func (mdms *GSuiteMDMService) IsDomainConfigured(domain string) bool {
 	if mdms.C.GlobalDebug {
 		defer TimeTrack(time.Now())
 	}
@@ -65,7 +65,7 @@ func (mdms *GSuiteMDMService) isDomainConfigured(domain string) bool {
 }
 
 // List all configured domains
-func (mdms *GSuiteMDMService) listAllDomains(verbose bool) {
+func (mdms *GSuiteMDMService) ListAllDomains(verbose bool) {
 	// Range through the slice of configured domains and print out some nice info
 	for _, domain := range mdms.C.Domains {
 		if verbose == true {
@@ -80,7 +80,7 @@ func (mdms *GSuiteMDMService) listAllDomains(verbose bool) {
 }
 
 // Verify specified domain
-func (mdms *GSuiteMDMService) verifySpecifiedDomain(domain string) ([]string, error) {
+func (mdms *GSuiteMDMService) VerifySpecifiedDomain(domain string) ([]string, error) {
 	if mdms.C.GlobalDebug {
 		defer TimeTrack(time.Now())
 	}
