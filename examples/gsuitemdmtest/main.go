@@ -47,6 +47,14 @@ import (
 //		5) go get -u github.com/rickt/gsuitemdm
 //		6) go build
 //		7) ./gsuitemdmtest
+//
+// Implementation Notes:
+//    * Google Sheet:
+//       An assumption is made that the Google Sheet expects data to start on row 3.
+//       Row 1 will be autofilled with "Last Automatic Update: <timestamp>"
+//       Row 2 is a header row, with columns A through R as (in CSV) format:
+//          DOMAIN,WIRELESS #,COLOR,SIZE,OWNER NAME,STATUS,OWNER EMAIL,MODEL,IMEI/ESN Hex,Serial #,\
+//          OS,TYPE,WIFI MAC,COMPROMISED?,DEV MODE?,UNKNOWN SOURCES?,USB DEBUG?,NOTES
 
 var (
 	appname    string = os.Getenv("TESTAPP")
