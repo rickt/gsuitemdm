@@ -12,7 +12,7 @@ import (
 )
 
 // Read all mobile device data from Google Cloud Datastore
-func (mdms *GSuiteMDMService) GetDatastoreDeviceData() ([]DatastoreMobileDevice, error) {
+func (mdms *GSuiteMDMService) GetDatastoreDevices() ([]DatastoreMobileDevice, error) {
 	if mdms.C.GlobalDebug {
 		defer TimeTrack(time.Now())
 	}

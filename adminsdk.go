@@ -10,7 +10,7 @@ import (
 )
 
 // Get the list of devices for a G Suite domain from the Admin API
-func (mdms *GSuiteMDMService) GetAdminAPIDeviceData(domain string) (*admin.MobileDevices, error) {
+func (mdms *GSuiteMDMService) GetAdminAPIDevices(domain string) (*admin.MobileDevices, error) {
 	if mdms.C.GlobalDebug {
 		defer TimeTrack(time.Now())
 	}
