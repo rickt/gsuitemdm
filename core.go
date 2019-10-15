@@ -24,12 +24,10 @@ func New(ctx context.Context, file string) (*GSuiteMDMService, error) {
 	}
 
 	// Create a new G Suite MDM service and populate it
-	var s *GSuiteMDMService
-	s.C = cf
-	s.Ctx = ctx
-	s.Log = log
-
-	return s, nil
+	return &GSuiteMDMService{
+		C:   cf,
+		Ctx: ctx,
+		Log: log}, nil
 }
 
 // EOF
