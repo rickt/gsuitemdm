@@ -57,6 +57,9 @@ type GSuiteMDMConfig struct {
 	//
 	SearchType string `json:"searchtype"`
 
+	// Time Zone
+	TimeZone string `json:"timezone"`
+
 	// G Suite domains that mdmtool knows about.
 	Domains Domains `json:"domains"`
 

@@ -12,6 +12,7 @@
 	"sheetid": "yourgooglesheetidgoeshere",
 	"sheetscope": "https://www.googleapis.com/auth/spreadsheets",
 	"sheetwho": "username@yourgsuitedomain.com",
+	"timezone": "America/Los_Angeles",
 	"version": "0.8",
 	"domains": [
 		{

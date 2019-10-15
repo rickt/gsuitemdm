@@ -116,9 +116,12 @@ func (mdms *GSuiteMDMService) UpdateSheet(mergeddata []DatastoreMobileDevice) er
 	// Note that we start at row 2 because row0 == "Last updated" line and row1 == Header
 	var row = 2
 
-	// Update the Last Updated timestamp.
-	// We want time expressed as being local to Los Angeles
-	loc, _ := time.LoadLocation("America/Los_Angeles")
+	// Set time zone to be as configured
+	loc, err := time.LoadLocation(mdms.C.TimeZone)
+	if err != nil {
+		return err
+	}
+	// Update the Last Updated timestamp in the sheet
 	ws.Update(0, 1, time.Now().In(loc).Format(time.RFC1123))
 
 	// Range through the canonical device data
