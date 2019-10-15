@@ -1,7 +1,7 @@
 package gsuitemdm
 
 //
-// GSuiteMDM core funcs
+// GSuiteMDM G Suite Admin SDK-specific funcs
 //
 
 import (
