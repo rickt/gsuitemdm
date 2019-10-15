@@ -146,7 +146,7 @@ func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevic
 }
 
 // Update a specific device in Google Cloud Datastore
-func (mdms *GSuiteMDMService) UpdateDeviceInDatastore(device *admin.MobileDevice) error {
+func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) error {
 	if mdms.C.Debug {
 		defer TimeTrack(time.Now())
 	}
