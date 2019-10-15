@@ -88,7 +88,7 @@ func (mdms *GSuiteMDMService) VerifySpecifiedDomain(domain string) ([]string, er
 	var domains []string
 
 	// Check to see if the specified domain is configured within mdmtool
-	if mdms.isDomainConfigured(domain) == false {
+	if mdms.IsDomainConfigured(domain) == false {
 		// Domain is not valid
 		t := "ERROR: domain '" + domain + "' is not a valid or configured domain"
 		return nil, errors.New(t)
