@@ -14,30 +14,31 @@ import (
 )
 
 // Read all mobile device data from Google Cloud Datastore
-func (mdms *GSuiteMDMService) GetDatastoreDevices() ([]DatastoreMobileDevice, error) {
+func (mdms *GSuiteMDMService) GetDatastoreDevices() error {
 	if mdms.C.Debug {
 		defer TimeTrack(time.Now())
 	}
 
-	var devices []DatastoreMobileDevice
+	var dc *datastore.Client
 	var err error
 
 	// Create a Datastore client
-	client, err := datastore.NewClient(mdms.Ctx, mdms.C.ProjectID)
+	dc, err = datastore.NewClient(mdms.Ctx, mdms.C.ProjectID)
 	if err != nil {
-		return devices, errors.New(fmt.Sprintf("Error creating Datastore client: %s", err))
+		return errors.New(fmt.Sprintf("Error creating Datastore client: %s", err))
 	}
 
 	// Build the query & get the list of devices
-	_, err = client.GetAll(mdms.Ctx, datastore.NewQuery("MobileDevice").
+	_, err = dc.GetAll(mdms.Ctx, datastore.NewQuery("MobileDevice").
 		Order("Name"),
-		&devices)
+		&mdms.DatastoreData)
+
 	if err != nil {
-		return devices, errors.New(fmt.Sprintf("Error querying Datastore: %s", err))
+		return errors.New(fmt.Sprintf("Error querying Datastore: %s", err))
 	}
 
 	// Return
-	return devices, nil
+	return nil
 
 }
 
@@ -48,29 +49,22 @@ func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevic
 	}
 
 	var d = new(DatastoreMobileDevice)
-	var dsd []DatastoreMobileDevice
-	var err error = nil
-
-	// Get device data from Datastore
-	dsd, err = mdms.GetDatastoreDevices()
-	if err != nil {
-		return d, errors.New(fmt.Sprintf("Error querying Datastore: %s", err))
-	}
+	var err error
 
 	// Normalise the IMEI we're looking for
 	nimei := strings.Replace(device.Imei, " ", "", -1)
 
 	// Range through the slice of devices from Datastore, and when found, return it
-	for k := range dsd {
-		if nimei == strings.Replace(dsd[k].IMEI, " ", "", -1) {
+	for k := range mdms.DatastoreData {
+		if nimei == strings.Replace(mdms.DatastoreData[k].IMEI, " ", "", -1) {
 			// Found!
-			d = &dsd[k]
-			break
+			d = &mdms.DatastoreData[k]
+			return d, nil
 		}
 	}
 
 	// Return
-	return d, nil
+	return nil, errors.New(fmt.Sprintf("Could not find device: %s", err))
 }
 
 // Update a specific device in Google Cloud Datastore
@@ -80,10 +74,11 @@ func (mdms *GSuiteMDMService) UpdateDeviceInDatastore(device *admin.MobileDevice
 	}
 
 	var d = new(DatastoreMobileDevice)
+	var dc *datastore.Client
 	var err error
 
 	// Create a Datastore client
-	client, err := datastore.NewClient(mdms.Ctx, mdms.C.ProjectID)
+	dc, err = datastore.NewClient(mdms.Ctx, mdms.C.ProjectID)
 	if err != nil {
 		return err
 	}
@@ -99,7 +94,8 @@ func (mdms *GSuiteMDMService) UpdateDeviceInDatastore(device *admin.MobileDevice
 	key := datastore.NameKey(mdms.C.DSNamekey, d.SN, nil)
 
 	// Save the device in Datastore
-	_, err = client.Put(mdms.Ctx, key, d)
+	_, err = dc.Put(mdms.Ctx, key, d)
+
 	if err != nil {
 		return err
 	}
