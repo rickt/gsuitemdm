@@ -6,6 +6,7 @@ package gsuitemdm
 
 import (
 	"bufio"
+	"cloud.google.com/go/logging"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -38,11 +39,14 @@ func checkError(err error) {
 }
 
 // Helper function to check errors, Cloud Logging Edition (tm)
-func CheckErrorCTX(err error, log *log.Logger) {
+func CheckErrorCTX(err error, log *logging.Logger) {
 	if err != nil {
 		// TODO: remove this
 		fmt.Printf("%s\n", err)
-		log.Fatal(err)
+		log.Log(logging.Entry{
+			Payload:  err,
+			Severity: logging.Error,
+		})
 	}
 }
 
