@@ -90,7 +90,7 @@ func (mdms *GSuiteMDMService) SearchSheetForDevice(device *admin.MobileDevice) D
 }
 
 // Update the Google Sheet
-func (mdms *GSuiteMDMService) UpdateSpreadsheet(mergeddata []DatastoreMobileDevice) error {
+func (mdms *GSuiteMDMService) UpdateSheet(mergeddata []DatastoreMobileDevice) error {
 	if mdms.C.Debug {
 		defer TimeTrack(time.Now())
 	}
