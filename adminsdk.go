@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// Convert an Admin API mobile device to a Datastore mobile device
+// Convert an Admin SDK mobile device object to a Datastore mobile device object
 func (mdms *GSuiteMDMService) ConvertSDKDeviceToDatastore(device *admin.MobileDevice) (*DatastoreMobileDevice, error) {
 	if mdms.C.Debug {
 		defer TimeTrack(time.Now())
@@ -20,7 +20,7 @@ func (mdms *GSuiteMDMService) ConvertSDKDeviceToDatastore(device *admin.MobileDe
 	var err error
 	var x = new(DatastoreMobileDevice)
 
-	// Convert the basics
+	// Convert
 	d.CompromisedStatus = device.DeviceCompromisedStatus
 	d.DeveloperMode = device.DeveloperOptionsStatus
 	d.Domain = getEmailDomain(device.Email[0])

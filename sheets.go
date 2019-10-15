@@ -1,7 +1,7 @@
 package gsuitemdm
 
 //
-// GSuiteMDM G Suite Admin SDK-specific funcs
+// GSuiteMDM Google Sheet-specific funcs
 //
 
 import (

@@ -13,6 +13,34 @@ import (
 	"time"
 )
 
+// Convert a Datastore mobile device object to an Admin SDK mobile device object
+func (mdms *GSuiteMDMService) ConvertDatastoreDevicetoSDK(device *DatastoreMobileDevice) *admin.MobileDevice {
+	if mdms.C.Debug {
+		defer TimeTrack(time.Now())
+	}
+
+	var d admin.MobileDevice
+
+	// Convert
+	d.DeviceCompromisedStatus = device.CompromisedStatus
+	d.DeveloperOptionsStatus = device.DeveloperMode
+	d.Email[0] = device.Email
+	d.Imei = strings.Replace(device.IMEI, " ", "", -1)
+	d.Model = device.Model
+	d.Os = device.OS
+	d.BuildNumber = device.OSBuild
+	d.SerialNumber = strings.Replace(device.SN, " ", "", -1)
+	d.Status = device.Status
+	d.FirstSync = device.SyncFirst
+	d.LastSync = device.SyncLast
+	d.Type = device.Type
+	d.UnknownSourcesStatus = device.UnknownSources
+	d.AdbStatus = device.USBADB
+	d.WifiMacAddress = device.WifiMac
+
+	return &d
+}
+
 // Read all mobile device data from Google Cloud Datastore
 func (mdms *GSuiteMDMService) GetDatastoreDevices() error {
 	if mdms.C.Debug {
