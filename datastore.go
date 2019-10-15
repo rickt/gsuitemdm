@@ -145,6 +145,49 @@ func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevic
 	return nil, errors.New(fmt.Sprintf("Could not find device: %s", err))
 }
 
+// Update all Datastore devices for a given domain with device data from the Admin SDK
+func (mdms *GSuiteMDMService) UpdateAllDevices(devices *admin.MobileDevices, domain string) (int, error) {
+
+	if mdms.C.Debug {
+		defer TimeTrack(time.Now())
+	}
+
+	var count int
+	var d = new(DatastoreMobileDevice)
+	var dc *datastore.Client
+	var err error
+
+	// Create a Datastore client
+	dc, err = datastore.NewClient(mdms.Ctx, mdms.C.ProjectID)
+	if err != nil {
+		return 0, err
+	}
+
+	// Iterate through the domain's devices
+	for _, device := range devices.Mobiledevices {
+		// Convert our *admin.MobileDevice to an *hmsMobileDevice
+		d, err = mdms.ConvertSDKDeviceToDatastore(device)
+		if err != nil {
+			return 0, err
+		}
+
+		// Setup the Datastore key
+		key := datastore.NameKey(mdms.C.DSNamekey, d.SN, nil)
+
+		// Save the entity in Datastore
+		_, err = dc.Put(mdms.Ctx, key, d)
+
+		if err != nil {
+			return 0, err
+		}
+
+		// Increment the counter
+		count++
+	}
+
+	return count, err
+}
+
 // Update a specific device in Google Cloud Datastore
 func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) error {
 	if mdms.C.Debug {
