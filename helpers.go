@@ -38,7 +38,7 @@ func checkError(err error) {
 }
 
 // Helper function to check errors, Cloud Logging Edition (tm)
-func checkErrorCTX(err error, log *log.Logger) {
+func CheckErrorCTX(err error, log *log.Logger) {
 	if err != nil {
 		// TODO: remove this
 		fmt.Printf("%s\n", err)
