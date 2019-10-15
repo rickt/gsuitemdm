@@ -11,7 +11,7 @@ import (
 
 // Get the list of devices for a G Suite domain from the Admin SDK
 func (mdms *GSuiteMDMService) GetAdminSDKDevices(domain string) (*admin.MobileDevices, error) {
-	if mdms.C.GlobalDebug {
+	if mdms.C.Debug {
 		defer TimeTrack(time.Now())
 	}
 

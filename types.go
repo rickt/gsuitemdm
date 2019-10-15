@@ -18,12 +18,12 @@ type GSuiteMDMService struct {
 
 // G Suite MDM Service config struct type
 type GSuiteMDMConfig struct {
-	// Required G Suite Admin API scope to perform ACTION operations (delete, wipe, block, etc).
+	// Required G Suite Admin SDK scope to perform ACTION operations (delete, wipe, block, etc).
 	// See SearchScope for more details
 	ActionScope string `json:"actionscope"`
 
 	// Global debug mode?
-	GlobalDebug bool `json:"globaldebug"`
+	Debug bool `json:"globaldebug"`
 
 	// Required G Suite Admin API scope to perform SEARCH operations. Since we are using the
 	// Mobiledevices: list method of the G Suite Admin API, refer to

@@ -18,7 +18,7 @@ import (
 
 // Authenticate with a domain, get an admin.Service
 func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid string, domain string, scope string) (*admin.Service, error) {
-	if mdms.C.GlobalDebug {
+	if mdms.C.Debug {
 		defer TimeTrack(time.Now())
 	}
 
@@ -59,7 +59,7 @@ func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid string, domain s
 
 // Create an authenticated http(s) client, used to read/write the Google Sheet
 func (mdms *GSuiteMDMService) HttpClient(creds string) (*http.Client, error) {
-	if mdms.C.GlobalDebug {
+	if mdms.C.Debug {
 		defer TimeTrack(time.Now())
 	}
 

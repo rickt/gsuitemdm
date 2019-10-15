@@ -15,7 +15,7 @@ import (
 
 // Read all mobile device data from Google Cloud Datastore
 func (mdms *GSuiteMDMService) GetDatastoreDevices() ([]DatastoreMobileDevice, error) {
-	if mdms.C.GlobalDebug {
+	if mdms.C.Debug {
 		defer TimeTrack(time.Now())
 	}
 
@@ -43,7 +43,7 @@ func (mdms *GSuiteMDMService) GetDatastoreDevices() ([]DatastoreMobileDevice, er
 
 // Search for a matching device in Google Datastore using a specific Admin SDK mobile device object
 func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevice) (*DatastoreMobileDevice, error) {
-	if mdms.C.GlobalDebug {
+	if mdms.C.Debug {
 		defer TimeTrack(time.Now())
 	}
 

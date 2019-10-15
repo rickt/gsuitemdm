@@ -12,7 +12,7 @@ import (
 
 // Build a list of all configured domains
 func (mdms *GSuiteMDMService) BuildFullDomainList() []string {
-	if mdms.C.GlobalDebug {
+	if mdms.C.Debug {
 		defer TimeTrack(time.Now())
 	}
 
@@ -28,7 +28,7 @@ func (mdms *GSuiteMDMService) BuildFullDomainList() []string {
 
 // Get a CustomerID for a given domain
 func (mdms *GSuiteMDMService) GetDomainCustomerID(domain string) (string, error) {
-	if mdms.C.GlobalDebug {
+	if mdms.C.Debug {
 		defer TimeTrack(time.Now())
 	}
 
@@ -46,7 +46,7 @@ func (mdms *GSuiteMDMService) GetDomainCustomerID(domain string) (string, error)
 
 // Check to see if a domain is configured
 func (mdms *GSuiteMDMService) IsDomainConfigured(domain string) bool {
-	if mdms.C.GlobalDebug {
+	if mdms.C.Debug {
 		defer TimeTrack(time.Now())
 	}
 
@@ -81,7 +81,7 @@ func (mdms *GSuiteMDMService) ListAllDomains(verbose bool) {
 
 // Verify specified domain
 func (mdms *GSuiteMDMService) VerifySpecifiedDomain(domain string) ([]string, error) {
-	if mdms.C.GlobalDebug {
+	if mdms.C.Debug {
 		defer TimeTrack(time.Now())
 	}
 
