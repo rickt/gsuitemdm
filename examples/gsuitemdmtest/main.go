@@ -38,7 +38,7 @@ import (
 //			export TESTSHEETID="1bnfhj459dbhs95ngkbnvbnlsjvpas82bhh5d_9W8fjs"
 //			export GOOGLE_APPLICATION_CREDENTIALS="/path/to/credentials_yourdomain.com.json"
 //		5) go get -u github.com/rickt/gsuitemdm
-//		6) go build gsuitemdmtest.go
+//		6) go build
 //		7) ./gsuitemdmtest
 
 var (
