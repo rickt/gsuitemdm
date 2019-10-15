@@ -146,7 +146,7 @@ func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevic
 }
 
 // Update all Datastore devices for a given domain with device data from the Admin SDK
-func (mdms *GSuiteMDMService) UpdateAllDevices(devices *admin.MobileDevices, domain string) (int, error) {
+func (mdms *GSuiteMDMService) UpdateAllDevices(domain string) (int, error) {
 
 	if mdms.C.Debug {
 		defer TimeTrack(time.Now())
@@ -164,7 +164,7 @@ func (mdms *GSuiteMDMService) UpdateAllDevices(devices *admin.MobileDevices, dom
 	}
 
 	// Iterate through the domain's devices
-	for _, device := range devices.Mobiledevices {
+	for _, device := range mdms.SDKData.Mobiledevices {
 		// Convert our *admin.MobileDevice to an *hmsMobileDevice
 		d, err = mdms.ConvertSDKDeviceToDatastore(device)
 		if err != nil {
