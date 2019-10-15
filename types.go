@@ -7,6 +7,7 @@ package gsuitemdm
 import (
 	"cloud.google.com/go/logging"
 	"context"
+	admin "google.golang.org/api/admin/directory/v1"
 )
 
 // G Suite MDM Service main struct type
@@ -14,8 +15,9 @@ type GSuiteMDMService struct {
 	C             GSuiteMDMConfig         // Main configuration
 	Ctx           context.Context         // Context
 	Log           *logging.Client         // Stackdriver (GCP) log
-	SheetData     []DatastoreMobileDevice // Google Sheet mobile device data
 	DatastoreData []DatastoreMobileDevice // Datastore mobile device data
+	SDKData       *admin.MobileDevices    // Admin SDK mobile device data
+	SheetData     []DatastoreMobileDevice // Google Sheet mobile device data
 }
 
 // G Suite MDM Service config struct type

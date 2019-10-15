@@ -62,12 +62,11 @@ func (mdms *GSuiteMDMService) ConvertSDKDeviceToDatastore(device *admin.MobileDe
 }
 
 // Get the list of devices for a G Suite domain from the Admin SDK
-func (mdms *GSuiteMDMService) GetAdminSDKDevices(domain string) (*admin.MobileDevices, error) {
+func (mdms *GSuiteMDMService) GetAdminSDKDevices(domain string) error {
 	if mdms.C.Debug {
 		defer TimeTrack(time.Now())
 	}
 
-	var ad *admin.MobileDevices
 	var as *admin.Service
 	var cid string
 	var err error
@@ -79,27 +78,27 @@ func (mdms *GSuiteMDMService) GetAdminSDKDevices(domain string) (*admin.MobileDe
 			// Domain found!
 			cid, err = mdms.GetDomainCustomerID(domain)
 			if err != nil {
-				return ad, err
+				return err
 			}
 
 			// Authenticate with this domain
 			as, err = mdms.AuthenticateWithDomain(cid, domain, mdms.C.SearchScope)
 			if err != nil {
-				return ad, err
+				return err
 			}
 
 			// Pull down the list of devices for this G Suite domain.
 			// Refer to https://godoc.org/google.golang.org/api/admin/directory/v1#MobileDevices
-			devices, err := as.Mobiledevices.List(d.CustomerID).OrderBy(mdms.C.APIQueryOrderBy).Do()
+			mdms.SDKData, err = as.Mobiledevices.List(d.CustomerID).OrderBy(mdms.C.APIQueryOrderBy).Do()
 			if err != nil {
-				return ad, err
+				return err
 			}
 
-			return devices, nil
+			return nil
 		}
 	}
 
-	return nil, nil
+	return nil
 }
 
 // EOF
