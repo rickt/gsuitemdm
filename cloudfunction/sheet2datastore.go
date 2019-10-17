@@ -17,6 +17,16 @@ var (
 	domain     string = os.Getenv("DOMAIN")
 )
 
+// Example deploy command line:
+//
+// $ cd gsuitemdm/demo/cloudfunction
+// $ cp env_example.yaml env.yaml
+// # edit env.yaml as appropriate to your environment
+// $ cp cloudfunction_conf_example.json cloudfunction_conf.json
+// # edit cloudfunction_conf.json as appropriate to your environment
+// $ gcloud config set project <yourprojectname>
+// $ gcloud functions deploy Sheet2Datastore --runtime go111 --trigger-http --env-vars-file env.yaml
+
 func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var l *logging.Client
