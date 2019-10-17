@@ -1,4 +1,4 @@
 APPNAME: sheet2datastore
 CONFIGFILE: cloudfunction_conf.json
 DOMAIN: yourdomain.com
-
+KEY: 0123456789
