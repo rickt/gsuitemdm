@@ -26,9 +26,7 @@ import (
 //		3) TODO
 //
 //	Instructions:
-//		1) add your own app name to the 'appname' var
-//		2) add the FQDN of your G Suite domain to the 'testdomain' var
-//		3) edit the 'configfile', making sure to change the following vars to suit:
+//		1) edit the 'configfile', making sure to change the following vars to suit:
 //			'globaldebug': if you want debug messages (bool)
 //			'projectid': set to the name of the GCP project you want to run gsuitemdm inside
 //			'sheetcreds': set to the path of the JSON credentials file of the user with
@@ -38,19 +36,19 @@ import (
 //			'sheetwho': set to the email address of the G Suite user who has permissions
 //				to write the test Google sheet
 //			'domains': setup this JSON array as per your G Suite domain setup
-//		4) set the folowing environment variables to suit your specific needs:
+//		2) set the folowing environment variables to suit your specific needs:
 //			export TESTAPP="gsuitemdmtest"
 //			export TESTDOMAIN="yourdomain.com"
 //			export TESTSHEETID="1bnfhj459dbhs95ngkbnvbnlsjvpas82bhh5d_9W8fjs"
 //			export GOOGLE_APPLICATION_CREDENTIALS="/path/to/credentials_yourdomain.com.json"
-//		5) go get -u github.com/rickt/gsuitemdm
-//		6) go build
-//		7) ./gsuitemdmtest
+//		3) go get -u github.com/rickt/gsuitemdm
+//		4) go build
+//		5) ./gsuitemdmtest
 
 var (
 	appname    string = os.Getenv("TESTAPP")
-	testdomain string = os.Getenv("TESTDOMAIN")
 	configfile string = "gsuitemdmtest_conf.json"
+	domain     string = os.Getenv("TESTDOMAIN")
 )
 
 func main() {
@@ -64,12 +62,12 @@ func main() {
 	}
 
 	// get Admin SDK data
-	err = gs.GetAdminSDKDevices(testdomain)
+	err = gs.GetAdminSDKDevices(domain)
 	if err != nil {
 		fmt.Printf("Error getting mobile device data from G Suite Admin SDK: %v\n", err)
 		return
 	}
-	fmt.Printf("G Suite Admin SDK for domain %s reports %d mobile devices\n", testdomain, len(gs.SDKData.Mobiledevices))
+	fmt.Printf("G Suite Admin SDK for domain %s reports %d mobile devices\n", domain, len(gs.SDKData.Mobiledevices))
 
 	// get sheet data
 	err = gs.GetSheetData()
@@ -98,12 +96,12 @@ func main() {
 	}
 
 	// get admin API data again, update datastore
-	err = gs.GetAdminSDKDevices(testdomain)
+	err = gs.GetAdminSDKDevices(domain)
 	if err != nil {
 		fmt.Printf("Error getting mobile device data from G Suite Admin SDK: %v\n", err)
 		return
 	}
-	count, err := gs.UpdateAllDatastoreData(testdomain)
+	count, err := gs.UpdateAllDatastoreData(domain)
 	if err != nil {
 		fmt.Printf("Error updating Google Datastore:", err)
 		return
