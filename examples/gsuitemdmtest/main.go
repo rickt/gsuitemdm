@@ -1,20 +1,18 @@
 package main
 
 import (
-	"cloud.google.com/go/logging"
 	"context"
 	"fmt"
 	"github.com/rickt/gsuitemdm"
 	"log"
 	"os"
-	"strconv"
 )
 
 // Sample code showing how to use the gsuitemdm package.
 //
 //	What it does:
-//		* downloads all mobile device data for a configured G Suite domain's MDM-managed devices using the G Suite Admin SDK API
-//		* downloads all mobile device data from a configured tracking Google sheet (if data already exists in the sheet)
+//		* downloads all mobile device data for a G Suite domain's MDM-managed devices using the G Suite Admin SDK
+//		* downloads all mobile device data from a tracking Google sheet
 //		* downloads all mobile device data from Google Datastore
 //		* merges all the data
 //		* updates the Google sheet
@@ -43,18 +41,11 @@ import (
 //		4) set the folowing environment variables to suit your specific needs:
 //			export TESTAPP="gsuitemdmtest"
 //			export TESTDOMAIN="yourdomain.com"
+//			export TESTSHEETID="1bnfhj459dbhs95ngkbnvbnlsjvpas82bhh5d_9W8fjs"
 //			export GOOGLE_APPLICATION_CREDENTIALS="/path/to/credentials_yourdomain.com.json"
 //		5) go get -u github.com/rickt/gsuitemdm
 //		6) go build
 //		7) ./gsuitemdmtest
-//
-// Implementation Notes:
-//    * Google Sheet:
-//       An assumption is made that the Google Sheet expects data to start on row 3.
-//       Row 1 will be autofilled with "Last Automatic Update: <timestamp>"
-//       Row 2 is a header row, with columns A through R as (in CSV) format:
-//          DOMAIN,WIRELESS #,COLOR,SIZE,OWNER NAME,STATUS,OWNER EMAIL,MODEL,IMEI/ESN Hex,Serial #,\
-//          OS,TYPE,WIFI MAC,COMPROMISED?,DEV MODE?,UNKNOWN SOURCES?,USB DEBUG?,NOTES
 
 var (
 	appname    string = os.Getenv("TESTAPP")
@@ -72,29 +63,29 @@ func main() {
 		log.Fatal("Couldn't get a gsuitemdm service")
 	}
 
-	// setup logging
-	lg := gs.Log.Logger(appname)
-
 	// get Admin SDK data
 	err = gs.GetAdminSDKDevices(testdomain)
 	if err != nil {
-		lg.Log(logging.Entry{Payload: err, Severity: logging.Error})
+		fmt.Printf("Error getting mobile device data from G Suite Admin SDK: %v\n", err)
+		return
 	}
-	lg.Log(logging.Entry{Payload: "G Suite Admin SDK for domain '" + testdomain + " reports " + strconv.Itoa(len(gs.SDKData.Mobiledevices)) + " mobile devices", Severity: logging.Notice})
+	fmt.Printf("G Suite Admin SDK for domain %s reports %d mobile devices\n", testdomain, len(gs.SDKData.Mobiledevices))
 
 	// get sheet data
 	err = gs.GetSheetData()
 	if err != nil {
-		lg.Log(logging.Entry{Payload: err, Severity: logging.Error})
+		fmt.Printf("Error getting Google Sheet data: %v\n", err)
+		return
 	}
-	lg.Log(logging.Entry{Payload: "Google Sheet reports " + strconv.Itoa(len(gs.SheetData)-1) + " rows", Severity: logging.Notice})
+	fmt.Printf("Google Sheet reports %d rows\n", len(gs.SheetData)-1)
 
 	// get datastore data
-	err = gs.GetDatastoreDevices()
+	err = gs.GetDatastoreData()
 	if err != nil {
-		lg.Log(logging.Entry{Payload: err, Severity: logging.Error})
+		fmt.Printf("Error getting Google Datastore data: %v\n", err)
+		return
 	}
-	lg.Log(logging.Entry{Payload: "Google Datastore reports " + strconv.Itoa(len(gs.DatastoreData)) + " mobile devices", Severity: logging.Notice})
+	fmt.Printf("Google Datastore reports %d mobile devices\n", len(gs.DatastoreData))
 
 	// merge some data
 	md := gs.MergeDatastoreAndSheetData()
@@ -102,26 +93,24 @@ func main() {
 	// update the sheet
 	err = gs.UpdateSheet(md)
 	if err != nil {
-		lg.Log(logging.Entry{Payload: "Error updating Sheet: " + fmt.Sprintf("%s", err), Severity: logging.Error})
+		fmt.Printf("Error updating Google Sheet: %v\n", err)
+		return
 	}
 
 	// get admin API data again, update datastore
 	err = gs.GetAdminSDKDevices(testdomain)
 	if err != nil {
-		lg.Log(logging.Entry{Payload: err, Severity: logging.Error})
+		fmt.Printf("Error getting mobile device data from G Suite Admin SDK: %v\n", err)
+		return
 	}
-	count, err := gs.UpdateAllDatastoreDevices(testdomain)
+	count, err := gs.UpdateAllDatastoreData(testdomain)
 	if err != nil {
-		lg.Log(logging.Entry{Payload: err, Severity: logging.Error})
-	} else {
-		lg.Log(logging.Entry{Payload: "Updated Datastore with " + strconv.Itoa(count) + " mobile devices", Severity: logging.Notice})
+		fmt.Printf("Error updating Google Datastore:", err)
+		return
 	}
-
-	// flush the logs
-	err = gs.Log.Close()
-	if err != nil {
-		lg.Log(logging.Entry{Payload: err, Severity: logging.Error})
-	}
+	fmt.Printf("Updated %d mobile devices in Google Datastore\n", count)
 
 	return
 }
+
+// EOF
