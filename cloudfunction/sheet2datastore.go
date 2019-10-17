@@ -34,7 +34,7 @@ func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
 
 	// Has the correct key been sent with the request?
 	sk, ok := r.URL.Query()["key"]
-	if !ok || len(keys[0]) < 1 || keys[0] != key {
+	if !ok || len(sk[0]) < 1 || sk[0] != key {
 		log.Printf("Error: incorrect key sent with request: %s", err)
 		http.Error(w, "Not authorized", 401)
 		return
