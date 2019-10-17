@@ -37,7 +37,7 @@ func (mdms *GSuiteMDMService) ConvertDatastoreDevicetoSDK(device *DatastoreMobil
 }
 
 // Read all mobile device data from Google Cloud Datastore
-func (mdms *GSuiteMDMService) GetDatastoreDevices() error {
+func (mdms *GSuiteMDMService) GetDatastoreData() error {
 	var dc *datastore.Client
 	var err error
 
@@ -129,7 +129,7 @@ func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevic
 }
 
 // Update all Datastore devices for a given domain with device data from the Admin SDK
-func (mdms *GSuiteMDMService) UpdateAllDatastoreDevices(domain string) (int, error) {
+func (mdms *GSuiteMDMService) UpdateAllDatastoreData(domain string) (int, error) {
 	var count int
 	var d = new(DatastoreMobileDevice)
 	var dc *datastore.Client

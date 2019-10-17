@@ -121,7 +121,7 @@ func (mdms *GSuiteMDMService) GetAdminSDKDevices(domain string) error {
 				return err
 			}
 
-			// Pull down the list of devices for this G Suite domain.
+			// Pull down the list of devices for this G Suite domain
 			// Refer to https://godoc.org/google.golang.org/api/admin/directory/v1#MobileDevices
 			mdms.SDKData, err = as.Mobiledevices.List(d.CustomerID).OrderBy(mdms.C.APIQueryOrderBy).Do()
 			if err != nil {
