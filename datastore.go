@@ -10,15 +10,10 @@ import (
 	"fmt"
 	admin "google.golang.org/api/admin/directory/v1"
 	"strings"
-	"time"
 )
 
 // Convert a Datastore mobile device object to an Admin SDK mobile device object
 func (mdms *GSuiteMDMService) ConvertDatastoreDevicetoSDK(device *DatastoreMobileDevice) *admin.MobileDevice {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	var d admin.MobileDevice
 
 	// Convert
@@ -43,10 +38,6 @@ func (mdms *GSuiteMDMService) ConvertDatastoreDevicetoSDK(device *DatastoreMobil
 
 // Read all mobile device data from Google Cloud Datastore
 func (mdms *GSuiteMDMService) GetDatastoreDevices() error {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	var dc *datastore.Client
 	var err error
 
@@ -71,10 +62,6 @@ func (mdms *GSuiteMDMService) GetDatastoreDevices() error {
 
 // Merge Datastore mobile device data & Google Sheet mobile device data
 func (mdms *GSuiteMDMService) MergeDatastoreAndSheetData() []DatastoreMobileDevice {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	var mergeddata []DatastoreMobileDevice
 
 	// Merge the data
@@ -122,10 +109,6 @@ func (mdms *GSuiteMDMService) MergeDatastoreAndSheetData() []DatastoreMobileDevi
 
 // Search for a matching device in Google Datastore using a specific Admin SDK mobile device object
 func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevice) (*DatastoreMobileDevice, error) {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	var d = new(DatastoreMobileDevice)
 	var err error
 
@@ -147,10 +130,6 @@ func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevic
 
 // Update all Datastore devices for a given domain with device data from the Admin SDK
 func (mdms *GSuiteMDMService) UpdateAllDatastoreDevices(domain string) (int, error) {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	var count int
 	var d = new(DatastoreMobileDevice)
 	var dc *datastore.Client
@@ -189,10 +168,6 @@ func (mdms *GSuiteMDMService) UpdateAllDatastoreDevices(domain string) (int, err
 
 // Update a specific device in Google Cloud Datastore
 func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) error {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	var d = new(DatastoreMobileDevice)
 	var dc *datastore.Client
 	var err error

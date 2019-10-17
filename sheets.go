@@ -18,10 +18,6 @@ import (
 
 // Read all mobile device data from the Google Sheet
 func (mdms *GSuiteMDMService) GetSheetData() error {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	var err error
 
 	// Get an authenticated http client
@@ -75,10 +71,6 @@ func (mdms *GSuiteMDMService) GetSheetData() error {
 
 // Create an authenticated http(s) client, used to read/write the Google Sheet
 func (mdms *GSuiteMDMService) HttpClient(creds string) (*http.Client, error) {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	// Read in the JSON credentials file for the domain/user we will write the Google Sheet as
 	data, err := ioutil.ReadFile(creds)
 	if err != nil {
@@ -101,10 +93,6 @@ func (mdms *GSuiteMDMService) HttpClient(creds string) (*http.Client, error) {
 
 // Search the Google Sheet for a specific device
 func (mdms *GSuiteMDMService) SearchSheetForDevice(device *admin.MobileDevice) DatastoreMobileDevice {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	var d DatastoreMobileDevice
 
 	// Add the local-to-Sheet data for this specific mobile device (if it exists)
@@ -121,10 +109,6 @@ func (mdms *GSuiteMDMService) SearchSheetForDevice(device *admin.MobileDevice) D
 
 // Update the Google Sheet
 func (mdms *GSuiteMDMService) UpdateSheet(mergeddata []DatastoreMobileDevice) error {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	// Get an authenticated http client
 	client, err := mdms.HttpClient(mdms.C.SheetCreds)
 	if err != nil {

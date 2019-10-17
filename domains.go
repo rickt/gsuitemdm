@@ -7,15 +7,10 @@ package gsuitemdm
 import (
 	"errors"
 	"fmt"
-	"time"
 )
 
 // Build a list of all configured domains
 func (mdms *GSuiteMDMService) BuildFullDomainList() []string {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	var domains []string
 
 	// Range through the slice of configured domains
@@ -28,10 +23,6 @@ func (mdms *GSuiteMDMService) BuildFullDomainList() []string {
 
 // Get a CustomerID for a given domain
 func (mdms *GSuiteMDMService) GetDomainCustomerID(domain string) (string, error) {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	// Range through the slice of configured domains and look for the specified domain
 	for _, d := range mdms.C.Domains {
 		switch d.DomainName {
@@ -46,10 +37,6 @@ func (mdms *GSuiteMDMService) GetDomainCustomerID(domain string) (string, error)
 
 // Check to see if a domain is configured
 func (mdms *GSuiteMDMService) IsDomainConfigured(domain string) bool {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	var ok = false
 
 	// Iterate through the slice of configured domains and look for the specified domain
@@ -81,10 +68,6 @@ func (mdms *GSuiteMDMService) ListAllDomains(verbose bool) {
 
 // Verify specified domain
 func (mdms *GSuiteMDMService) VerifySpecifiedDomain(domain string) ([]string, error) {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	var domains []string
 
 	// Check to see if the specified domain is configured within mdmtool

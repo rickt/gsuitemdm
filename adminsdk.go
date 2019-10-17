@@ -12,15 +12,10 @@ import (
 	admin "google.golang.org/api/admin/directory/v1"
 	"io/ioutil"
 	"strings"
-	"time"
 )
 
 // Authenticate with a domain, get an admin.Service
 func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid, domain string) (*admin.Service, error) {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	// Range through slice of configured domains until we find the domain we're looking for
 	for _, d := range mdms.C.Domains {
 		switch {
@@ -58,10 +53,6 @@ func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid, domain string) 
 
 // Convert an Admin SDK mobile device object to a Datastore mobile device object
 func (mdms *GSuiteMDMService) ConvertSDKDeviceToDatastore(device *admin.MobileDevice) (*DatastoreMobileDevice, error) {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	var d, y DatastoreMobileDevice
 	var err error
 	var x = new(DatastoreMobileDevice)
@@ -110,10 +101,6 @@ func (mdms *GSuiteMDMService) ConvertSDKDeviceToDatastore(device *admin.MobileDe
 
 // Get the list of devices for a G Suite domain from the Admin SDK
 func (mdms *GSuiteMDMService) GetAdminSDKDevices(domain string) error {
-	if mdms.C.Debug {
-		defer TimeTrack(time.Now())
-	}
-
 	var as *admin.Service
 	var cid string
 	var err error
