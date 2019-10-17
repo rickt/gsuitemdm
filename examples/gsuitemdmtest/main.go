@@ -13,8 +13,8 @@ import (
 // Sample code showing how to use the gsuitemdm package.
 //
 //	What it does:
-//		* downloads all mobile device data for a G Suite domain's MDM-managed devices using the G Suite Admin SDK
-//		* downloads all mobile device data from a tracking Google sheet
+//		* downloads all mobile device data for a configured G Suite domain's MDM-managed devices using the G Suite Admin SDK API
+//		* downloads all mobile device data from a configured tracking Google sheet (if data already exists in the sheet)
 //		* downloads all mobile device data from Google Datastore
 //		* merges all the data
 //		* updates the Google sheet
