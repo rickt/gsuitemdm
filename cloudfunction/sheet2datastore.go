@@ -15,6 +15,7 @@ var (
 	appname    string = os.Getenv("APPNAME")
 	configfile string = os.Getenv("CONFIGFILE")
 	domain     string = os.Getenv("DOMAIN")
+	key        string = os.Getenv("KEY")
 )
 
 // Example deploy command line:
@@ -30,6 +31,14 @@ var (
 func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var l *logging.Client
+
+	// Has the correct key been sent with the request?
+	sk, ok := r.URL.Query()["key"]
+	if !ok || len(keys[0]) < 1 || keys[0] != key {
+		log.Printf("Error: incorrect key sent with request: %s", err)
+		http.Error(w, "Not authorized", 401)
+		return
+	}
 
 	// Get a context
 	ctx := context.Background()
@@ -111,7 +120,7 @@ func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Finished
-	fmt.Fprintf(w, "SUCCESS\n")
+	fmt.Fprintf(w, "Success\n")
 
 	if gs.C.Debug {
 		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "gsuitemdm cloudfunction " + appname + " ended"})
