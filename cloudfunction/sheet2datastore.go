@@ -51,6 +51,12 @@ func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Debug mode?
+	sk, ok = r.URL.Query()["verbose"]
+	if sk[0] == "true" {
+		gs.C.Debug = true
+	}
+
 	// Initialise Stackdriver logging for this GCP project
 	l, err = logging.NewClient(ctx, gs.C.ProjectID)
 
@@ -59,6 +65,7 @@ func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
 
 	if gs.C.Debug {
 		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "gsuitemdm cloudfunction " + appname + " started"})
+		fmt.Fprintf(w, "gsuitemdm cloudfunction %s started\n", appname)
 	}
 
 	// Get Admin SDK data
@@ -70,6 +77,7 @@ func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
 
 	if gs.C.Debug {
 		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "Admin SDK reports " + strconv.Itoa(len(gs.SDKData.Mobiledevices)) + " mobile devices for domain " + domain})
+		fmt.Fprintf(w, "Admin SDK reports %d mobile devices for domain %s\n", len(gs.SDKData.Mobiledevices), domain)
 	}
 
 	// Get sheet data
@@ -81,6 +89,7 @@ func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
 
 	if gs.C.Debug {
 		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "Google Sheet reports " + strconv.Itoa(len(gs.SheetData)-1) + " rows of data"})
+		fmt.Fprintf(w, "Google Sheet reports %d mobile devices for domain %s\n", len(gs.SheetData)-1, domain)
 	}
 
 	// Get datastore data
@@ -92,6 +101,7 @@ func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
 
 	if gs.C.Debug {
 		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "Google Datastore reports " + strconv.Itoa(len(gs.DatastoreData)) + " mobile devices for domain " + domain})
+		fmt.Fprintf(w, "Google Datastore reports %d mobile devices for domain %s\n", len(gs.DatastoreData), domain)
 	}
 
 	// Merge the data
@@ -106,6 +116,7 @@ func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
 
 	if gs.C.Debug {
 		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "Updated Google Sheet"})
+		fmt.Fprintf(w, "Updated Google Sheet\n")
 	}
 
 	// Update datastore
@@ -117,13 +128,16 @@ func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
 
 	if gs.C.Debug {
 		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "Updated Google Datastore with " + strconv.Itoa(count) + " mobile devices for domain " + domain})
+		fmt.Fprintf(w, "Updated Google Datastore with %d mobile devices for domain %s\n", count, domain)
+	}
+
+	if gs.C.Debug {
+		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "gsuitemdm cloudfunction " + appname + " ended"})
+		fmt.Fprintf(w, "gsuitemdm cloudfunction %s ended\n", appname)
 	}
 
 	// Finished
 	fmt.Fprintf(w, "Success\n")
 
-	if gs.C.Debug {
-		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "gsuitemdm cloudfunction " + appname + " ended"})
-	}
 	return
 }
