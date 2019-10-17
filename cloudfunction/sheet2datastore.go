@@ -52,8 +52,8 @@ func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Debug mode?
-	sk, ok = r.URL.Query()["verbose"]
-	if sk[0] == "true" {
+	d := r.URL.Query().Get("debug")
+	if len(d) != 0 {
 		gs.C.Debug = true
 	}
 
