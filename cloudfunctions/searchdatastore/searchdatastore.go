@@ -4,6 +4,7 @@ import (
 	"cloud.google.com/go/datastore"
 	"cloud.google.com/go/logging"
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/rickt/gsuitemdm"
 	"log"
@@ -67,38 +68,82 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Is the qtype= specified a query type we support?
-	if qt[0] != "all" || qt[0] != "email" || qt[0] != "imei" || qt[0] != "name" ||
-		qt[0] != "notes" || qt[0] != "phone" || qt[0] != "sn" || qt[0] != "status" {
+	// Do we support the specified query type
+	if qt[0] != "all" && qt[0] != "email" && qt[0] != "imei" && qt[0] != "name" && qt[0] != "notes" &&
+		qt[0] != "phone" && qt[0] != "sn" && qt[0] != "status" {
 		http.Error(w, "Invalid query type specified", 400)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Invalid query type specified"})
 		return
 	}
 
-	// Create a Datastore client
-	dc, err := datastore.NewClient(ctx, gs.C.ProjectID)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Error creating Datastore client: %s", err), 400)
-		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error creating Datastore client: " + err.Error()})
-		return
-	}
+	// Check specified query type
+	switch qt[0] {
+	// all
+	case "all":
+		var devices []gsuitemdm.DatastoreMobileDevice
 
-	var devices []gsuitemdm.DatastoreMobileDevice
+		// Create a Datastore client
+		dc, err := datastore.NewClient(ctx, gs.C.ProjectID)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Error creating Datastore client: %s", err), 500)
+			sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error creating Datastore client: " + err.Error()})
+			return
+		}
 
-	// If qtype=all then return all devices
-	if qt[0] == "all" {
 		// Build the Datastore query & get the list of devices
 		_, err = dc.GetAll(ctx, datastore.NewQuery("MobileDevice").
 			Order("Name"),
 			&devices)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("Error querying Datastore for all devices: %s", err), 400)
+			http.Error(w, fmt.Sprintf("Error querying Datastore for all devices: %s", err), 500)
 			sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error querying Datastore for all devices: " + err.Error()})
 			return
-
-			// Return some nice data
-			fmt.Fprintf(w, "devices = %v\n")
 		}
+
+		// Return some nice data
+		js, err := json.Marshal(devices)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Error marshaling JSON: %s", err), 500)
+			sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error marshaling JSON: " + err.Error()})
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
+		return
+
+	case "email":
+		fmt.Fprintf(w, "qtype=email\n")
+		return
+
+	case "imei":
+		fmt.Fprintf(w, "qtype=imei\n")
+		return
+
+	case "name":
+		fmt.Fprintf(w, "qtype=name\n")
+		return
+
+	case "notes":
+		fmt.Fprintf(w, "qtype=notes\n")
+		return
+
+	case "phone":
+		fmt.Fprintf(w, "qtype=phone\n")
+		return
+
+	case "sn":
+		fmt.Fprintf(w, "qtype=sn\n")
+		return
+
+	case "status":
+		fmt.Fprintf(w, "qtype=status\n")
+		return
+
+	default:
+		http.Error(w, "Invalid query type specified", 400)
+		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Invalid query type specified"})
+		return
+
 	}
 
 	// Nearly finished
