@@ -154,9 +154,6 @@ func (mdms *GSuiteMDMService) UpdateAllDatastoreData() (int, error) {
 		return 0, err
 	}
 
-	// Get existing Datastore data
-	err = mdms.GetDatastoreData()
-
 	// Iterate through the domain's devices
 	for _, device := range mdms.SDKData.Mobiledevices {
 
