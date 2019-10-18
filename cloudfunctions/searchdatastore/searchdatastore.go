@@ -1,6 +1,7 @@
 package searchdatastore
 
 import (
+	"cloud.google.com/go/datastore"
 	"cloud.google.com/go/logging"
 	"context"
 	"fmt"
@@ -58,6 +59,49 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "gsuitemdm cloudfunction %s started\n", appname)
 	}
 
+	// Check URL parameters. Was qtype= specified, and is it zero length
+	qt, ok := r.URL.Query()["qtype"]
+	if !ok || len(qt[0]) < 1 {
+		http.Error(w, "Query type not specified", 400)
+		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Query type not specified"})
+		return
+	}
+
+	// Is the qtype= specified a query type we support?
+	if qt[0] != "all" || qt[0] != "email" || qt[0] != "imei" || qt[0] != "name" ||
+		qt[0] != "notes" || qt[0] != "phone" || qt[0] != "sn" || qt[0] != "status" {
+		http.Error(w, "Invalid query type specified", 400)
+		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Invalid query type specified"})
+		return
+	}
+
+	// Create a Datastore client
+	dc, err := datastore.NewClient(ctx, gs.C.ProjectID)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error creating Datastore client: %s", err), 400)
+		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error creating Datastore client: " + err.Error()})
+		return
+	}
+
+	var devices []gsuitemdm.DatastoreMobileDevice
+
+	// If qtype=all then return all devices
+	if qt[0] == "all" {
+		// Build the Datastore query & get the list of devices
+		_, err = dc.GetAll(ctx, datastore.NewQuery("MobileDevice").
+			Order("Name"),
+			&devices)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Error querying Datastore for all devices: %s", err), 400)
+			sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error querying Datastore for all devices: " + err.Error()})
+			return
+
+			// Return some nice data
+			fmt.Fprintf(w, "devices = %v\n")
+		}
+	}
+
+	// Nearly finished
 	if gs.C.Debug {
 		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "gsuitemdm cloudfunction " + appname + " ended"})
 		fmt.Fprintf(w, "gsuitemdm cloudfunction %s ended\n", appname)
