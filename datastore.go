@@ -161,6 +161,24 @@ func (mdms *GSuiteMDMService) UpdateAllDatastoreData() (int, error) {
 
 		fmt.Printf("UpdateAllDatastoreData(): d = %v\n", d)
 
+		// Does the device exist in Datastore already?
+		old, err := mdms.SearchDatastoreForDevice(device)
+		if err == nil {
+			// Device already exists in Datastore; copy over existing info if its there
+			if d.PhoneNumber != "" {
+				d.PhoneNumber = old.PhoneNumber
+			}
+			if d.Color != "" {
+				d.Color = old.Color
+			}
+			if d.RAM != "" {
+				d.RAM = old.RAM
+			}
+			if d.Notes != "" {
+				d.Notes = old.Notes
+			}
+		}
+
 		// Setup the Datastore key
 		key := datastore.NameKey(mdms.C.DSNamekey, d.SN, nil)
 
