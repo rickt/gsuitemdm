@@ -52,12 +52,6 @@ func checkUserConfirmation(s string) bool {
 	}
 }
 
-// Helper function to do case-insensitive partial-string searches
-func ciContains(a, b string) bool {
-
-	return strings.Contains(strings.ToUpper(a), strings.ToUpper(b))
-}
-
 // Helper function to strip the domain name from an email address
 func getEmailDomain(email string) string {
 
