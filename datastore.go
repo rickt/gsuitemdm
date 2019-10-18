@@ -129,7 +129,7 @@ func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevic
 }
 
 // Update all Datastore devices for a given domain with device data from the Admin SDK
-func (mdms *GSuiteMDMService) UpdateAllDatastoreData(domain string) (int, error) {
+func (mdms *GSuiteMDMService) UpdateAllDatastoreData() (int, error) {
 	var count int
 	var d = new(DatastoreMobileDevice)
 	var dc *datastore.Client

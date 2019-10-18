@@ -14,7 +14,6 @@ import (
 var (
 	appname    string = os.Getenv("APPNAME")
 	configfile string = os.Getenv("CONFIGFILE")
-	domain     string = os.Getenv("DOMAIN")
 	key        string = os.Getenv("KEY")
 )
 
@@ -29,6 +28,7 @@ var (
 // $ gcloud functions deploy Sheet2Datastore --runtime go111 --trigger-http --env-vars-file env.yaml
 
 func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
+	var domain string
 	var err error
 	var l *logging.Client
 
@@ -68,16 +68,20 @@ func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "gsuitemdm cloudfunction %s started\n", appname)
 	}
 
-	// Get Admin SDK data
-	err = gs.GetAdminSDKDevices(domain)
-	if err != nil {
-		sl.Log(logging.Entry{Severity: logging.Error, Payload: "Error getting device data from G Suite Admin SDK: " + fmt.Sprintf("%s", err)})
-		return
-	}
+	// Get Admin SDK data for all configured domains
+	for _, dm := range gs.C.Domains {
+		err = gs.GetAdminSDKDevices(dm.DomainName)
+		if err != nil {
+			sl.Log(logging.Entry{Severity: logging.Error, Payload: "Error getting device data from G Suite Admin SDK: " + fmt.Sprintf("%s", err)})
+			return
+		}
 
-	if gs.C.Debug {
-		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "Admin SDK reports " + strconv.Itoa(len(gs.SDKData.Mobiledevices)) + " mobile devices for domain " + domain})
-		fmt.Fprintf(w, "Admin SDK reports %d mobile devices for domain %s\n", len(gs.SDKData.Mobiledevices), domain)
+		domain = dm.DomainName
+
+		if gs.C.Debug {
+			sl.Log(logging.Entry{Severity: logging.Notice, Payload: "Admin SDK reports " + strconv.Itoa(len(gs.SDKData.Mobiledevices)) + " mobile devices for domain " + domain})
+			fmt.Fprintf(w, "Admin SDK reports %d mobile devices for domain %s\n", len(gs.SDKData.Mobiledevices), domain)
+		}
 	}
 
 	// Get sheet data
@@ -89,7 +93,7 @@ func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
 
 	if gs.C.Debug {
 		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "Google Sheet reports " + strconv.Itoa(len(gs.SheetData)-1) + " rows of data"})
-		fmt.Fprintf(w, "Google Sheet reports %d mobile devices for domain %s\n", len(gs.SheetData)-1, domain)
+		fmt.Fprintf(w, "Google Sheet reports %d rows of data\n", len(gs.SheetData)-1)
 	}
 
 	// Get datastore data
@@ -100,8 +104,8 @@ func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if gs.C.Debug {
-		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "Google Datastore reports " + strconv.Itoa(len(gs.DatastoreData)) + " mobile devices for domain " + domain})
-		fmt.Fprintf(w, "Google Datastore reports %d mobile devices for domain %s\n", len(gs.DatastoreData), domain)
+		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "Google Datastore reports " + strconv.Itoa(len(gs.DatastoreData)) + " mobile devices"})
+		fmt.Fprintf(w, "Google Datastore reports %d mobile devices\n", len(gs.DatastoreData))
 	}
 
 	// Merge the data
@@ -120,7 +124,7 @@ func Sheet2Datastore(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Update datastore
-	count, err := gs.UpdateAllDatastoreData(domain)
+	count, err := gs.UpdateAllDatastoreData()
 	if err != nil {
 		sl.Log(logging.Entry{Severity: logging.Error, Payload: "Error updating Google Datastore: " + fmt.Sprintf("%s", err)})
 		return
