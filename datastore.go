@@ -116,6 +116,8 @@ func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevic
 	// Normalise the IMEI we're looking for
 	nimei := strings.Replace(device.Imei, " ", "", -1)
 
+	log.Printf("SearchDatastoreForDevice(): looking for device=%s\n", device.Imei)
+
 	// Range through the slice of devices from Datastore, and when found, return it
 	for k := range mdms.DatastoreData {
 		if nimei == strings.Replace(mdms.DatastoreData[k].IMEI, " ", "", -1) {
@@ -154,15 +156,12 @@ func (mdms *GSuiteMDMService) UpdateAllDatastoreData() (int, error) {
 	// Iterate through the domain's devices
 	for _, device := range mdms.SDKData.Mobiledevices {
 
-		log.Printf("UpdateAllDatastoreData(): device = %v\n", device)
-
 		// Convert our *admin.MobileDevice to an *hmsMobileDevice
 		d, err = mdms.ConvertSDKDeviceToDatastore(device)
 		if err != nil {
 			return 0, err
 		}
-
-		log.Printf("UpdateAllDatastoreData(): d = %v\n", d)
+		log.Printf("UpdateAllDatastoreData(): converted device %s\n", device.Imei)
 
 		// Does the device exist in Datastore already?
 		old, err := mdms.SearchDatastoreForDevice(device)
