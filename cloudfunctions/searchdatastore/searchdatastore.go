@@ -97,11 +97,11 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Query search data cannot be zero length", 400)
 			sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Query search data cannot be zero length"})
 			return
+		} else {
+			// Query string is valid, continue
+			qstring = qs[0]
 		}
 	}
-
-	// Query string is valid, continue
-	qstring = qs[0]
 
 	// Query type is valid and query string (q=) is not zero length, lets get the Datastore data
 	// Create a Datastore client
@@ -124,13 +124,14 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 			log.Printf("Invalid domain specified")
 			http.Error(w, "Invalid domain specified", 200)
 			return
+		} else {
+			// Domain is valid, continue
+			domain = d[0]
 		}
 	}
 
 	// What kind of Datastore query do we make?
 	if len(domain) > 1 {
-		// Domain is valid
-		domain = d[0]
 		// Perform a domain-specific search using a Datastore filter
 		_, err = dc.GetAll(ctx, datastore.NewQuery("MobileDevice").
 			Filter("Domain =", domain).
