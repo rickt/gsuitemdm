@@ -5,6 +5,8 @@ package gsuitemdm
 //
 
 import (
+	"errors"
+	"fmt"
 	"github.com/Iwark/spreadsheet"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -92,7 +94,7 @@ func (mdms *GSuiteMDMService) HttpClient(creds string) (*http.Client, error) {
 }
 
 // Search the Google Sheet for a specific device
-func (mdms *GSuiteMDMService) SearchSheetForDevice(device *admin.MobileDevice) DatastoreMobileDevice {
+func (mdms *GSuiteMDMService) SearchSheetForDevice(device *admin.MobileDevice) (DatastoreMobileDevice, error) {
 	var d DatastoreMobileDevice
 
 	// Add the local-to-Sheet data for this specific mobile device (if it exists)
@@ -100,11 +102,11 @@ func (mdms *GSuiteMDMService) SearchSheetForDevice(device *admin.MobileDevice) D
 		if (strings.Replace(device.Imei, " ", "", -1) == strings.Replace(shv.IMEI, " ", "", -1)) ||
 			(strings.Replace(device.SerialNumber, " ", "", -1) == strings.Replace(shv.SN, " ", "", -1)) {
 			// Device found!
-			return shv
+			return shv, nil
 		}
 	}
 
-	return d
+	return d, errors.New(fmt.Sprintf("Could not find device"))
 }
 
 // Update the Google Sheet
