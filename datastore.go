@@ -154,6 +154,9 @@ func (mdms *GSuiteMDMService) UpdateAllDatastoreData() (int, error) {
 		return 0, err
 	}
 
+	// Get existing Datastore data
+	err = mdms.GetDatastoreData()
+
 	// Iterate through the domain's devices
 	for _, device := range mdms.SDKData.Mobiledevices {
 
@@ -162,7 +165,7 @@ func (mdms *GSuiteMDMService) UpdateAllDatastoreData() (int, error) {
 		if err != nil {
 			return 0, err
 		}
-		log.Printf("UpdateAllDatastoreData(): converted device %s\n", device.Imei)
+		log.Printf("UpdateAllDatastoreData(): converted device %s\n", strings.Replace(device.Imei, " ", "", -1))
 
 		// Does the device exist in Datastore already?
 		old, err := mdms.SearchDatastoreForDevice(device)
