@@ -16,7 +16,6 @@ import (
 var (
 	appname    string = os.Getenv("APPNAME")
 	configfile string = os.Getenv("CONFIGFILE")
-	domain     string = os.Getenv("DOMAIN")
 	key        string = os.Getenv("KEY")
 )
 
