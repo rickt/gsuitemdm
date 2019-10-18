@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	admin "google.golang.org/api/admin/directory/v1"
+	"log"
 	"strings"
 )
 
@@ -119,10 +120,12 @@ func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevic
 	for k := range mdms.DatastoreData {
 		if nimei == strings.Replace(mdms.DatastoreData[k].IMEI, " ", "", -1) {
 			// Found!
+			log.Printf("SearchDatastoreForDevice(): device found, device=%v\n", device)
 			d = &mdms.DatastoreData[k]
 			return d, nil
 		} else {
 			// Not found, lets create it
+			log.Printf("SearchDatastoreForDevice(): device NOT found, device=%v\n", device)
 			d, err = mdms.ConvertSDKDeviceToDatastore(device)
 			if err != nil {
 				return nil, errors.New(fmt.Sprintf("SearchDatastoreForDevice(): 1Could not find device: %s, device=%v", err, device))
@@ -151,7 +154,7 @@ func (mdms *GSuiteMDMService) UpdateAllDatastoreData() (int, error) {
 	// Iterate through the domain's devices
 	for _, device := range mdms.SDKData.Mobiledevices {
 
-		fmt.Printf("UpdateAllDatastoreData(): device = %v\n", device)
+		log.Printf("UpdateAllDatastoreData(): device = %v\n", device)
 
 		// Convert our *admin.MobileDevice to an *hmsMobileDevice
 		d, err = mdms.ConvertSDKDeviceToDatastore(device)
@@ -159,11 +162,12 @@ func (mdms *GSuiteMDMService) UpdateAllDatastoreData() (int, error) {
 			return 0, err
 		}
 
-		fmt.Printf("UpdateAllDatastoreData(): d = %v\n", d)
+		log.Printf("UpdateAllDatastoreData(): d = %v\n", d)
 
 		// Does the device exist in Datastore already?
 		old, err := mdms.SearchDatastoreForDevice(device)
 		if err == nil {
+			log.Printf("UpdateAllDatastoreData(): d.PhoneNumber=%d old.PhoneNumber=%d\n", d.PhoneNumber, old.PhoneNumber)
 			// Device already exists in Datastore; copy over existing info if its there
 			if d.PhoneNumber != "" {
 				d.PhoneNumber = old.PhoneNumber
