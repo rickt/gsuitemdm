@@ -125,14 +125,14 @@ func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevic
 			// Not found, lets create it
 			d, err = mdms.ConvertSDKDeviceToDatastore(device)
 			if err != nil {
-				return nil, errors.New(fmt.Sprintf("Could not find device: %s", err))
+				return nil, errors.New(fmt.Sprintf("SearchDatastoreForDevice(): 1Could not find device: %s, device=%v", err, device))
 			}
 			return d, nil
 		}
 	}
 
 	// Return
-	return nil, errors.New(fmt.Sprintf("Could not find device: %s", err))
+	return nil, errors.New(fmt.Sprintf("SearchDatastoreForDevice(): 2Could not find device: %s, device=%v", err, device))
 }
 
 // Update all Datastore devices for a given domain with device data from the Admin SDK
