@@ -143,11 +143,16 @@ func (mdms *GSuiteMDMService) UpdateAllDatastoreData() (int, error) {
 
 	// Iterate through the domain's devices
 	for _, device := range mdms.SDKData.Mobiledevices {
+
+		fmt.Printf("UpdateAllDatastoreData(): device = %v\n", device)
+
 		// Convert our *admin.MobileDevice to an *hmsMobileDevice
 		d, err = mdms.ConvertSDKDeviceToDatastore(device)
 		if err != nil {
 			return 0, err
 		}
+
+		fmt.Printf("UpdateAllDatastoreData(): d = %v\n", d)
 
 		// Setup the Datastore key
 		key := datastore.NameKey(mdms.C.DSNamekey, d.SN, nil)
