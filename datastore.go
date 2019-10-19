@@ -202,7 +202,8 @@ func (mdms *GSuiteMDMService) UpdateAllDatastoreData() (int, error) {
 
 // Update a specific device in Google Cloud Datastore
 func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) error {
-	var d = new(DatastoreMobileDevice)
+	var ed = new(DatastoreMobileDevice)
+	var nd = new(DatastoreMobileDevice)
 	var dc *datastore.Client
 	var err error
 
@@ -213,17 +214,35 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 	}
 
 	// We were passed an Admin SDK mobile device object. We need to convert it to
-	// a Datastore mobile device object
-	d, err = mdms.ConvertSDKDeviceToDatastore(device)
+	// a new Datastore mobile device object
+	nd, err = mdms.ConvertSDKDeviceToDatastore(device)
 	if err != nil {
 		return err
 	}
 
-	// Setup the datastore key
-	key := datastore.NameKey(mdms.C.DSNamekey, d.SN, nil)
+	// Get the existing Datastore entry for this device
+	key := datastore.NameKey(mdms.C.DSNamekey, nd.SN, nil)
+	err = dc.Get(mdms.Ctx, key, ed)
+	if err != nil {
+		return err
+	}
+
+	// If existing data exists, preserve it
+	if ed.PhoneNumber != "" {
+		nd.PhoneNumber = ed.PhoneNumber
+	}
+	if ed.Color != "" {
+		nd.Color = ed.Color
+	}
+	if ed.RAM != "" {
+		nd.RAM = ed.RAM
+	}
+	if ed.Notes != "" {
+		nd.Notes = ed.Notes
+	}
 
 	// Save the device in Datastore
-	_, err = dc.Put(mdms.Ctx, key, d)
+	_, err = dc.Put(mdms.Ctx, key, nd)
 
 	if err != nil {
 		return err
