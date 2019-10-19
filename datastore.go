@@ -216,7 +216,7 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 	// We were passed an Admin SDK mobile device object. We need to convert it to
 	// a new Datastore mobile device object
 	if mdms.C.Debug {
-		log.Printf("UpdateDatastoreDevice(): converting device %s\n", nd.Email)
+		log.Printf("UpdateDatastoreDevice(): converting device %s\n", device.Email)
 	}
 	nd, err = mdms.ConvertSDKDeviceToDatastore(device)
 	if err != nil {
