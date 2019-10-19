@@ -228,9 +228,9 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 		return err
 	}
 
-	// If existing data exists for this device, preserve it
+	// If existing data exists for this device in Datastore, preserve it
 	if ed.PhoneNumber != "" {
-		nd.PhoneNumber = ed.PhoneNumber
+		nd.PhoneNumber = strings.Replace(ed.PhoneNumber, " ", "", -1)
 	}
 	if ed.Color != "" {
 		nd.Color = ed.Color
@@ -240,6 +240,18 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 	}
 	if ed.Notes != "" {
 		nd.Notes = ed.Notes
+	}
+
+	// If existing data exists for this device in the Google Sheet, preserve it
+	for _, shv := range mdms.SheetData {
+		if (strings.Replace(nd.IMEI, " ", "", -1) == strings.Replace(shv.IMEI, " ", "", -1)) ||
+			(strings.Replace(nd.SN, " ", "", -1) == strings.Replace(shv.SN, " ", "", -1)) {
+			log.Printf("MergeDatastoreAndSheetData(): adding local data for device=%s\n", nd.IMEI)
+			nd.Color = shv.Color
+			nd.RAM = shv.RAM
+			nd.Notes = shv.Notes
+			nd.PhoneNumber = shv.PhoneNumber
+		}
 	}
 
 	// We're finished, save the device in Datastore

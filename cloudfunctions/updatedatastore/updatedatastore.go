@@ -59,6 +59,13 @@ func UpdateDatastore(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Get Google Sheet data
+	err = gs.GetSheetData()
+	if err != nil {
+		sl.Log(logging.Entry{Severity: logging.Error, Payload: "Error getting Google Sheet data: " + fmt.Sprintf("%s", err)})
+		return
+	}
+
 	// Range through the slice of configured domains
 	for _, dm := range gs.C.Domains {
 		domain = dm.DomainName
