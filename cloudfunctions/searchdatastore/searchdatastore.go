@@ -57,11 +57,6 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 	// Register a Stackdriver logger instance for this app
 	sl := l.Logger(appname)
 
-	if gs.C.Debug {
-		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "gsuitemdm cloudfunction " + appname + " started"})
-		fmt.Fprintf(w, "gsuitemdm cloudfunction %s started\n", appname)
-	}
-
 	// Check URL parameters. Was qtype= specified, and is it zero length
 	var qt []string
 	var qtype string
@@ -219,12 +214,6 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(js)
-
-	// Nearly finished
-	if gs.C.Debug {
-		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "gsuitemdm cloudfunction " + appname + " ended"})
-		fmt.Fprintf(w, "gsuitemdm cloudfunction %s ended\n", appname)
-	}
 
 	return
 }
