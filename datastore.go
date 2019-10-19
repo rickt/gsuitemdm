@@ -200,7 +200,7 @@ func (mdms *GSuiteMDMService) UpdateAllDatastoreData() (int, error) {
 	return count, err
 }
 
-// Update a specific device in Google Cloud Datastore
+// Update a device in Google Cloud Datastore with fresh data from the Admin SDK
 func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) error {
 	var ed = new(DatastoreMobileDevice)
 	var nd = new(DatastoreMobileDevice)
@@ -215,15 +215,9 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 
 	// We were passed an Admin SDK mobile device object. We need to convert it to
 	// a new Datastore mobile device object
-	if mdms.C.Debug {
-		log.Printf("UpdateDatastoreDevice(): converting device %s\n", device.Email[0])
-	}
 	nd, err = mdms.ConvertSDKDeviceToDatastore(device)
 	if err != nil {
 		return err
-	}
-	if mdms.C.Debug {
-		log.Printf("UpdateDatastoreDevice(): converted device %s\n", nd.Email)
 	}
 
 	// Get the existing Datastore entry for this device
@@ -235,27 +229,15 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 
 	// If existing data exists for this device, preserve it
 	if ed.PhoneNumber != "" {
-		if mdms.C.Debug {
-			log.Printf("UpdateDatastoreDevice(): preserving PhoneNumber %s for device %s\n", ed.PhoneNumber, nd.Email)
-		}
 		nd.PhoneNumber = ed.PhoneNumber
 	}
 	if ed.Color != "" {
-		if mdms.C.Debug {
-			log.Printf("UpdateDatastoreDevice(): preserving Color %s for device %s\n", ed.Color, nd.Color)
-		}
 		nd.Color = ed.Color
 	}
 	if ed.RAM != "" {
-		if mdms.C.Debug {
-			log.Printf("UpdateDatastoreDevice(): preserving RAM %s for device %s\n", ed.RAM, nd.RAM)
-		}
 		nd.RAM = ed.RAM
 	}
 	if ed.Notes != "" {
-		if mdms.C.Debug {
-			log.Printf("UpdateDatastoreDevice(): preserving Notes '%s' for device %s\n", ed.Notes, nd.Notes)
-		}
 		nd.Notes = ed.Notes
 	}
 
