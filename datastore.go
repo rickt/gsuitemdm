@@ -201,11 +201,12 @@ func (mdms *GSuiteMDMService) UpdateAllDatastoreData() (int, error) {
 }
 
 // Update a device in Google Cloud Datastore with fresh data from the Admin SDK
-func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) error {
+func (mdms *GSuiteMDMService) UpdateDatastoreDeviceFromSDK(device *admin.MobileDevice) error {
 	var ed = new(DatastoreMobileDevice)
 	var nd = new(DatastoreMobileDevice)
 	var dc *datastore.Client
 	var err error
+	var key *datastore.Key
 
 	// Create a Datastore client
 	dc, err = datastore.NewClient(mdms.Ctx, mdms.C.ProjectID)
@@ -213,15 +214,15 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 		return err
 	}
 
-	// We were passed an Admin SDK mobile device object. We need to convert it to
-	// a new Datastore mobile device object
+	// We were passed an Admin SDK mobile device object. We need to convert it to a
+	// new Datastore mobile device object
 	nd, err = mdms.ConvertSDKDeviceToDatastore(device)
 	if err != nil {
 		return err
 	}
 
 	// Get the existing Datastore entry for this device
-	key := datastore.NameKey(mdms.C.DSNamekey, nd.SN, nil)
+	key = datastore.NameKey(mdms.C.DSNamekey, nd.SN, nil)
 	err = dc.Get(mdms.Ctx, key, ed)
 	if err != nil {
 		return err
