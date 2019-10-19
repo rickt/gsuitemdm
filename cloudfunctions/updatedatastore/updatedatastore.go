@@ -72,7 +72,7 @@ func UpdateDatastore(w http.ResponseWriter, r *http.Request) {
 
 		// Range through this domain's list of devices and update it in Datastore
 		for _, device := range gs.SDKData.Mobiledevices {
-			err = gs.UpdateDatastoreDeviceFromSDK(device)
+			err = gs.UpdateDatastoreDevice(device)
 			if err != nil {
 				sl.Log(logging.Entry{Severity: logging.Error, Payload: "Error converting device: " + fmt.Sprintf("%s", err)})
 			}

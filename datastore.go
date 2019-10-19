@@ -201,7 +201,7 @@ func (mdms *GSuiteMDMService) UpdateAllDatastoreData() (int, error) {
 }
 
 // Update a device in Google Cloud Datastore with fresh data from the Admin SDK
-func (mdms *GSuiteMDMService) UpdateDatastoreDeviceFromSDK(device *admin.MobileDevice) error {
+func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) error {
 	var ed = new(DatastoreMobileDevice)
 	var nd = new(DatastoreMobileDevice)
 	var dc *datastore.Client
