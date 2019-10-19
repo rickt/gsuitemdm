@@ -216,7 +216,7 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 	// We were passed an Admin SDK mobile device object. We need to convert it to
 	// a new Datastore mobile device object
 	if mdms.C.Debug {
-		log.Printf("UpdateDatastoreDevice(): converting device %s\n", device.Email)
+		log.Printf("UpdateDatastoreDevice(): converting device %s\n", device.Email[0])
 	}
 	nd, err = mdms.ConvertSDKDeviceToDatastore(device)
 	if err != nil {
@@ -233,24 +233,33 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 		return err
 	}
 
-	// If existing data exists, preserve it
+	// If existing data exists for this device, preserve it
 	if ed.PhoneNumber != "" {
 		if mdms.C.Debug {
-			log.Printf("UpdateDatastoreDevice(): preserving phone %s for device %s\n", ed.PhoneNumber, nd.Email)
+			log.Printf("UpdateDatastoreDevice(): preserving PhoneNumber %s for device %s\n", ed.PhoneNumber, nd.Email)
 		}
 		nd.PhoneNumber = ed.PhoneNumber
 	}
 	if ed.Color != "" {
+		if mdms.C.Debug {
+			log.Printf("UpdateDatastoreDevice(): preserving Color %s for device %s\n", ed.Color, nd.Color)
+		}
 		nd.Color = ed.Color
 	}
 	if ed.RAM != "" {
+		if mdms.C.Debug {
+			log.Printf("UpdateDatastoreDevice(): preserving RAM %s for device %s\n", ed.RAM, nd.RAM)
+		}
 		nd.RAM = ed.RAM
 	}
 	if ed.Notes != "" {
+		if mdms.C.Debug {
+			log.Printf("UpdateDatastoreDevice(): preserving Notes '%s' for device %s\n", ed.Notes, nd.Notes)
+		}
 		nd.Notes = ed.Notes
 	}
 
-	// Save the device in Datastore
+	// We're finished, save the device in Datastore
 	_, err = dc.Put(mdms.Ctx, key, nd)
 
 	if err != nil {
