@@ -215,9 +215,15 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 
 	// We were passed an Admin SDK mobile device object. We need to convert it to
 	// a new Datastore mobile device object
+	if mdms.C.Debug {
+		log.Printf("UpdateDatastoreDevice(): converting device %s\n", nd.Email)
+	}
 	nd, err = mdms.ConvertSDKDeviceToDatastore(device)
 	if err != nil {
 		return err
+	}
+	if mdms.C.Debug {
+		log.Printf("UpdateDatastoreDevice(): converted device %s\n", nd.Email)
 	}
 
 	// Get the existing Datastore entry for this device
@@ -229,6 +235,9 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 
 	// If existing data exists, preserve it
 	if ed.PhoneNumber != "" {
+		if mdms.C.Debug {
+			log.Printf("UpdateDatastoreDevice(): preserving phone %s for device %s\n", ed.PhoneNumber, nd.Email)
+		}
 		nd.PhoneNumber = ed.PhoneNumber
 	}
 	if ed.Color != "" {
