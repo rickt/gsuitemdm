@@ -21,15 +21,29 @@ var (
 
 // $ gcloud functions deploy SearchDatastore --runtime go111 --trigger-http --env-vars-file env.yaml
 
-func SearchDatastore(w http.ResponseWriter, r *http.Request) {
+func SearchDatastorePost(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var devices []*gsuitemdm.DatastoreMobileDevice
 	var l *logging.Client
+	var request gsuitemdm.SearchRequest
 
-	// Has the correct key been sent with the request?
-	sk, ok := r.URL.Query()["key"]
-	if !ok || len(sk[0]) < 1 || sk[0] != key {
-		log.Printf("Error: incorrect key sent with request: %s", err)
+	// Null message body?
+	if r.Body == nil {
+		http.Error(w, "Error: Null message body", 400)
+		return
+	}
+
+	// Not null, lets decode the message body
+	err = json.NewDecoder(r.Body).Decode(&request)
+	if err != nil {
+		log.Printf("Error decoding JSON message body: %s", err)
+		http.Error(w, "Error decoding JSON message body", 400)
+		return
+	}
+
+	// Check the key
+	if request.Key != key {
+		log.Printf("Error: incorrect key sent with request")
 		http.Error(w, "Not authorized", 401)
 		return
 	}
@@ -46,8 +60,7 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Debug mode?
-	dbg := r.URL.Query().Get("debug")
-	if len(dbg) != 0 {
+	if request.Debug == true {
 		gs.C.Debug = true
 	}
 
@@ -57,43 +70,30 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 	// Register a Stackdriver logger instance for this app
 	sl := l.Logger(appname)
 
-	// Check URL parameters. Was qtype= specified, and is it zero length
-	var qt []string
-	var qtype string
-
-	qt, ok = r.URL.Query()["qtype"]
-	if !ok || len(qt[0]) < 1 {
+	// Ok, lets go deeper and check the message body. Was qtype= specified, and is it zero length?
+	if len(request.QType) < 1 {
 		http.Error(w, "Query type not specified", 400)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Query type not specified"})
 		return
 	}
 
 	// Do we support the specified query type
-	if qt[0] != "all" && qt[0] != "email" && qt[0] != "imei" && qt[0] != "name" && qt[0] != "notes" &&
-		qt[0] != "phone" && qt[0] != "sn" && qt[0] != "status" {
+	if request.QType != "all" && request.QType != "email" && request.QType != "imei" && request.QType != "name" && request.QType != "notes" &&
+		request.QType != "phone" && request.QType != "sn" && request.QType != "status" {
 		http.Error(w, "Invalid query type specified", 400)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Invalid query type specified"})
 		return
 	}
 
-	// Query type is valid, continue
-	qtype = qt[0]
-
 	// Query type is valid, lets check if the query string (q=) is not zero length. Only do this
 	// if the query type is not 'all' as no 'q' parameter required if qtype==all
-	var qs []string
-	var qstring string
 
-	if qt[0] != "all" {
+	if request.QType != "all" {
 		// Check 'q=' since this is not a 'qtype=all' scenario
-		qs, ok = r.URL.Query()["q"]
-		if !ok || len(qs[0]) < 1 {
+		if len(request.Q) < 1 {
 			http.Error(w, "Query search data cannot be zero length", 400)
 			sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Query search data cannot be zero length"})
 			return
-		} else {
-			// Query string is valid, continue
-			qstring = qs[0]
 		}
 	}
 
@@ -107,28 +107,18 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Was domain URL parameter specified?
-	var domain string
-
-	// Check if domain= was specified
-	d, ok := r.URL.Query()["domain"]
-	// Yes, domain= was specified, but is the domain valid?
-	if ok {
-		if len(d[0]) < 1 || gs.IsDomainConfigured(d[0]) == false {
-			// Domain specified is invalid
-			log.Printf("Invalid domain specified")
-			http.Error(w, "Invalid domain specified", 200)
-			return
-		} else {
-			// Domain is valid, continue
-			domain = d[0]
-		}
+	if request.Domain != "" && gs.IsDomainConfigured(request.Domain) == false {
+		// Domain specified is invalid
+		log.Printf("Invalid domain specified")
+		http.Error(w, "Invalid domain specified", 200)
+		return
 	}
 
 	// What kind of Datastore query do we make?
-	if len(domain) > 1 {
+	if request.Domain != "" {
 		// Perform a domain-specific search using a Datastore filter
 		_, err = dc.GetAll(ctx, datastore.NewQuery(gs.C.DSNamekey).
-			Filter("Domain =", domain).
+			Filter("Domain =", request.Domain).
 			Order(gs.C.DatastoreQueryOrderBy),
 			&devices)
 	} else {
@@ -144,7 +134,7 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Return data right away if specified query type is "all"
-	if qtype == "all" {
+	if request.QType == "all" {
 		// Return some nice JSON data
 		js, err := json.MarshalIndent(devices, "", "   ")
 		if err != nil {
@@ -162,39 +152,39 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 
 	for k := range devices {
 
-		switch qtype {
+		switch request.QType {
 		case "email":
-			if devices[k].Email == qstring {
+			if devices[k].Email == request.Q {
 				searchdata = append(searchdata, devices[k])
 			}
 
 		case "imei":
-			if devices[k].IMEI == qstring {
+			if devices[k].IMEI == request.Q {
 				searchdata = append(searchdata, devices[k])
 			}
 
 		case "name":
-			if strings.Contains(strings.ToUpper(devices[k].Name), strings.ToUpper(qstring)) {
+			if strings.Contains(strings.ToUpper(devices[k].Name), strings.ToUpper(request.Q)) {
 				searchdata = append(searchdata, devices[k])
 			}
 
 		case "notes":
-			if strings.Contains(strings.ToUpper(devices[k].Notes), strings.ToUpper(qstring)) {
+			if strings.Contains(strings.ToUpper(devices[k].Notes), strings.ToUpper(request.Q)) {
 				searchdata = append(searchdata, devices[k])
 			}
 
 		case "phone":
-			if devices[k].PhoneNumber == qstring {
+			if devices[k].PhoneNumber == request.Q {
 				searchdata = append(searchdata, devices[k])
 			}
 
 		case "sn":
-			if devices[k].SN == qstring {
+			if devices[k].SN == request.Q {
 				searchdata = append(searchdata, devices[k])
 			}
 
 		case "status":
-			if strings.Contains(strings.ToUpper(devices[k].Status), strings.ToUpper(qstring)) {
+			if strings.Contains(strings.ToUpper(devices[k].Status), strings.ToUpper(request.Q)) {
 				searchdata = append(searchdata, devices[k])
 			}
 
