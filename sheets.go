@@ -55,11 +55,11 @@ func (mdms *GSuiteMDMService) GetSheetData() error {
 		var d DatastoreMobileDevice
 
 		// Get data from the sheet and populate
-		d.PhoneNumber = (ws.Rows[kr+1][1].Value)
+		d.PhoneNumber = strings.Replace((ws.Rows[kr+1][1].Value), " ", "", -1)
 		d.Color = (ws.Rows[kr+1][2].Value)
 		d.RAM = (ws.Rows[kr+1][3].Value)
-		d.IMEI = (ws.Rows[kr+1][8].Value)
-		d.SN = (ws.Rows[kr+1][9].Value)
+		d.IMEI = strings.Replace((ws.Rows[kr+1][8].Value), " ", "", -1)
+		d.SN = strings.Replace((ws.Rows[kr+1][9].Value), " ", "", -1)
 		d.Notes = (ws.Rows[kr+1][18].Value)
 
 		// Append this device to devices
@@ -128,7 +128,7 @@ func (mdms *GSuiteMDMService) MergeDatastoreAndSheetData() []DatastoreMobileDevi
 				d.Color = shv.Color
 				d.RAM = shv.RAM
 				d.Notes = shv.Notes
-				d.PhoneNumber = shv.PhoneNumber
+				d.PhoneNumber = strings.Replace(shv.PhoneNumber, " ", "", -1)
 			}
 		}
 
@@ -196,15 +196,15 @@ func (mdms *GSuiteMDMService) UpdateSheet(mergeddata []DatastoreMobileDevice) er
 
 		// Update each column, per row
 		ws.Update(row, 0, upd.Domain)
-		ws.Update(row, 1, upd.PhoneNumber)
+		ws.Update(row, 1, strings.Replace(upd.PhoneNumber), " ", "", -1)
 		ws.Update(row, 2, upd.Color)
 		ws.Update(row, 3, upd.RAM)
 		ws.Update(row, 4, upd.Name)
 		ws.Update(row, 5, upd.Status)
 		ws.Update(row, 6, upd.Email)
 		ws.Update(row, 7, upd.Model)
-		ws.Update(row, 8, upd.IMEI)
-		ws.Update(row, 9, upd.SN)
+		ws.Update(row, 8, strings.Replace(upd.IMEI), " ", "", -1)
+		ws.Update(row, 9, strings.Replace(upd.SN), " ", "", -1)
 		ws.Update(row, 10, humanize.Time(lts))
 		ws.Update(row, 11, upd.OS)
 		ws.Update(row, 12, upd.Type)
