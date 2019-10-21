@@ -3,6 +3,7 @@ package updatedatastore
 import (
 	"cloud.google.com/go/logging"
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/rickt/gsuitemdm"
 	"log"
@@ -10,7 +11,11 @@ import (
 	"os"
 )
 
+// Example deploy command line:
 // $ gcloud functions deploy UpdateDatastore --runtime go111 --trigger-http --env-vars-file env.yaml
+
+// Example command line to trigger a Google Datastore update:
+// $ curl -X POST -d '{"key": "0123456789", "qtype": "name", "q": "rick"}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/UpdateDatastore
 
 var (
 	appname    string = os.Getenv("APPNAME")
@@ -22,11 +27,25 @@ func UpdateDatastore(w http.ResponseWriter, r *http.Request) {
 	var domain string
 	var err error
 	var l *logging.Client
+	var request gsuitemdm.UpdateRequest
 
-	// Has the correct key been sent with the request?
-	sk, ok := r.URL.Query()["key"]
-	if !ok || len(sk[0]) < 1 || sk[0] != key {
-		log.Printf("Error: incorrect key sent with request: %s", err)
+	// Null message body?
+	if r.Body == nil {
+		http.Error(w, "Error: Null message body", 400)
+		return
+	}
+
+	// Not null, lets decode the message body
+	err = json.NewDecoder(r.Body).Decode(&request)
+	if err != nil {
+		log.Printf("Error decoding JSON message body: %s", err)
+		http.Error(w, "Error decoding JSON message body", 400)
+		return
+	}
+
+	// Check the key
+	if request.Key != key {
+		log.Printf("Error: incorrect key sent with request")
 		http.Error(w, "Not authorized", 401)
 		return
 	}
@@ -43,8 +62,7 @@ func UpdateDatastore(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Debug mode?
-	d := r.URL.Query().Get("debug")
-	if len(d) != 0 {
+	if request.Debug == true {
 		gs.C.Debug = true
 	}
 
