@@ -13,7 +13,7 @@ func New(ctx context.Context, file string) (*GSuiteMDMService, error) {
 	var cf GSuiteMDMConfig
 	var err error
 
-	// Load in main configuration file and get a config struct
+	// Load in main configuration file and get a config struct back
 	cf, err = loadConfig(file)
 	if err != nil {
 		return nil, err
