@@ -8,6 +8,8 @@ import (
 	"os"
 )
 
+// TODO: this is woefully out of date/doesn't work since i changed the API. Need to update!!!
+
 // Sample code showing how to use the gsuitemdm package.
 //
 //	What it does:
