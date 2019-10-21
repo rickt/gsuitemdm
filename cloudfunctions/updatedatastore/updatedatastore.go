@@ -15,7 +15,7 @@ import (
 // $ gcloud functions deploy UpdateDatastore --runtime go111 --trigger-http --env-vars-file env.yaml
 
 // Example command line to trigger a Google Datastore update:
-// $ curl -X POST -d '{"key": "0123456789", "qtype": "name", "q": "rick"}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/UpdateDatastore
+// $ curl -X POST -d '{"key": "0123456789", "debug": false}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/UpdateDatastore
 
 var (
 	appname    string = os.Getenv("APPNAME")
