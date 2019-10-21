@@ -76,8 +76,8 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Do we support the specified query type
-	if request.QType != "all" && request.QType != "email" && request.QType != "imei" && request.QType != "name" && request.QType != "notes" &&
-		request.QType != "phone" && request.QType != "sn" && request.QType != "status" {
+	if request.QType != "all" && request.QType != "email" && request.QType != "imei" && request.QType != "name" &&
+		request.QType != "notes" && request.QType != "phone" && request.QType != "sn" && request.QType != "status" {
 		http.Error(w, "Invalid query type specified", 400)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Invalid query type specified"})
 		return
@@ -85,7 +85,6 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 
 	// Query type is valid, lets check if the query string (q=) is not zero length. Only do this
 	// if the query type is not 'all' as no 'q' parameter required if qtype==all
-
 	if request.QType != "all" {
 		// Check 'q=' since this is not a 'qtype=all' scenario
 		if len(request.Q) < 1 {
@@ -96,7 +95,6 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Query type is valid and query string (q=) is not zero length, lets get the Datastore data
-	// Create a Datastore client
 	dc, err := datastore.NewClient(ctx, gs.C.ProjectID)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error creating Datastore client: %s", err), 500)
@@ -104,7 +102,7 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Was domain URL parameter specified?
+	// Is this a domain-specific search?
 	if request.Domain != "" && gs.IsDomainConfigured(request.Domain) == false {
 		// Domain specified is invalid
 		log.Printf("Invalid domain specified")
@@ -205,3 +203,5 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 
 	return
 }
+
+// EOF
