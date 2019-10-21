@@ -54,9 +54,6 @@ func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid, domain string) 
 // Convert an Admin SDK mobile device object to a Datastore mobile device object
 func (mdms *GSuiteMDMService) ConvertSDKDeviceToDatastore(device *admin.MobileDevice) (*DatastoreMobileDevice, error) {
 	var d DatastoreMobileDevice
-	// var y DatastoreMobileDevice
-	// var err error
-	// var x = new(DatastoreMobileDevice)
 
 	// Convert data received from the Admin SDK
 	d.CompromisedStatus = device.DeviceCompromisedStatus
@@ -76,28 +73,6 @@ func (mdms *GSuiteMDMService) ConvertSDKDeviceToDatastore(device *admin.MobileDe
 	d.UnknownSources = device.UnknownSourcesStatus
 	d.USBADB = device.AdbStatus
 	d.WifiMac = device.WifiMacAddress
-
-	/*
-
-		// If Datastore has existing "local data" (colour, notes, phone number, RAM) for this device, we need to merge
-		// it with the data received from the Admin SDK
-		x, err = mdms.SearchDatastoreForDevice(device)
-		if err == nil {
-			d.Color = x.Color
-			d.Notes = x.Notes
-			d.PhoneNumber = x.PhoneNumber
-			d.RAM = x.RAM
-		}
-
-		// However, if the Google Sheet also has exinsting local data for this device, we need to merge it as well.
-		y, err = mdms.SearchSheetForDevice(device)
-		if err == nil {
-			d.Color = y.Color
-			d.Notes = y.Notes
-			d.PhoneNumber = y.PhoneNumber
-			d.RAM = y.RAM
-		}
-	*/
 
 	return &d, nil
 }
