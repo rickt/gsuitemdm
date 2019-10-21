@@ -198,14 +198,15 @@ func (mdms *GSuiteMDMService) UpdateSheet(mergeddata []DatastoreMobileDevice) er
 		ws.Update(row, 7, upd.Model)
 		ws.Update(row, 8, upd.IMEI)
 		ws.Update(row, 9, upd.SN)
-		ws.Update(row, 10, upd.OS)
-		ws.Update(row, 11, upd.Type)
-		ws.Update(row, 12, upd.WifiMac)
-		ws.Update(row, 13, upd.CompromisedStatus)
-		ws.Update(row, 14, strconv.FormatBool(upd.DeveloperMode))
-		ws.Update(row, 15, strconv.FormatBool(upd.UnknownSources))
-		ws.Update(row, 16, strconv.FormatBool(upd.USBADB))
-		ws.Update(row, 17, upd.Notes)
+		ws.Update(row, 10, upd.SyncLast)
+		ws.Update(row, 11, upd.OS)
+		ws.Update(row, 12, upd.Type)
+		ws.Update(row, 13, upd.WifiMac)
+		ws.Update(row, 14, upd.CompromisedStatus)
+		ws.Update(row, 15, strconv.FormatBool(upd.DeveloperMode))
+		ws.Update(row, 16, strconv.FormatBool(upd.UnknownSources))
+		ws.Update(row, 17, strconv.FormatBool(upd.USBADB))
+		ws.Update(row, 18, upd.Notes)
 
 		// Incremement the row count
 		row++
