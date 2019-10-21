@@ -60,7 +60,7 @@ func (mdms *GSuiteMDMService) GetSheetData() error {
 		d.RAM = (ws.Rows[kr+1][3].Value)
 		d.IMEI = (ws.Rows[kr+1][8].Value)
 		d.SN = (ws.Rows[kr+1][9].Value)
-		d.Notes = (ws.Rows[kr+1][17].Value)
+		d.Notes = (ws.Rows[kr+1][18].Value)
 
 		// Append this device to devices
 		mdms.SheetData = append(mdms.SheetData, d)
