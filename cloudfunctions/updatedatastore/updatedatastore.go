@@ -10,6 +10,8 @@ import (
 	"os"
 )
 
+// $ gcloud functions deploy UpdateDatastore --runtime go111 --trigger-http --env-vars-file env.yaml
+
 var (
 	appname    string = os.Getenv("APPNAME")
 	configfile string = os.Getenv("CONFIGFILE")
@@ -87,8 +89,8 @@ func UpdateDatastore(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Finished
-	sl.Log(logging.Entry{Severity: logging.Notice, Payload: "Success"})
-	fmt.Fprintf(w, "Success\n")
+	sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success"})
+	fmt.Fprintf(w, "%s Success\n", appname)
 
 	return
 }
