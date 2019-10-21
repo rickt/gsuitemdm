@@ -127,13 +127,13 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 	// What kind of Datastore query do we make?
 	if len(domain) > 1 {
 		// Perform a domain-specific search using a Datastore filter
-		_, err = dc.GetAll(ctx, datastore.NewQuery("MobileDevice").
+		_, err = dc.GetAll(ctx, datastore.NewQuery(mdms.C.DSNamekey).
 			Filter("Domain =", domain).
 			Order(gs.C.DatastoreQueryOrderBy),
 			&devices)
 	} else {
 		// Perform a full Datastore search with no filter
-		_, err = dc.GetAll(ctx, datastore.NewQuery("MobileDevice").
+		_, err = dc.GetAll(ctx, datastore.NewQuery(mdms.C.DSNamekey).
 			Order(gs.C.DatastoreQueryOrderBy),
 			&devices)
 	}
@@ -213,7 +213,7 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	w.Write(js)
+	w.Write(js + "\n")
 
 	return
 }
