@@ -13,7 +13,7 @@ gsuitemdm offers a framework and tools to manage G Suite MDM-protected mobile de
 ## Features
 * Stores mobile device state in Google Datastore for speed (the G Suite [Admin SDK](https://developers.google.com/admin-sdk) is quite slow) and resiliency
 * Easily create an automatically-updating Google Sheet to track all your G Suite domains' mobile devices
-* API Endpoints deployed as (Cloud Functions)[https://cloud.google.com/functions/] offering functionality such as:
+* API Endpoints deployed as [Cloud Functions](https://cloud.google.com/functions/) offering functionality such as:
 	* Update Datastore with fresh mobile device data from the Admin SDK
 	* Update Google Sheet with mobile device data from Google Datastore
 	* Search Datastore for mobile device(s) based on criteria such as owner name, email address, IMEI/SN, etc
