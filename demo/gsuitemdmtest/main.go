@@ -8,8 +8,6 @@ import (
 	"os"
 )
 
-// TODO: this is woefully out of date/doesn't work since i changed the API. Need to update!!!
-
 // Sample code showing how to use the gsuitemdm package.
 //
 //	What it does:
@@ -54,16 +52,16 @@ var (
 )
 
 func main() {
-	// get a context
+	// Get a context
 	ctx := context.Background()
 
-	// get a G Suite MDM Service
+	// Get a G Suite MDM Service
 	gs, err := gsuitemdm.New(ctx, configfile)
 	if err != nil {
 		log.Fatal("Couldn't get a gsuitemdm service")
 	}
 
-	// get Admin SDK data
+	// Get Admin SDK data
 	err = gs.GetAdminSDKDevices(domain)
 	if err != nil {
 		fmt.Printf("Error getting mobile device data from G Suite Admin SDK: %v\n", err)
@@ -71,7 +69,7 @@ func main() {
 	}
 	fmt.Printf("G Suite Admin SDK for domain %s reports %d mobile devices\n", domain, len(gs.SDKData.Mobiledevices))
 
-	// get sheet data
+	// Get Google Sheet data
 	err = gs.GetSheetData()
 	if err != nil {
 		fmt.Printf("Error getting Google Sheet data: %v\n", err)
@@ -79,7 +77,7 @@ func main() {
 	}
 	fmt.Printf("Google Sheet reports %d rows\n", len(gs.SheetData)-1)
 
-	// get datastore data
+	// Get Datastore data
 	err = gs.GetDatastoreData()
 	if err != nil {
 		fmt.Printf("Error getting Google Datastore data: %v\n", err)
@@ -87,28 +85,35 @@ func main() {
 	}
 	fmt.Printf("Google Datastore reports %d mobile devices\n", len(gs.DatastoreData))
 
-	// merge some data
+	// Merge some data
 	md := gs.MergeDatastoreAndSheetData()
 
-	// update the sheet
+	// Update the sheet
 	err = gs.UpdateSheet(md)
 	if err != nil {
 		fmt.Printf("Error updating Google Sheet: %v\n", err)
 		return
 	}
 
-	// get admin API data again, update datastore
-	err = gs.GetAdminSDKDevices(domain)
-	if err != nil {
-		fmt.Printf("Error getting mobile device data from G Suite Admin SDK: %v\n", err)
-		return
+	// Range through the slice of configured domains
+	for _, dm := range gs.C.Domains {
+		domain = dm.DomainName
+
+		// Get data about this domain's devices from the Admin SDK
+		err = gs.GetAdminSDKDevices(domain)
+		if err != nil {
+			fmt.Printf("Error getting Admin SDK data for domain %s: %s\n", domain, err)
+			return
+		}
+
+		// Range through this domain's list of devices and update it in Datastore
+		for _, device := range gs.SDKData.Mobiledevices {
+			err = gs.UpdateDatastoreDevice(device)
+			if err != nil {
+				fmt.Printf("Error updating a mobile device for domain %s: %s\n", domain, err)
+			}
+		}
 	}
-	count, err := gs.UpdateAllDatastoreData(domain)
-	if err != nil {
-		fmt.Printf("Error updating Google Datastore:", err)
-		return
-	}
-	fmt.Printf("Updated %d mobile devices in Google Datastore\n", count)
 
 	return
 }
