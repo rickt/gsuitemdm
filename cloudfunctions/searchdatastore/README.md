@@ -9,7 +9,8 @@ A [Cloud Function](https://cloud.google.com/functions/) component of the [gsuite
 Example test command line that searches Datastore for devices owned by 'john' (case insensitive owner name search):
 
 ```json
-$ curl -X POST -d '{"key": "0123456789", "qtype": "name", "q": "rick"}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastorePost
+$ curl -X POST -d '{"key": "0123456789", "qtype": "name", "q": "rick"}' \
+  https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastorePost
 [
    {
       "Color": "black",
@@ -38,15 +39,10 @@ $ curl -X POST -d '{"key": "0123456789", "qtype": "name", "q": "rick"}' https://
 
 By way of illustration, the above same data would be returned with the following searches:
 
-`
-$ curl -X POST -d '{"key": "0123456789", "qtype": "email", "q": "johnd@foo.com"}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastorePost
-
-$ curl -X POST -d '{"key": "0123456789", "qtype": "imei", "q": "012345678901234"}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastorePost
-
-$ curl -X POST -d '{"key": "0123456789", "qtype": "notes", "q": "3rd"}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastorePost
-
-$ curl -X POST -d '{"key": "0123456789", "qtype": "phone", "q": "2135551212"}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastorePost
-
-$ curl -X POST -d '{"key": "0123456789", "qtype": "sn", "q": "Z01ABCD0ABCD"}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastorePost
+`$ curl -X POST -d '{"key": "0123456789", "qtype": "email", "q": "johnd@foo.com"}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastorePost`
+`$ curl -X POST -d '{"key": "0123456789", "qtype": "imei", "q": "012345678901234"}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastorePost`
+`$ curl -X POST -d '{"key": "0123456789", "qtype": "notes", "q": "3rd"}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastorePost`
+`$ curl -X POST -d '{"key": "0123456789", "qtype": "phone", "q": "2135551212"}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastorePost`
+`$ curl -X POST -d '{"key": "0123456789", "qtype": "sn", "q": "Z01ABCD0ABCD"}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastorePost`
 `
 
