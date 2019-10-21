@@ -196,15 +196,15 @@ func (mdms *GSuiteMDMService) UpdateSheet(mergeddata []DatastoreMobileDevice) er
 
 		// Update each column, per row
 		ws.Update(row, 0, upd.Domain)
-		ws.Update(row, 1, strings.Replace(upd.PhoneNumber), " ", "", -1)
+		ws.Update(row, 1, strings.Replace(upd.PhoneNumber, " ", "", -1))
 		ws.Update(row, 2, upd.Color)
 		ws.Update(row, 3, upd.RAM)
 		ws.Update(row, 4, upd.Name)
 		ws.Update(row, 5, upd.Status)
 		ws.Update(row, 6, upd.Email)
 		ws.Update(row, 7, upd.Model)
-		ws.Update(row, 8, strings.Replace(upd.IMEI), " ", "", -1)
-		ws.Update(row, 9, strings.Replace(upd.SN), " ", "", -1)
+		ws.Update(row, 8, strings.Replace(upd.IMEI, " ", "", -1))
+		ws.Update(row, 9, strings.Replace(upd.SN, " ", "", -1))
 		ws.Update(row, 10, humanize.Time(lts))
 		ws.Update(row, 11, upd.OS)
 		ws.Update(row, 12, upd.Type)
