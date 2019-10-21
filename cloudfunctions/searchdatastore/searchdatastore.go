@@ -57,7 +57,7 @@ var (
 // $ curl -X POST -d '{"key": "0123456789", "qtype": "phone", "q": "2135551212"}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastorePost
 // $ curl -X POST -d '{"key": "0123456789", "qtype": "sn", "q": "Z01ABCD0ABCD"}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastorePost
 
-func SearchDatastorePost(w http.ResponseWriter, r *http.Request) {
+func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var devices []*gsuitemdm.DatastoreMobileDevice
 	var l *logging.Client
