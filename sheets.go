@@ -104,6 +104,7 @@ func (mdms *GSuiteMDMService) MergeDatastoreAndSheetData() []DatastoreMobileDevi
 		var d DatastoreMobileDevice
 
 		// Merge
+		d.Color = dsv.Color
 		d.CompromisedStatus = dsv.CompromisedStatus
 		d.Domain = dsv.Domain
 		d.DeveloperMode = dsv.DeveloperMode
@@ -111,8 +112,11 @@ func (mdms *GSuiteMDMService) MergeDatastoreAndSheetData() []DatastoreMobileDevi
 		d.IMEI = strings.Replace(dsv.IMEI, " ", "", -1)
 		d.Model = dsv.Model
 		d.Name = dsv.Name
+		d.Notes = dsv.Notes
 		d.OS = dsv.OS
 		d.OSBuild = dsv.OSBuild
+		d.PhoneNumber = strings.Replace(dsv.PhoneNumber, " ", "", -1)
+		d.RAM = dsv.RAM
 		d.SN = strings.Replace(dsv.SN, " ", "", -1)
 		d.Status = dsv.Status
 		d.SyncFirst = dsv.SyncFirst
@@ -125,10 +129,18 @@ func (mdms *GSuiteMDMService) MergeDatastoreAndSheetData() []DatastoreMobileDevi
 		// Add the local-to-sheet data for this specific mobile device (if it exists)
 		for _, shv := range mdms.SheetData {
 			if (strings.Replace(d.IMEI, " ", "", -1) == strings.Replace(shv.IMEI, " ", "", -1)) || (strings.Replace(d.SN, " ", "", -1) == strings.Replace(shv.SN, " ", "", -1)) {
-				d.Color = shv.Color
-				d.RAM = shv.RAM
-				d.Notes = shv.Notes
-				d.PhoneNumber = strings.Replace(shv.PhoneNumber, " ", "", -1)
+				if d.Color == "" {
+					d.Color = shv.Color
+				}
+				if d.RAM == "" {
+					d.RAM = shv.RAM
+				}
+				if d.Notes == "" {
+					d.Notes = shv.Notes
+				}
+				if d.PhoneNumber == "" {
+					d.PhoneNumber = strings.Replace(shv.PhoneNumber, " ", "", -1)
+				}
 			}
 		}
 
