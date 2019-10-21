@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Iwark/spreadsheet"
+	"github.com/dustin/go-humanize"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	admin "google.golang.org/api/admin/directory/v1"
@@ -187,6 +188,12 @@ func (mdms *GSuiteMDMService) UpdateSheet(mergeddata []DatastoreMobileDevice) er
 
 	// Range through the canonical device data
 	for _, upd := range mergeddata {
+		// convert last sync strings to time.Time so we can humanize them
+		lts, err := time.Parse(time.RFC3339, upd.SyncLast)
+		if err != nil {
+			return err
+		}
+
 		// Update each column, per row
 		ws.Update(row, 0, upd.Domain)
 		ws.Update(row, 1, upd.PhoneNumber)
@@ -198,7 +205,7 @@ func (mdms *GSuiteMDMService) UpdateSheet(mergeddata []DatastoreMobileDevice) er
 		ws.Update(row, 7, upd.Model)
 		ws.Update(row, 8, upd.IMEI)
 		ws.Update(row, 9, upd.SN)
-		ws.Update(row, 10, upd.SyncLast)
+		ws.Update(row, 10, humanize.Time(lts))
 		ws.Update(row, 11, upd.OS)
 		ws.Update(row, 12, upd.Type)
 		ws.Update(row, 13, upd.WifiMac)
