@@ -19,6 +19,7 @@ type DatastoreMobileDevice struct {
 	OSBuild           string // OS Build
 	PhoneNumber       string // Telephone number of the device
 	RAM               string // RAM in GB
+	ResourceId        string // MDM ID for device
 	SN                string // Serial number
 	Status            string // Device status
 	SyncFirst         string // First sync device time
