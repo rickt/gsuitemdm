@@ -117,6 +117,7 @@ func (mdms *GSuiteMDMService) MergeDatastoreAndSheetData() []DatastoreMobileDevi
 		d.OSBuild = dsv.OSBuild
 		d.PhoneNumber = strings.Replace(dsv.PhoneNumber, " ", "", -1)
 		d.RAM = dsv.RAM
+		d.ResourceId = dsv.ResourceId
 		d.SN = strings.Replace(dsv.SN, " ", "", -1)
 		d.Status = dsv.Status
 		d.SyncFirst = dsv.SyncFirst
