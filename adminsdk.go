@@ -15,7 +15,7 @@ import (
 )
 
 // Authenticate with a domain, get an admin.Service
-func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid, domain string) (*admin.Service, error) {
+func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid, domain, scope string) (*admin.Service, error) {
 	// Range through slice of configured domains until we find the domain we're looking for
 	for _, d := range mdms.C.Domains {
 		switch {
@@ -28,7 +28,7 @@ func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid, domain string) 
 			}
 
 			// create JWT config using the credentials file
-			jwt, err := google.JWTConfigFromJSON(creds, mdms.C.SearchScope)
+			jwt, err := google.JWTConfigFromJSON(creds, scope)
 			if err != nil {
 				return nil, err
 			}
