@@ -9,7 +9,7 @@ A [Cloud Function](https://cloud.google.com/functions/) component of the [gsuite
 Example test command line that searches Datastore for devices owned by 'john' (case insensitive owner name search):
 
 ```json
-$ curl -X POST -d '{"key": "0123456789", "qtype": "name", "q": "rick"}' \
+$ curl -X POST -d '{"key": "0123456789", "qtype": "name", "q": "john"}' \
   https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastorePost
 [
    {
