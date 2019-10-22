@@ -143,7 +143,7 @@ func WipeDevice(w http.ResponseWriter, r *http.Request) {
 
 	// Was `confirm: true` sent along with the request?
 	if request.Confirm != true {
-		fmt.Fprintf(w, "Notice: Device found, correct status (%s) but no CONFIRM sent, will not approve\n", device.Status)
+		fmt.Fprintf(w, "Notice: Device found, but no CONFIRM sent, will not approve\n")
 		return
 	}
 

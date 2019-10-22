@@ -17,6 +17,7 @@ var (
 	key        string = os.Getenv("KEY")
 )
 
+// Update Google Datastore with fresh mobile device data from the Admin SDK and the Google Sheet
 func UpdateDatastore(w http.ResponseWriter, r *http.Request) {
 	var domain string
 	var err error

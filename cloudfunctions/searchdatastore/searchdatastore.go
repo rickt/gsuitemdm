@@ -19,6 +19,7 @@ var (
 	key        string = os.Getenv("KEY")
 )
 
+// Search Google Datastore for a mobile devie
 func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var devices []*gsuitemdm.DatastoreMobileDevice

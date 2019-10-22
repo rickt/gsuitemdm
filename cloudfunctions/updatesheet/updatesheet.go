@@ -11,18 +11,13 @@ import (
 	"os"
 )
 
-// Example deploy command line:
-// $ gcloud functions deploy UpdateSheet --runtime go111 --trigger-http --env-vars-file env.yaml
-
-// Example command line to trigger a Google Datastore update:
-// $ curl -X POST -d '{"key": "0123456789", "debug": false}' https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/UpdateSheet
-
 var (
 	appname    string = os.Getenv("APPNAME")
 	configfile string = os.Getenv("CONFIGFILE")
 	key        string = os.Getenv("KEY")
 )
 
+// Update the Google Sheet with fresh data from Google Datastore
 func UpdateSheet(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var l *logging.Client
