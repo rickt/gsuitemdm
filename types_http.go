@@ -5,7 +5,7 @@ package gsuitemdm
 //
 
 // Action (Approve, Block, Delete, Wipe)
-type DeviceActionRequest struct {
+type ActionRequest struct {
 	Action string `json:"action"`
 	Debug  bool   `json:"debug"`
 	IMEI   string `json:"imei"`
