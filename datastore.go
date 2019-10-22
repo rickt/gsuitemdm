@@ -33,6 +33,7 @@ func (mdms *GSuiteMDMService) ConvertDatastoreDevicetoSDK(device *DatastoreMobil
 	d.UnknownSourcesStatus = device.UnknownSources
 	d.AdbStatus = device.USBADB
 	d.WifiMacAddress = device.WifiMac
+	d.ResourceId = device.ResourceId
 
 	return &d
 }

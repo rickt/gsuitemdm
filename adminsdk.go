@@ -65,6 +65,7 @@ func (mdms *GSuiteMDMService) ConvertSDKDeviceToDatastore(device *admin.MobileDe
 	d.Name = device.Name[0]
 	d.OS = device.Os
 	d.OSBuild = device.BuildNumber
+	d.ResourceId = device.ResourceId
 	d.SN = strings.Replace(device.SerialNumber, " ", "", -1)
 	d.Status = device.Status
 	d.SyncFirst = device.FirstSync
