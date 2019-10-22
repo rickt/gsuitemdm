@@ -6,12 +6,13 @@ package gsuitemdm
 
 // Action (Approve, Block, Delete, Wipe)
 type ActionRequest struct {
-	Action string `json:"action"`
-	Debug  bool   `json:"debug"`
-	Domain string `json:"domain"`
-	IMEI   string `json:"imei"`
-	Key    string `json:"key"`
-	SN     string `json:"sn"`
+	Action  string `json:"action"`
+	Confirm bool   `json:"confirm"`
+	Debug   bool   `json:"debug"`
+	Domain  string `json:"domain"`
+	IMEI    string `json:"imei"`
+	Key     string `json:"key"`
+	SN      string `json:"sn"`
 }
 
 // Search
