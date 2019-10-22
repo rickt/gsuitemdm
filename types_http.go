@@ -4,6 +4,15 @@ package gsuitemdm
 // GSuiteMDM types for HTTP requests
 //
 
+// Action (Approve, Block, Delete, Wipe)
+type DeviceActionRequest struct {
+	Action string `json:"action"`
+	Debug  bool   `json:"debug"`
+	IMEI   string `json:"imei"`
+	Key    string `json:"key"`
+	SN     string `json:"sn"`
+}
+
 // Search
 type SearchRequest struct {
 	Debug  bool   `json:"debug"`
