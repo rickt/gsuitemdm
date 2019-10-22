@@ -8,6 +8,7 @@ package gsuitemdm
 type ActionRequest struct {
 	Action string `json:"action"`
 	Debug  bool   `json:"debug"`
+	Domain string `json:"domain"`
 	IMEI   string `json:"imei"`
 	Key    string `json:"key"`
 	SN     string `json:"sn"`
