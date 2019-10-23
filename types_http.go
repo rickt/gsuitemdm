@@ -19,7 +19,7 @@ type ActionRequest struct {
 type DirectoryData struct {
 	Name        string `json:"name"`
 	Email       string `json:"email"`
-	PhoneNumber string `json:"phonenumbner"`
+	PhoneNumber string `json:"phonenumber"`
 }
 
 // Search
