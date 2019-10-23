@@ -15,11 +15,6 @@ type ActionRequest struct {
 	SN      string `json:"sn"`
 }
 
-// Directory reply
-type DirectoryReply struct {
-	People []DirectoryData `json:"people"`
-}
-
 // Individual directory entry
 type DirectoryData struct {
 	Name        string `json:"name"`
