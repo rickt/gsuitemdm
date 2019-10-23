@@ -50,7 +50,7 @@ func (mdms *GSuiteMDMService) GetDatastoreData() error {
 	}
 
 	// Build the query & get the list of devices
-	_, err = dc.GetAll(mdms.Ctx, datastore.NewQuery(g.C.DSNameKey).
+	_, err = dc.GetAll(mdms.Ctx, datastore.NewQuery(mdms.C.DSNameKey).
 		Order("Name"),
 		&mdms.DatastoreData)
 
