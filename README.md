@@ -49,6 +49,7 @@ Out of the box, GSuiteMDM offers 3 main things to help G Suite MDM administrator
 	* UpdateSheet
 	* WipeDevice
 2. Tracking Google Sheet
+	* (TODO)
 2. tools (command line tool `mdmtool` and auto-updated mobile device tracking Google Sheet to manage G Suite MDM-protected mobile devices without having to use the G Suite [Admin Console](https://admin.google.com/). 
 
 ## Status
