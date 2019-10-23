@@ -18,7 +18,7 @@ GSuiteMDM provides:
 		* Any notes associated with the device (TODO: expand notes on this + Google Sheet)
 		* G Suite domain to which the device belongs
 	* API endpoints are simple, easy to deploy and manage, lightweight GCP [Cloud Functions](https://cloud.google.com/functions/). Authentication is done by key, e.g. 
-	```
+```
 $ curl -X POST -d '{"key": "$KEY", "qtype": "name", "q": "john smith"}' https://$APIURL/SearchApiEndpoint
 [
    {
@@ -30,14 +30,12 @@ $ curl -X POST -d '{"key": "$KEY", "qtype": "name", "q": "john smith"}' https://
       "IMEI": "01234567890987654321",
       "Model": "iPhone XR",
       "Name": "John Smith",
-
 	[ snipped for brevity ]
-
       "USBADB": false,
       "WifiMac": "aa:bb:cc:dd:ee:ff"
    }
 ]
-	```
+```
 
 ## Features
 Out of the box, GSuiteMDM offers 3 main things to help G Suite MDM administrators:
