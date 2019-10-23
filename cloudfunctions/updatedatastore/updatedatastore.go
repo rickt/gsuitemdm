@@ -105,6 +105,11 @@ func UpdateDatastore(w http.ResponseWriter, r *http.Request) {
 	sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success"})
 	fmt.Fprintf(w, "%s Success\n", appname)
 
+	// Clean up
+	gs.DatastoreData = nil
+	gs.SDKData = nil
+	gs.SheetData = nil
+
 	return
 }
 
