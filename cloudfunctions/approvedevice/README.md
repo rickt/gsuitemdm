@@ -9,7 +9,8 @@ A [Cloud Function](https://cloud.google.com/functions/) component of the [gsuite
 Example test command line that approves a device in the domain foo.com with IMEI 1234567890987654321:
 
 ```
-$ curl -X POST -d '{"key": "0123456789", "action": "approve", "imei": "1234567890987654321", "domain": "foo.com", "confirm": true}' \
+$ curl -X POST -d \
+  '{"key": "0123456789", "action": "approve", "imei": "1234567890987654321", "domain": "foo.com", "confirm": true}' \
   https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/ApproveDevice
 ```
 
