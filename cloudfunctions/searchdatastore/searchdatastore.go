@@ -153,36 +153,43 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 		case "email":
 			if devices[k].Email == request.Q {
 				searchdata = append(searchdata, devices[k])
+				break
 			}
 
 		case "imei":
 			if devices[k].IMEI == request.Q {
 				searchdata = append(searchdata, devices[k])
+				break
 			}
 
 		case "name":
 			if strings.Contains(strings.ToUpper(devices[k].Name), strings.ToUpper(request.Q)) {
 				searchdata = append(searchdata, devices[k])
+				break
 			}
 
 		case "notes":
 			if strings.Contains(strings.ToUpper(devices[k].Notes), strings.ToUpper(request.Q)) {
 				searchdata = append(searchdata, devices[k])
+				break
 			}
 
 		case "phone":
 			if devices[k].PhoneNumber == request.Q {
 				searchdata = append(searchdata, devices[k])
+				break
 			}
 
 		case "sn":
 			if devices[k].SN == request.Q {
 				searchdata = append(searchdata, devices[k])
+				break
 			}
 
 		case "status":
 			if strings.Contains(strings.ToUpper(devices[k].Status), strings.ToUpper(request.Q)) {
 				searchdata = append(searchdata, devices[k])
+				break
 			}
 
 		default:
