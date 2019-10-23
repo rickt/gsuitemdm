@@ -123,7 +123,7 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 					var p gsuitemdm.DirectoryData
 					p.Name = devices[k].Name
 					p.Email = devices[k].Email
-					p.PhoneNumber = devices[k].PhoneNumber
+					p.PhoneNumber = "(" + devices[k].PhoneNumber[0:3] + ") " + devices[k].PhoneNumber[3:6] + "-" + devices[k].PhoneNumber[6:10]
 					dirdata = append(dirdata, p)
 					break
 				}
@@ -137,7 +137,7 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 					var p gsuitemdm.DirectoryData
 					p.Name = devices[k].Name
 					p.Email = devices[k].Email
-					p.PhoneNumber = devices[k].PhoneNumber
+					p.PhoneNumber = "(" + devices[k].PhoneNumber[0:3] + ") " + devices[k].PhoneNumber[3:6] + "-" + devices[k].PhoneNumber[6:10]
 					dirdata = append(dirdata, p)
 					break
 				}
