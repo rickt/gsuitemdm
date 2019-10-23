@@ -144,6 +144,7 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 			nd.RAM = shv.RAM
 			nd.Notes = shv.Notes
 			nd.PhoneNumber = strings.Replace(shv.PhoneNumber, " ", "", -1)
+			break
 		}
 	}
 
