@@ -106,9 +106,7 @@ func UpdateDatastore(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "%s Success\n", appname)
 
 	// Clean up
-	gs.DatastoreData = nil
-	gs.SDKData = nil
-	gs.SheetData = nil
+	gs = nil
 
 	return
 }
