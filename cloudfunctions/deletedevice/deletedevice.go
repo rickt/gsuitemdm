@@ -156,7 +156,7 @@ func WipeDevice(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Authenticate with the Admin SDK for this domain
-	as, err = gs.AuthenticateWithDomain(cid, request.Domain)
+	as, err = gs.AuthenticateWithDomain(cid, request.Domain, gs.C.ActionScope)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error authenticating with the Admin SDK for domain %s: %s", request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error authenticating with the Admin SDK for domain " + request.Domain + ": " + err.Error()})
