@@ -5,6 +5,3 @@ A [Cloud Function](https://cloud.google.com/functions/) component of the [gsuite
 ## HOW-TO Deploy ##
 `$ gcloud functions deploy UpdateDatastore --runtime go111 --trigger-http --env-vars-file env.yaml --memory 512MB`
 
-## TODO ##
-* Add "all" query type to return all phone numbers
-
