@@ -1,5 +1,5 @@
 # gsuitemdm
-GSuiteMDM is a higher-layer API framework to ease the management of iOS or Android mobile devices in G Suite domains that use G Suite MDM to secure their mobile devices. 
+GSuiteMDM is an API framework that eases the management of iOS or Android mobile devices in G Suite domains that use G Suite MDM to secure their mobile devices. 
 
 GSuiteMDM provides:
 * Multiple, easy to use, secure APIs to help you quickly manage many mobile devices 
@@ -39,7 +39,7 @@ READY FOR PUBLIC USE
 * 20191014: Started conversion to go package
 
 ## TODO
-* Add PhoneNumber API cloud function
+* [DONE] Add PhoneNumber API cloud function
 * [DONE] Port all MDM device action operations (Approve/Block/Wipe Account/Wipe Device) into package
 * [DONE] Port all search operations into package
 
