@@ -50,8 +50,7 @@ func (mdms *GSuiteMDMService) GetDatastoreData() error {
 	}
 
 	// Build the query & get the list of devices
-	// TODO: change MobileDevice below
-	_, err = dc.GetAll(mdms.Ctx, datastore.NewQuery("MobileDevice").
+	_, err = dc.GetAll(mdms.Ctx, datastore.NewQuery(g.C.DSNameKey).
 		Order("Name"),
 		&mdms.DatastoreData)
 
