@@ -27,8 +27,9 @@ ALMOST READY FOR PUBLIC USE
 * 20191014: Started conversion to go package
 
 ## TODO
-* Port all MDM device action operations (Approve/Block/Wipe Account/Wipe Device) into package
-* Port all search operations into package
+* Add PhoneNumber API cloud function
+* [DONE] Port all MDM device action operations (Approve/Block/Wipe Account/Wipe Device) into package
+* [DONE] Port all search operations into package
 
 ## Setup Notes
 
