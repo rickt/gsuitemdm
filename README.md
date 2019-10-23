@@ -1,5 +1,5 @@
 # gsuitemdm
-GSuiteMDM is an API framework that eases the management of iOS or Android mobile devices in G Suite domains that use G Suite MDM to secure their mobile devices. 
+GSuiteMDM is a Go package that eases the management of iOS or Android mobile devices in G Suite domains that use G Suite MDM to secure their mobile devices.
 
 GSuiteMDM provides:
 * Multiple, easy to use, secure APIs to help you quickly manage many mobile devices 
