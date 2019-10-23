@@ -8,7 +8,7 @@ GSuiteMDM provides:
 	* Uses [GCP service accounts](https://developers.google.com/identity/protocols/OAuth2ServiceAccount) and G Suite [domain-wide delegation authority](https://gsuite-developers.googleblog.com/2012/11/domain-wide-delegation-of-authority-and.html)
 	* Mobile device data stored in Google Datastore
 	* Quickly and easily Approve/Block/Delete/List/Search for/Wipe MDM-protected devices in multiple domains
-		* Build your own web app by using the GSuiteMDM APIs, or
+		* Build your own web app by calling the GSuiteMDM APIs, or
 		* Use the built-in command line tool `mdmtool` (coming soon)
 	* Search for mobile devices based on:
 		* Owner G Suite account full name or email address
@@ -18,9 +18,26 @@ GSuiteMDM provides:
 		* Any notes associated with the device (TODO: expand notes on this + Google Sheet)
 		* G Suite domain to which the device belongs
 	* API endpoints are simple, easy to deploy and manage, lightweight GCP [Cloud Functions](https://cloud.google.com/functions/). Authentication is done by key, e.g. 
-```$ curl -X POST -d '{"key": "0123456789", "qtype": "name", "q": "john"}' \
-  https://<gcpprojectname>.cloudfunctions.net/SearchDatastore
-```
+	```
+$ curl -X POST -d '{"key": "$KEY", "qtype": "name", "q": "john smith"}' https://$APIURL/SearchApiEndpoint
+[
+   {
+      "Color": "black",
+      "CompromisedStatus": "No compromise detected",
+      "Domain": "foo.com",
+      "DeveloperMode": false,
+      "Email": "jsmith@foo.com",
+      "IMEI": "01234567890987654321",
+      "Model": "iPhone XR",
+      "Name": "John Smith",
+
+	[ snipped for brevity ]
+
+      "USBADB": false,
+      "WifiMac": "aa:bb:cc:dd:ee:ff"
+   }
+]
+	```
 
 ## Features
 Out of the box, GSuiteMDM offers 3 main things to help G Suite MDM administrators:
