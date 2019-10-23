@@ -21,7 +21,7 @@ var (
 )
 
 // Wipe a mobile device using the G Suite Admin SDK
-func WipeDevice(w http.ResponseWriter, r *http.Request) {
+func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 	var as *admin.Service
 	var cid string
 	var devices []*gsuitemdm.DatastoreMobileDevice
