@@ -3,17 +3,24 @@ GSuiteMDM is a Go package that eases the management of iOS or Android mobile dev
 
 GSuiteMDM provides:
 * Multiple, easy to use, secure APIs to help you quickly manage many mobile devices 
-	* A high-layer wrapper around the [G Suite Admin SDK API](https://developers.google.com/admin-sdk)
-	* Persistent data storage in cheap/fast/resilient Google Datastore
+	* G Suite MDM is a high-layer wrapper around the [G Suite Admin SDK API](https://developers.google.com/admin-sdk)
+	* Supports multiple G Suite domains, E-Z configuration
+	* Uses [GCP service accounts](https://developers.google.com/identity/protocols/OAuth2ServiceAccount) and G Suite [domain-wide delegation authority](https://gsuite-developers.googleblog.com/2012/11/domain-wide-delegation-of-authority-and.html)
+	* Mobile device data stored in Google Datastore
 	* Quickly and easily Approve/Block/Delete/List/Search for/Wipe MDM-protected devices in multiple domains
-	* Search for or list all devices based on:
-		* Owner name or email address
-		* Device current G Suite MDM Status (APPROVED, PENDING, BLOCKED, WIPING, etc)
-		* Device phone number
-		* Device IMEI or Serial Number
-		* Any notes associated with the device
+		* Build your own web app by using the GSuiteMDM APIs, or
+		* Use the built-in command line tool `mdmtool` (coming soon)
+	* Search for mobile devices based on:
+		* Owner G Suite account full name or email address
+		* Mobile device current G Suite MDM Status (APPROVED, PENDING, BLOCKED, WIPING, etc)
+		* Mobile device phone number (TODO: expand notes on this + Google Sheet)
+		* Mobile device IMEI or Serial Number
+		* Any notes associated with the device (TODO: expand notes on this + Google Sheet)
 		* G Suite domain to which the device belongs
-	* API endpoints are simple, easy to deploy and manage, lightweight GCP [Cloud Functions](https://cloud.google.com/functions/)
+	* API endpoints are simple, easy to deploy and manage, lightweight GCP [Cloud Functions](https://cloud.google.com/functions/). Authentication is done by key, e.g. 
+```$ curl -X POST -d '{"key": "0123456789", "qtype": "name", "q": "john"}' \
+  https://<gcpprojectname>.cloudfunctions.net/SearchDatastore
+```
 
 ## Features
 Out of the box, GSuiteMDM offers 3 main things to help G Suite MDM administrators:
@@ -21,10 +28,10 @@ Out of the box, GSuiteMDM offers 3 main things to help G Suite MDM administrator
 	* ApproveDevice
 	* BlockDevice
 	* DeleteDevice
-	* Directory / Phone Number Search
-	* Search (for a mobile device)
-	* Update Datastore
-	* Automatically update a mobile device tracking Google Sheet
+	* Directory 
+	* SearchDatastore
+	* UpdateDatastore
+	* UpdateSheet
 	* WipeDevice
 2. Tracking Google Sheet
 2. tools (command line tool `mdmtool` and auto-updated mobile device tracking Google Sheet to manage G Suite MDM-protected mobile devices without having to use the G Suite [Admin Console](https://admin.google.com/). 
