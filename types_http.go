@@ -15,6 +15,18 @@ type ActionRequest struct {
 	SN      string `json:"sn"`
 }
 
+// Directory reply
+type DirectoryReply struct {
+	People []DirectoryData `json:"people"`
+}
+
+// Individual directory entry
+type DirectoryData struct {
+	Name        string `json:"name"`
+	Email       string `json:"email"`
+	PhoneNumber string `json:"phonenumbner"`
+}
+
 // Search
 type SearchRequest struct {
 	Debug  bool   `json:"debug"`
