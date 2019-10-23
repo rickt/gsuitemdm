@@ -7,10 +7,10 @@ A [Cloud Function](https://cloud.google.com/functions/) component of the [gsuite
 
 ## API Examples ##
 
-Example test command line that searches for phone numbers with the name "doe":
+Example test command line that searches for phone numbers including the name "doe":
 
 ```json
-$ curl -X POST -d '{"key": "0123456789", "qtype": "name", "q": "john"}' \ 
+$ curl -X POST -d '{"key": "0123456789", "qtype": "name", "q": "doe"}' \ 
   https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/Directory
 [
    {
