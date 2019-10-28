@@ -20,8 +20,6 @@ func New(ctx context.Context, file string) (*GSuiteMDMService, error) {
 		return nil, err
 	}
 
-	fmt.Printf("new gsuitemdm service created\n")
-
 	// Create a new G Suite MDM service and populate it
 	return &GSuiteMDMService{
 		C:   cf,
