@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"runtime"
 )
 
 var (
@@ -107,6 +108,7 @@ func UpdateDatastore(w http.ResponseWriter, r *http.Request) {
 
 	// Clean up
 	gs = nil
+	runtime.GC()
 
 	return
 }
