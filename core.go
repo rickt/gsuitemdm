@@ -6,7 +6,6 @@ package gsuitemdm
 
 import (
 	"context"
-	"fmt"
 )
 
 // Create a new G Suite MDM Service
