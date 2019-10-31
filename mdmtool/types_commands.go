@@ -1,4 +1,4 @@
-package mdmtool
+package main
 
 //
 // Types for mdmtool commands

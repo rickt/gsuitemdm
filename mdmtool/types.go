@@ -1,4 +1,4 @@
-package mdmtool
+package main
 
 //
 // Types for mdmtool
@@ -9,8 +9,8 @@ import (
 )
 
 type MDMTool struct {
-	GSMDMService gsuitemdm.GSuiteMDMService // G Suite MDM Service
-	URLs         MDMToolURLs                // URLs
+	GSMDMService *gsuitemdm.GSuiteMDMService // G Suite MDM Service
+	URLs         MDMToolURLs                 // URLs
 
 }
 
