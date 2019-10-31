@@ -11,11 +11,11 @@ import (
 var (
 	appname    string = "mdmtool"
 	configfile string = "mdmtool_conf.json"
+	m                 = new(MDMTool)
 )
 
 func main() {
 	var err error
-	var m = new(MDMTool)
 
 	// Load MDMTool config
 	m.Config, err = loadMDMToolConfig(configfile)
