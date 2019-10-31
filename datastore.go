@@ -111,6 +111,9 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 	// We were passed an Admin SDK mobile device object. We need to convert it to a
 	// new Datastore mobile device object
 	nd, err = mdms.ConvertSDKDeviceToDatastore(device)
+	if mdms.C.Debug == true {
+		fmt.Printf("debug: nd = %v", nd)
+	}
 	if err != nil {
 		return err
 	}
@@ -119,7 +122,11 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 	key = datastore.NameKey(mdms.C.DSNamekey, nd.SN, nil)
 	err = dc.Get(mdms.Ctx, key, ed)
 	if err != nil {
+		fmt.Printf("error: dc.Get()")
 		return err
+	}
+	if mdms.C.Debug == true {
+		fmt.Printf("debug: ed = %v", ed)
 	}
 
 	// If existing data exists for this device in Datastore, preserve it
@@ -144,6 +151,9 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 			nd.RAM = shv.RAM
 			nd.Notes = shv.Notes
 			nd.PhoneNumber = strings.Replace(shv.PhoneNumber, " ", "", -1)
+			if mdms.C.Debug == true {
+				fmt.Printf("debug: shv = %v", shv)
+			}
 			break
 		}
 	}

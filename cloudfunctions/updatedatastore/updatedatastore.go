@@ -2,6 +2,7 @@ package updatedatastore
 
 import (
 	"cloud.google.com/go/logging"
+	"cloud.google.com/go/profiler"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -24,6 +25,18 @@ func UpdateDatastore(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var l *logging.Client
 	var request gsuitemdm.UpdateRequest
+
+	// Start profiling
+	err = profiler.Start(profiler.Config{
+		Service:              "mdm-updater",
+		NoHeapProfiling:      true,
+		NoGoroutineProfiling: true,
+		DebugLogging:         true,
+	})
+	if err != nil {
+		log.Printf("Error starting go profiling: %s", err)
+		http.Error(w, "Error starting go profiling", 400)
+	}
 
 	// Null message body?
 	if r.Body == nil {
