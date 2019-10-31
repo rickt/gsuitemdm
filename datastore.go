@@ -70,18 +70,14 @@ func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevic
 	// Normalise the SN we're looking for
 	nsn := strings.Replace(device.SerialNumber, " ", "", -1)
 
-	log.Printf("SearchDatastoreForDevice(): looking for device=%s\n", nsn)
-
 	// Range through the slice of devices from Datastore, and when found, return it
 	for k := range mdms.DatastoreData {
 		if nsn == strings.Replace(mdms.DatastoreData[k].SN, " ", "", -1) {
 			// Found!
-			log.Printf("SearchDatastoreForDevice(): device found, device=%v\n", device)
 			d = &mdms.DatastoreData[k]
 			return d, nil
 		} else {
 			// Not found, lets create it
-			log.Printf("SearchDatastoreForDevice(): device NOT found, device=%v\n", device)
 			d, err = mdms.ConvertSDKDeviceToDatastore(device)
 			if err != nil {
 				return nil, errors.New(fmt.Sprintf("SearchDatastoreForDevice(): Could not find device: %s, device=%v", err, device))
@@ -111,9 +107,6 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 	// We were passed an Admin SDK mobile device object. We need to convert it to a
 	// new Datastore mobile device object
 	nd, err = mdms.ConvertSDKDeviceToDatastore(device)
-	if mdms.C.Debug == true {
-		fmt.Printf("debug: nd = %v\n", nd)
-	}
 	if err != nil {
 		return err
 	}
@@ -122,11 +115,10 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 	key = datastore.NameKey(mdms.C.DSNamekey, nd.SN, nil)
 	err = dc.Get(mdms.Ctx, key, ed)
 	if err != nil {
-		fmt.Printf("error: dc.Get(): %s\n", err)
+		// Note: no need to return on err != nil here because we will get an error if
+		// we try to retrieve a device's data if it doesn't exist, and instead of
+		// returning, we want to create a new one. So, don't return on err!
 		// return err
-	}
-	if mdms.C.Debug == true {
-		fmt.Printf("debug: ed = %v\n", ed)
 	}
 
 	// If existing data exists for this device in Datastore, preserve it
@@ -150,9 +142,6 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 			nd.RAM = shv.RAM
 			nd.Notes = shv.Notes
 			nd.PhoneNumber = strings.Replace(shv.PhoneNumber, " ", "", -1)
-			if mdms.C.Debug == true {
-				fmt.Printf("debug: shv = %v\n", shv)
-			}
 			break
 		}
 	}
