@@ -15,14 +15,14 @@ type MDMTool struct {
 }
 
 type MDMToolURLs struct {
-	ApproveDeviceURL   string `json:"approveurl"`         // URL of Approve cloud function
-	BlockDeviceURL     string `json:"blockurl"`           // URL of Block cloud function
-	DeleteDeviceURL    string `json:"deleteurl"`          // URL of Delete cloud function
+	ApproveDeviceURL   string `json:"approvedeviceurl"`   // URL of Approve Device cloud function
+	BlockDeviceURL     string `json:"blockdeviceurl"`     // URL of Block Device cloud function
+	DeleteDeviceURL    string `json:"deletedeviceurl"`    // URL of Delete Device cloud function
 	DirectoryURL       string `json:"directoryurl"`       // URL of Directory cloud function
-	SearchDatastoreURL string `json:"searchurl"`          // URL of Search cloud function
+	SearchDatastoreURL string `json:"searchdatastoreurl"` // URL of Search Device cloud function
 	UpdateDatastoreURL string `json:"updatedatastoreurl"` // URL of Update Datastore cloud function
 	UpdateSheetURL     string `json:"updatesheeturl"`     // URL of Update Sheet cloud function
-	WipeDeviceURL      string `json:"wipeurl"`            // URL of Wipe cloud function
+	WipeDeviceURL      string `json:"wipedeviceurl"`      // URL of Wipe Device cloud function
 }
 
 // EOF
