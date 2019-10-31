@@ -150,17 +150,23 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Return some nice JSON data
-	js, err := json.MarshalIndent(dirdata, "", "   ")
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Error marshaling JSON: %s", err), 500)
-		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error marshaling JSON: " + err.Error()})
+	// Do we have any data to return? If so, marshal into JSON and return it
+	if len(dirdata) > 0 {
+		// We have valid search data to return
+		js, err := json.MarshalIndent(dirdata, "", "   ")
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Error marshaling JSON: %s", err), 500)
+			sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error marshaling JSON: " + err.Error()})
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
+		return
+	} else {
+		// No data to return
+		http.Error(w, "", 204)
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(js)
-
-	return
 }
 
 // EOF
