@@ -67,14 +67,14 @@ func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevic
 	var d = new(DatastoreMobileDevice)
 	var err error
 
-	// Normalise the IMEI we're looking for
-	nimei := strings.Replace(device.Imei, " ", "", -1)
+	// Normalise the SN we're looking for
+	nsn := strings.Replace(device.SerialNumber, " ", "", -1)
 
-	log.Printf("SearchDatastoreForDevice(): looking for device=%s\n", nimei)
+	log.Printf("SearchDatastoreForDevice(): looking for device=%s\n", nsn)
 
 	// Range through the slice of devices from Datastore, and when found, return it
 	for k := range mdms.DatastoreData {
-		if nimei == strings.Replace(mdms.DatastoreData[k].IMEI, " ", "", -1) {
+		if nsn == strings.Replace(mdms.DatastoreData[k].SN, " ", "", -1) {
 			// Found!
 			log.Printf("SearchDatastoreForDevice(): device found, device=%v\n", device)
 			d = &mdms.DatastoreData[k]
@@ -84,14 +84,14 @@ func (mdms *GSuiteMDMService) SearchDatastoreForDevice(device *admin.MobileDevic
 			log.Printf("SearchDatastoreForDevice(): device NOT found, device=%v\n", device)
 			d, err = mdms.ConvertSDKDeviceToDatastore(device)
 			if err != nil {
-				return nil, errors.New(fmt.Sprintf("SearchDatastoreForDevice(): 1Could not find device: %s, device=%v", err, device))
+				return nil, errors.New(fmt.Sprintf("SearchDatastoreForDevice(): Could not find device: %s, device=%v", err, device))
 			}
 			return d, nil
 		}
 	}
 
 	// Return
-	return nil, errors.New(fmt.Sprintf("SearchDatastoreForDevice(): 2Could not find device: %s, device=%v", err, device))
+	return nil, errors.New(fmt.Sprintf("SearchDatastoreForDevice(): Could not find device: %s, device=%v", err, device))
 }
 
 // Update a device in Google Cloud Datastore
@@ -145,8 +145,7 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 
 	// If existing data exists for this device in the Google Sheet, preserve it
 	for _, shv := range mdms.SheetData {
-		if (strings.Replace(nd.IMEI, " ", "", -1) == strings.Replace(shv.IMEI, " ", "", -1)) ||
-			(strings.Replace(nd.SN, " ", "", -1) == strings.Replace(shv.SN, " ", "", -1)) {
+		if strings.Replace(nd.SN, " ", "", -1) == strings.Replace(shv.SN, " ", "", -1) {
 			nd.Color = shv.Color
 			nd.RAM = shv.RAM
 			nd.Notes = shv.Notes
