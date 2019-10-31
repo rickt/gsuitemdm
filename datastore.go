@@ -122,8 +122,8 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 	key = datastore.NameKey(mdms.C.DSNamekey, nd.SN, nil)
 	err = dc.Get(mdms.Ctx, key, ed)
 	if err != nil {
-		fmt.Printf("error: dc.Get()\n")
-		return err
+		fmt.Printf("error: dc.Get(): %s\n", err)
+		// return err
 	}
 	if mdms.C.Debug == true {
 		fmt.Printf("debug: ed = %v\n", ed)
