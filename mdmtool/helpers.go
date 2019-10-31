@@ -10,8 +10,8 @@ import (
 )
 
 // Load MDMTool configuration
-func loadMDMToolURLs(file string) (MDMToolURLs, error) {
-	var c MDMToolURLs
+func loadMDMToolConfig(file string) (MDMToolConfig, error) {
+	var c MDMToolConfig
 
 	// Open the MDMTool configuration file
 	cf, err := os.Open(file)
