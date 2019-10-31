@@ -129,7 +129,7 @@ func (mdms *GSuiteMDMService) MergeDatastoreAndSheetData() []DatastoreMobileDevi
 
 		// Add the local-to-sheet data for this specific mobile device (if it exists)
 		for _, shv := range mdms.SheetData {
-			if (strings.Replace(d.IMEI, " ", "", -1) == strings.Replace(shv.IMEI, " ", "", -1)) || (strings.Replace(d.SN, " ", "", -1) == strings.Replace(shv.SN, " ", "", -1)) {
+			if strings.Replace(d.SN, " ", "", -1) == strings.Replace(shv.SN, " ", "", -1) {
 				if d.Color == "" {
 					d.Color = shv.Color
 				}
@@ -158,8 +158,7 @@ func (mdms *GSuiteMDMService) SearchSheetForDevice(device *admin.MobileDevice) (
 
 	// Add the local-to-Sheet data for this specific mobile device (if it exists)
 	for _, shv := range mdms.SheetData {
-		if (strings.Replace(device.Imei, " ", "", -1) == strings.Replace(shv.IMEI, " ", "", -1)) ||
-			(strings.Replace(device.SerialNumber, " ", "", -1) == strings.Replace(shv.SN, " ", "", -1)) {
+		if strings.Replace(device.SerialNumber, " ", "", -1) == strings.Replace(shv.SN, " ", "", -1) {
 			// Device found!
 			return shv, nil
 		}
