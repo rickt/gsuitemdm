@@ -7,11 +7,12 @@ package main
 import ()
 
 type MDMTool struct {
-	URLs MDMToolURLs // URLs
+	Config MDMToolConfig // MDMTool configuration
 
 }
 
-type MDMToolURLs struct {
+type MDMToolConfig struct {
+	APIKey             string `json:"apikey"`             // G Suite MDM API Key
 	ApproveDeviceURL   string `json:"approvedeviceurl"`   // URL of Approve Device cloud function
 	BlockDeviceURL     string `json:"blockdeviceurl"`     // URL of Block Device cloud function
 	DeleteDeviceURL    string `json:"deletedeviceurl"`    // URL of Delete Device cloud function
