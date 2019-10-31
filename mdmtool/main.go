@@ -9,16 +9,16 @@ import (
 // MDMTool main code
 
 var (
-	appname  string = "mdmtool"
-	urlsfile string = "mdmtool_urls.json"
+	appname    string = "mdmtool"
+	configfile string = "mdmtool_conf.json"
 )
 
 func main() {
 	var err error
 	var m = new(MDMTool)
 
-	// Load MDMTool URLs configuration
-	m.URLs, err = loadMDMToolURLs(urlsfile)
+	// Load MDMTool config
+	m.Config, err = loadMDMToolConfig(configfile)
 	if err != nil {
 		log.Fatal("Error loading MDMTool URLs")
 	}
@@ -27,12 +27,14 @@ func main() {
 	mdmtool := kingpin.New("mdmtool", "HMS G Suite MDM Tool")
 
 	// Add the commands
-	addApproveCommand(mdmtool)     // approve
-	addBlockCommand(mdmtool)       // block
-	addDeleteCommand(mdmtool)      // delete
-	addDirectoryCommand(mdmtool)   // directory
-	addListDomainsCommand(mdmtool) // list domains
-	addWipeCommand(mdmtool)        // wipe
+	addApproveCommand(mdmtool)         // approve
+	addBlockCommand(mdmtool)           // block
+	addDeleteCommand(mdmtool)          // delete
+	addDirectoryCommand(mdmtool)       // directory
+	addListDomainsCommand(mdmtool)     // listdomains
+	addUpdateDatastoreCommand(mdmtool) // updatedb
+	addUpdateSheetCommand(mdmtool)     // updatesheet
+	addWipeCommand(mdmtool)            // wipe
 
 	// Parse runtime options
 	kingpin.MustParse(mdmtool.Parse(os.Args[1:]))
