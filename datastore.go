@@ -9,7 +9,6 @@ import (
 	"errors"
 	"fmt"
 	admin "google.golang.org/api/admin/directory/v1"
-	"log"
 	"strings"
 )
 
