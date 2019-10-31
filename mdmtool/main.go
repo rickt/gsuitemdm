@@ -1,8 +1,6 @@
 package main
 
 import (
-	"context"
-	"github.com/rickt/gsuitemdm"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"log"
 	"os"
@@ -11,23 +9,13 @@ import (
 // MDMTool main code
 
 var (
-	appname    string = "mdmtool"
-	configfile string = "mdmtool_conf.json"
-	urlsfile   string = "mdmtool_urls.json"
+	appname  string = "mdmtool"
+	urlsfile string = "mdmtool_urls.json"
 )
 
 func main() {
 	var err error
 	var m = new(MDMTool)
-
-	// Get a context
-	ctx := context.Background()
-
-	// Get a G Suite MDM Service
-	m.GSMDMService, err = gsuitemdm.New(ctx, configfile)
-	if err != nil {
-		log.Fatal("Couldn't get a gsuitemdm service")
-	}
 
 	// Load MDMTool URLs configuration
 	m.URLs, err = loadMDMToolURLs(urlsfile)

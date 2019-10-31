@@ -4,13 +4,10 @@ package main
 // Types for mdmtool
 //
 
-import (
-	"github.com/rickt/gsuitemdm"
-)
+import ()
 
 type MDMTool struct {
-	GSMDMService *gsuitemdm.GSuiteMDMService // G Suite MDM Service
-	URLs         MDMToolURLs                 // URLs
+	URLs MDMToolURLs // URLs
 
 }
 
