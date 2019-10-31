@@ -5,8 +5,12 @@ package main
 //
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
+	"github.com/rickt/gsuitemdm"
 	"gopkg.in/alecthomas/kingpin.v2"
+	"log"
 )
 
 //
@@ -24,7 +28,42 @@ func addApproveCommand(mdmtool *kingpin.Application) {
 
 // Setup the "approve" command
 func (ac *ApproveCommand) run(c *kingpin.ParseContext) error {
-	fmt.Printf("approve goes here\n")
+	// Check runtime options
+	if (ac.IMEI == "" && ac.SN == "") || (ac.IMEI != "" && ac.SN != "") {
+		return errors.New("with \"approve\" command you must specify either --imei or --sn")
+	}
+
+	// Runtime options are good
+	var req gsuitemdm.ActionRequest
+
+	// How are we identifying the device to be approved?
+	switch {
+
+	// IMEI
+	case ac.IMEI != "":
+		req.IMEI = ac.IMEI
+		break
+
+	// Serial Number
+	case ac.SN != "":
+		req.SN = ac.SN
+		break
+	}
+
+	// Setup the rest of the request
+	req.Action = "approve"
+	req.Domain = ac.Domain
+	req.Key = m.Config.APIKey
+
+	// Marshal the JSON
+	js, err := json.MarshalIndent(req, "", "   ")
+	if err != nil {
+		log.Fatal("Error marshaling JSON")
+		return nil
+	}
+
+	fmt.Printf("%s\n", js)
+
 	return nil
 }
 
@@ -99,6 +138,38 @@ func addListDomainsCommand(mdmtool *kingpin.Application) {
 // Setup the "listdomains" command
 func (ld *ListDomainsCommand) run(c *kingpin.ParseContext) error {
 	fmt.Printf("list domains goes here\n")
+	return nil
+}
+
+//
+// UPDATE DATASTORE
+//
+func addUpdateDatastoreCommand(mdmtool *kingpin.Application) {
+	c := &UpdateDatastoreCommand{}
+	ld := mdmtool.Command("updatedb", "Update the DB").Action(c.run)
+	ld.Flag("verbose", "Enable verbose mode").Short('v').BoolVar(&c.Verbose)
+
+}
+
+// Setup the "updatedb" command
+func (ld *UpdateDatastoreCommand) run(c *kingpin.ParseContext) error {
+	fmt.Printf("updatedb goes here\n")
+	return nil
+}
+
+//
+// UPDATE SHEET
+//
+func addUpdateSheetCommand(mdmtool *kingpin.Application) {
+	c := &UpdateSheetCommand{}
+	ld := mdmtool.Command("updatesheet", "Update the Google Sheet").Action(c.run)
+	ld.Flag("verbose", "Enable verbose mode").Short('v').BoolVar(&c.Verbose)
+
+}
+
+// Setup the "updatesheet" command
+func (ld *UpdateSheetCommand) run(c *kingpin.ParseContext) error {
+	fmt.Printf("updatesheet goes here\n")
 	return nil
 }
 

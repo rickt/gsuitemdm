@@ -1,25 +1,12 @@
 {
-	"actionscope": "https://www.googleapis.com/auth/admin.directory.device.mobile",
-	"apiqueryorderby": "name",
-	"datastorequeryorderby": "Domain",
-	"dsnamekey": "MobileDevice",
-	"globaldebug": true,
-	"projectid": "yourgcpprojectname",
-	"remotewipetype": "admin_account_wipe",
-	"searchscope": "https://www.googleapis.com/auth/admin.directory.device.mobile.readonly",
-	"searchtype": "all",
-	"sheetcreds": "credentials_yourgsuitedomain.com.json",
-	"sheetid": "yourgooglesheetidgoeshere",
-	"sheetscope": "https://www.googleapis.com/auth/spreadsheets",
-	"sheetwho": "username@yourgsuitedomain.com",
-	"timezone": "America/Los_Angeles",
-	"version": "0.8",
-	"domains": [
-		{
-			"domainname": "yourgsuitedomain.com",
-			"companyid": "C0123abcD",
-			"adminuser": "username@yourgsuitedomain.com",
-			"credentialsfile": "/path/to/credentials_yourgsuitedomain.com.json"
-		}
-	]
+		  "apikey": "1234567890",
+		  "approvedeviceurl": "https://us-central1-PROJECTID.cloudfunctions.net/ApproveDevice",
+		  "blockdeviceurl": "https://us-central1-PROJECTID.cloudfunctions.net/BlockDevice",
+		  "deletedeviceurl": "https://us-central1-PROJECTID.cloudfunctions.net/DeleteDevice",
+		  "directoryurl": "https://us-central1-PROJECTID.cloudfunctions.net/Directory", 
+		  "searchdatastoreurl": "https://us-central1-PROJECTID.cloudfunctions.net/SearchDatastore", 
+		  "updatedatastoreurl": "https://us-central1-PROJECTID.cloudfunctions.net/UpdateDatastore",
+		  "updatesheeturl": "https://us-central1-PROJECTID.cloudfunctions.net/UpdateSheet",
+		  "wipedeviceurl": "https://us-central1-PROJECTID.cloudfunctions.net/WipeDevice"
 }
+

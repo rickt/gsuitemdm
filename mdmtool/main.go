@@ -20,11 +20,11 @@ func main() {
 	// Load MDMTool config
 	m.Config, err = loadMDMToolConfig(configfile)
 	if err != nil {
-		log.Fatal("Error loading MDMTool URLs")
+		log.Fatal("Error loading MDMTool configuration")
 	}
 
-	// Create an MDMTool
-	mdmtool := kingpin.New("mdmtool", "HMS G Suite MDM Tool")
+	// Create an MDMTool app
+	mdmtool := kingpin.New(appname, "HMS G Suite MDM Tool")
 
 	// Add the commands
 	addApproveCommand(mdmtool)         // approve
