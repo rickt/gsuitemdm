@@ -16,18 +16,29 @@ import (
 	"time"
 )
 
-// Case-insensitive sort helper funcs
+// Sort funcs for devices
 func (s DatastoreMobileDevices) Len() int {
 	return len(s.Mobiledevices)
 }
-
 func (s DatastoreMobileDevices) Less(i, j int) bool {
 	// return s.Mobiledevices[i].Name < s.Mobiledevices[j].Name
 	return []rune(strings.ToLower(s.Mobiledevices[i].Name))[0] < []rune(strings.ToLower(s.Mobiledevices[j].Name))[0]
 }
-
 func (s DatastoreMobileDevices) Swap(i, j int) {
 	s.Mobiledevices[i], s.Mobiledevices[j] = s.Mobiledevices[j], s.Mobiledevices[i]
+}
+
+// Sort funcs for directory data
+func (s AllDirectoryData) Len() int {
+	return len(s.Data)
+}
+func (s AllDirectoryData) Less(i, j int) bool {
+	// return s.Mobiledevices[i].Name < s.Mobiledevices[j].Name
+	// return []rune(strings.ToLower(s.Mobiledevices[i].Name))[0] < []rune(strings.ToLower(s.Mobiledevices[j].Name))[0]
+	return s.Data[i].Name < s.Data[j].Name
+}
+func (s AllDirectoryData) Swap(i, j int) {
+	s.Data[i], s.Data[j] = s.Data[j], s.Data[i]
 }
 
 // Helper function to ask for user confirmation in the CLI

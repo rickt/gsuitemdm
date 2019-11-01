@@ -22,6 +22,11 @@ type DirectoryData struct {
 	PhoneNumber string `json:"phonenumber"`
 }
 
+// Multiple directory entries
+type AllDirectoryData struct {
+	Data []DirectoryData
+}
+
 // Search
 type SearchRequest struct {
 	Debug  bool   `json:"debug"`

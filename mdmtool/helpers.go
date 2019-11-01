@@ -58,6 +58,13 @@ func loadMDMToolConfig(file string) (MDMToolConfig, error) {
 
 }
 
+// Print out directory data
+func printDirectoryData(person gsuitemdm.DirectoryData) {
+	fmt.Printf("%-21.21s | %s | %s\n", person.Name, person.PhoneNumber, person.Email)
+
+	// fmt.Printf("%21.21s | %-16.16s | %-14.14s | %-16.16s | %-15.15s | %-13.13s | %-18.18s | %-20.20s\n", device.Domain, device.Model, fnum, device.SN, device.IMEI, device.Status, humanize.Time(lts), device.Name)
+}
+
 // Print out mobile device data (Datastore edition)
 func printDeviceData(device gsuitemdm.DatastoreMobileDevice, verbose bool) {
 
@@ -124,6 +131,22 @@ func printHeaderLine() {
 func printLine() {
 	// print a line
 	fmt.Printf("----------------------+------------------+----------------+------------------+-----------------+---------------+--------------------+---------------\n")
+}
+
+// Print out the phone directory header line
+func printPhoneHeaderLine() {
+	// print the first line of dashes
+	printPhoneLine()
+	// print header line
+	fmt.Printf("Name                  | Phone Number   | Email \n")
+	// print a line of dashes under the header line
+	printPhoneLine()
+}
+
+// Print out a correctly formatted line for the phone directory
+func printPhoneLine() {
+	// print a line
+	fmt.Printf("----------------------+----------------+------------------------------------------\n")
 }
 
 // EOF

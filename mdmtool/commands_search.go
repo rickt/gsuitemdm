@@ -26,13 +26,103 @@ import (
 func addDirectoryCommand(mdmtool *kingpin.Application) {
 	c := &DirectoryCommand{}
 	dir := mdmtool.Command("dir", "Search the mobile phone directory").Action(c.run)
-	dir.Flag("name", "Search using name").Short('n').StringVar(&c.Name)
-	dir.Flag("email", "Search using email").Short('e').StringVar(&c.Email)
+	dir.Flag("name", "Search for a phone number using name").Short('n').StringVar(&c.Name)
+	dir.Flag("email", "Search for a phone number using email").Short('e').StringVar(&c.Email)
 }
 
 // Setup the "directory" command
 func (dr *DirectoryCommand) run(c *kingpin.ParseContext) error {
-	fmt.Printf("directory goes here\n")
+	// Check runtime options
+	if (dr.Email == "" && dr.Name == "") || (dr.Email != "" && dr.Name != "") {
+		return errors.New("with \"dir\" command you must specify one of --email or --name")
+	}
+
+	// Runtime options are good, lets setup the request body
+	var rb gsuitemdm.SearchRequest
+
+	// What kind of search are we doing?
+	switch {
+
+	// Email
+	case dr.Email != "":
+		rb.QType = "email"
+		rb.Q = dr.Email
+		break
+
+	// Name
+	case dr.Name != "":
+		rb.QType = "name"
+		rb.Q = dr.Name
+		break
+	}
+
+	// Setup the rest of the SEARCH request
+	rb.Key = m.Config.APIKey
+
+	// Marshal the JSON
+	js, err := json.Marshal(rb)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Build the http request
+	req, err := http.NewRequest("POST", m.Config.DirectoryURL, bytes.NewBuffer(js))
+	if err != nil {
+		log.Fatal(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	// Create an http client
+	client := &http.Client{}
+
+	// Send the request and get a nice response
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Unmarshal the JSON
+	var dirdata []gsuitemdm.DirectoryData
+	err = json.Unmarshal(body, &dirdata)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// If this was a bad request, or no results returned, exit
+	if len(dirdata) < 1 {
+		// Was this a bad request?
+		if resp.Status == "400 Bad Request" {
+			fmt.Printf("%s\n", body)
+		}
+		if resp.Status == "204 No Content" {
+			// Or was this a good response but just with no data?
+			fmt.Printf("Search returned 0 results.\n")
+		}
+		return nil
+	}
+
+	// Okay, we have good data, sort it
+	sort.Sort(gsuitemdm.AllDirectoryData{dirdata})
+
+	// Print a nice header line
+	printPhoneHeaderLine()
+
+	// Range through the directory entries and pretty-print then
+	for k := range dirdata {
+		printDirectoryData(dirdata[k])
+	}
+
+	// Print a nice footer line
+	printPhoneLine()
+
+	fmt.Printf("Search returned %d results.\n", len(dirdata))
+
 	return nil
 }
 
@@ -156,6 +246,9 @@ func (sc *SearchCommand) run(c *kingpin.ParseContext) error {
 	// Unmarshal the JSON
 	var reply []gsuitemdm.DatastoreMobileDevice
 	err = json.Unmarshal(body, &reply)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// If this was a bad request, or no results returned, exit
 	if len(reply) < 1 {
@@ -182,10 +275,12 @@ func (sc *SearchCommand) run(c *kingpin.ParseContext) error {
 	for k := range reply {
 		printDeviceData(reply[k], sc.Verbose)
 	}
+
 	// Only print final line if verbose mode was NOT requested
 	if sc.Verbose != true {
 		printLine()
 	}
+
 	fmt.Printf("Search returned %d results.\n", len(reply))
 
 	return nil
