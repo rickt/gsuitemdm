@@ -21,6 +21,7 @@ Actions perform the requested Admin SDK action. All actions require `-i IMEI` or
 $ mdmtool approve -i IMEI -d DOMAIN
 ```
 * `Block`
+	* `$ mdmtool block -s SN -d DOMAIN`
 * `Delete`
 * `Wipe`
 
