@@ -27,3 +27,10 @@ Actions perform the requested Admin SDK action. All actions require `-i IMEI` or
 
 A confirmation dialog before any action requires a (Y/N) response. 
 
+| Action  | What it does                 | Allowed States                                     | Example Usage                         |
+|---------|------------------------------|----------------------------------------------------|---------------------------------------|
+| Approve | Approves a mobile device     | BLOCKED PENDING PROVISIONING                       | `$ mdmtool approve -i IMEI -d DOMAIN` |
+| Block   | Blocks a mobile device       | APPROVED PENDING                                   | `$ mdmtool block -i IMEI -d DOMAIN`   |
+| Delete  | Deletes a mobile device      | APPROVED BLOCKED PENDING PROVISIONING WIPED WIPING |                                       |
+| Wipe    | Remote-wipes a mobile device |                                                    |                                       |
+
