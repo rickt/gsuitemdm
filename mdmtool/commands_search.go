@@ -164,7 +164,7 @@ func (sc *SearchCommand) run(c *kingpin.ParseContext) error {
 			fmt.Printf("%s\n", body)
 		}
 		if resp.Status == "204 No Content" {
-			// Or was this a good response (http status=200) but just with no data?
+			// Or was this a good response but just with no data?
 			fmt.Printf("Search returned 0 results.\n")
 		}
 		return nil
