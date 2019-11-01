@@ -147,13 +147,13 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 	// Check if device has the correct G Suite MDM status. Valid states for approve are:
 	// PENDING and BLOCKED
 	if device.Status != "PENDING" && device.Status != "BLOCKED" {
-		http.Error(w, fmt.Sprintf("Error: Device cannot be approved (status=%s)\n", device.Status), 400)
+		http.Error(w, fmt.Sprintf("Error: Device found but cannot be approved (status is already %s)", device.Status), 400)
 		return
 	}
 
 	// Was `confirm: true` sent along with the request?
 	if request.Confirm != true {
-		fmt.Fprintf(w, "Notice: Device found, correct status (%s) but no CONFIRM sent, will not approve\n", device.Status)
+		http.Error(w, "Error: Device found but cannot be approved because no CONFIRM sent", 400)
 		return
 	}
 
