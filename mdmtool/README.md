@@ -18,7 +18,7 @@ bar.com               | iPhone XR        | (323) 555-1212 | DEF456DEF456     | 3
 * Search using device owner email address:
 	* `$ mdmtool search -e foo@bar.com`
 * Search using device IMEI:
-	* `$ mdmtool search -i 01234567890987654321`
+	* `$ mdmtool search -i 012345678909876`
 * Search using device serial number:
 	* `$ mdmtool search -n ZX81TRS80C64`
 * Search using notes (stored in a device tracking Google Sheet):
@@ -40,6 +40,12 @@ Actions perform the requested Admin SDK action on a mobile device. All actions r
 	* `$ mdmtool wipe -s SN -d DOMAIN`
 
 All actions require a valid (Y/N) confirmation response before being executed. 
+```
+$ mdmtool wipe -i 012345678909876 -d hypermediasystems.com
+WARNING: Are you sure you want to WIPE device IMEI=357333095976027 in domain hypermediasystems.com? [y/n]: n
+mdmtool: error: Approval not granted, no change made to device.
+$
+```
 
 ### Action Details
 | Action  | What it does                 | Details on what it does                                                              |
