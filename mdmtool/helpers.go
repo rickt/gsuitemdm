@@ -39,6 +39,12 @@ func checkUserConfirmation(s string) bool {
 	}
 }
 
+// Helper func to extract an email domain from an email address
+func getDomain(email string) string {
+	components := strings.Split(email, "@")
+	return components[1]
+}
+
 // Load MDMTool configuration
 func loadMDMToolConfig(file string) (MDMToolConfig, error) {
 	var c MDMToolConfig
