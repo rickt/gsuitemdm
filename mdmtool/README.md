@@ -2,7 +2,7 @@
 A command line utility enabling fast & easy MDM ops on G Suite MDM-protected mobile devices. 
 
 ## Search
-Quickly search for mobile devices
+Search for mobile device data.
 
 ```
 $ mdmtool search -n doe
@@ -67,6 +67,7 @@ WARNING: Are you sure you want to WIPE device IMEI=123456789098765 in domain foo
 | ` updatesheet`    | Updates Google Sheet with fresh data from Datastore                                          |
 
 ## Directory
+Search for user phone numbers.
 ```
 $ mdmtool dir -n doe
 ----------------------+----------------+------------------------------------------
