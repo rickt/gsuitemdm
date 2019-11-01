@@ -46,24 +46,24 @@ func (ac *ApproveCommand) run(c *kingpin.ParseContext) error {
 	// IMEI
 	case ac.IMEI != "":
 		rb.IMEI = ac.IMEI
-		approval = checkUserConfirmation(fmt.Sprintf("\nWARNING: Are you sure you want to APPROVE device IMEI=%s in domain %s?", ac.IMEI, ac.Domain))
+		approval = checkUserConfirmation(fmt.Sprintf("WARNING: Are you sure you want to APPROVE device IMEI=%s in domain %s?", ac.IMEI, ac.Domain))
 		break
 
 	// Serial Number
 	case ac.SN != "":
 		rb.SN = ac.SN
-		approval = checkUserConfirmation(fmt.Sprintf("\nWARNING: Are you sure you want to APPROVE device SN=%s in domain %s?", ac.SN, ac.Domain))
+		approval = checkUserConfirmation(fmt.Sprintf("WARNING: Are you sure you want to APPROVE device SN=%s in domain %s?", ac.SN, ac.Domain))
 		break
 	}
 
 	// Check if approval was given
 	if approval == false {
-		fmt.Printf("\nApproval not given, exiting\n")
+		fmt.Printf("Approval not given, exiting\n")
 		return nil
 
 	}
 
-	// Approval has been given, lets setup the rest of the request
+	// Approval has been given, lets setup the rest of the APPROVE request
 	rb.Action = "approve"
 	rb.Confirm = true
 	rb.Domain = ac.Domain
@@ -109,8 +109,68 @@ func addBlockCommand(mdmtool *kingpin.Application) {
 }
 
 // Setup the "block" command
-func (ac *BlockCommand) run(c *kingpin.ParseContext) error {
-	fmt.Printf("block goes here\n")
+func (bc *BlockCommand) run(c *kingpin.ParseContext) error {
+	// Check runtime options
+	if (bc.IMEI == "" && bc.SN == "") || (bc.IMEI != "" && bc.SN != "") {
+		return errors.New("with \"block\" command you must specify either --imei or --sn")
+	}
+
+	// Runtime options are good, lets setup the request body
+	var approval bool
+	var rb gsuitemdm.ActionRequest
+
+	// How are we identifying the device to be blocked?
+	switch {
+
+	// IMEI
+	case bc.IMEI != "":
+		rb.IMEI = bc.IMEI
+		approval = checkUserConfirmation(fmt.Sprintf("WARNING: Are you sure you want to BLOCK device IMEI=%s in domain %s?", bc.IMEI, bc.Domain))
+		break
+
+	// Serial Number
+	case bc.SN != "":
+		rb.SN = bc.SN
+		approval = checkUserConfirmation(fmt.Sprintf("WARNING: Are you sure you want to BLOCK device SN=%s in domain %s?", bc.SN, bc.Domain))
+		break
+	}
+
+	// Check if approval was given
+	if approval == false {
+		fmt.Printf("Approval not given, exiting\n")
+		return nil
+
+	}
+
+	// Approval has been given, lets setup the rest of the BLOCK request
+	rb.Action = "block"
+	rb.Confirm = true
+	rb.Domain = bc.Domain
+	rb.Key = m.Config.APIKey
+
+	// Marshal the JSON
+	js, err := json.Marshal(rb)
+	if err != nil {
+		log.Fatal(err)
+		return nil
+	}
+
+	// Build the http request
+	req, err := http.NewRequest("POST", m.Config.BlockDeviceURL, bytes.NewBuffer(js))
+	req.Header.Set("Content-Type", "application/json")
+
+	// Create an http client
+	client := &http.Client{}
+
+	// Send the request and get a nice response
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+
 	return nil
 }
 
