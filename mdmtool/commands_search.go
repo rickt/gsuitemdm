@@ -15,6 +15,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sort"
 )
 
 //
@@ -147,8 +148,31 @@ func (sc *SearchCommand) run(c *kingpin.ParseContext) error {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
-	body, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println(string(body))
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Unmarshal the JSON
+	var reply []gsuitemdm.DatastoreMobileDevice
+	err = json.Unmarshal(body, &reply)
+
+	// If no results returned, exit
+	if len(reply) < 1 {
+		fmt.Printf("Search returned no results.\n")
+		return nil
+	}
+
+	// Sort the data
+	sort.Sort(gsuitemdm.DatastoreMobileDevices{reply})
+
+	// Range through the returned data and pretty-print it
+	printHeaderLine()
+	for k := range reply {
+		printDeviceData(reply[k], sc.Verbose)
+	}
+	printLine()
+
 	return nil
 }
 
