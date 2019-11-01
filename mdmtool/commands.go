@@ -375,8 +375,68 @@ func addWipeCommand(mdmtool *kingpin.Application) {
 }
 
 // Setup the "wipe" command
-func (ac *WipeCommand) run(c *kingpin.ParseContext) error {
-	fmt.Printf("wipe goes here\n")
+func (wc *WipeCommand) run(c *kingpin.ParseContext) error {
+	// Check runtime options
+	if (wc.IMEI == "" && wc.SN == "") || (wc.IMEI != "" && wc.SN != "") {
+		return errors.New("with \"wipe\" command you must specify either --imei or --sn")
+	}
+
+	// Runtime options are good, lets setup the request body
+	var approval bool
+	var rb gsuitemdm.ActionRequest
+
+	// How are we identifying the device to be wiped?
+	switch {
+
+	// IMEI
+	case wc.IMEI != "":
+		rb.IMEI = wc.IMEI
+		approval = checkUserConfirmation(fmt.Sprintf("WARNING: Are you sure you want to WIPE device IMEI=%s in domain %s?", wc.IMEI, wc.Domain))
+		break
+
+	// Serial Number
+	case wc.SN != "":
+		rb.SN = wc.SN
+		approval = checkUserConfirmation(fmt.Sprintf("WARNING: Are you sure you want to WIPE device SN=%s in domain %s?", wc.SN, wc.Domain))
+		break
+	}
+
+	// Check if approval was given
+	if approval == false {
+		return errors.New("Approval not granted, no change made to device.")
+	}
+
+	// Approval has been given, lets setup the rest of the WIPE request
+	rb.Action = "wipe"
+	rb.Confirm = true
+	rb.Domain = wc.Domain
+	rb.Key = m.Config.APIKey
+
+	// Marshal the JSON
+	js, err := json.Marshal(rb)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Build the http request
+	req, err := http.NewRequest("POST", m.Config.WipeDeviceURL, bytes.NewBuffer(js))
+	if err != nil {
+		log.Fatal(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	// Create an http client
+	client := &http.Client{}
+
+	// Send the request and get a nice response
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+
 	return nil
 }
 
