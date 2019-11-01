@@ -54,3 +54,6 @@ A confirmation dialog before any action requires a (Y/N) response.
 	* `$ mdmtool udpatedb`
 * `Update Google Sheet`
 	* `$ mdmtool updateshet`
+
+### Update Details
+
