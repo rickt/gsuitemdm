@@ -1,9 +1,8 @@
 # mdmtool
 A command line utility enabling fast & easy MDM ops on G Suite MDM-protected mobile devices. 
 
-## Examples
+## Search
 
-### Search
 ```
 $ mdmtool search -n doe
 ----------------------+------------------+----------------+------------------+-----------------+---------------+--------------------+---------------
@@ -29,9 +28,8 @@ bar.com               | iPhone XR        | (323) 555-1212 | DEF456DEF456     | 3
 * Search using device status:
 	* `$ mdmtool search -t BLOCKED`
 
-
-### Actions
-Actions perform the requested Admin SDK action. All actions require `-i IMEI` or `-s SN` as well as `-d DOMAIN`, e.g.
+## Actions
+Actions perform the requested Admin SDK action on a mobile device. All actions require `-i IMEI` or `-s SN` as well as `-d DOMAIN`, e.g.
 * `Approve` 
 	* `$ mdmtool approve -i IMEI -d DOMAIN`
 * `Block` 
@@ -43,7 +41,7 @@ Actions perform the requested Admin SDK action. All actions require `-i IMEI` or
 
 A confirmation dialog before any action requires a (Y/N) response. 
 
-#### Action Details
+### Action Details
 | Action  | What it does                 | Details on what it does                                                              |
 |---------|------------------------------|--------------------------------------------------------------------------------------|
 | Approve | Approves a mobile device     | Allows a user to sign into G Suite on their mobile device                            |
@@ -51,5 +49,8 @@ A confirmation dialog before any action requires a (Y/N) response.
 | Delete  | Deletes a mobile device      | Removes a device from MDM; use only when replacing a mobile device with a new one    |
 | Wipe    | Remote-wipes a mobile device | Forcibly remove all data & content from a device; device returns to factory settings |
 
-### Updates
-
+## Updates
+* `Update Datastore`
+	* `$ mdmtool udpatedb`
+* `Update Google Sheet`
+	* `$ mdmtool updateshet`
