@@ -39,7 +39,7 @@ Actions perform the requested Admin SDK action on a mobile device. All actions r
 * `Wipe` 
 	* `$ mdmtool wipe -s SN -d DOMAIN`
 
-A confirmation dialog before any action requires a (Y/N) response. 
+All actions require a valid (Y/N) confirmation response before being executed. 
 
 ### Action Details
 | Action  | What it does                 | Details on what it does                                                              |
