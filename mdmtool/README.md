@@ -17,22 +17,12 @@ bar.com               | iPhone XR        | (323) 555-1212 | DEF456DEF456     | 3
 ### Actions
 Actions perform the requested Admin SDK action. All actions require `-i IMEI` or `-s SN` as well as `-d DOMAIN`, e.g.
 * `Approve`
-```
-$ mdmtool approve -i IMEI -d DOMAIN
-```
+	* `$ mdmtool approve -i IMEI -d DOMAIN`
 * `Block`
 	* `$ mdmtool block -s SN -d DOMAIN`
 * `Delete`
+	* `$ mdmtool delete -i IMEI -d DOMAIN`
 * `Wipe`
+	* `$ mdmtool wipe -s SN -d DOMAIN`
 
-All actions require `-i IMEI` or `-s SN` as well as `-d DOMAIN`, e.g.
-```
-$ mdmtool approve -i IMEI -d DOMAIN
-
-$ mdmtool block -s SN -d DOMAIN
-
-$ mdmtool delete -i IMEI -d DOMAIN
-
-$ mdmtool wipe -s SN -d DOMAIN
-```
 
