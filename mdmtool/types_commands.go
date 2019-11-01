@@ -25,15 +25,10 @@ type DeleteCommand struct {
 	SN     string
 }
 
-// DirectoryCommand
+// DirectoryCommand ...
 type DirectoryCommand struct {
 	Email string
 	Name  string
-}
-
-// ListDomainsCommand ...
-type ListDomainsCommand struct {
-	Verbose bool
 }
 
 // SearchCommand ...
