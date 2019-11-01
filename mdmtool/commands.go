@@ -294,6 +294,8 @@ func (ld *UpdateDatastoreCommand) run(c *kingpin.ParseContext) error {
 		log.Fatal(err)
 	}
 
+	fmt.Printf("Updating Datastore... ")
+
 	// Build the http request
 	req, err := http.NewRequest("POST", m.Config.UpdateDatastoreURL, bytes.NewBuffer(js))
 	if err != nil {
@@ -310,6 +312,9 @@ func (ld *UpdateDatastoreCommand) run(c *kingpin.ParseContext) error {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
+
+	fmt.Printf(" done.\n")
+
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
 
@@ -339,6 +344,8 @@ func (ld *UpdateSheetCommand) run(c *kingpin.ParseContext) error {
 		log.Fatal(err)
 	}
 
+	fmt.Printf("Updating Google Sheet... ")
+
 	// Build the http request
 	req, err := http.NewRequest("POST", m.Config.UpdateSheetURL, bytes.NewBuffer(js))
 	if err != nil {
@@ -355,6 +362,9 @@ func (ld *UpdateSheetCommand) run(c *kingpin.ParseContext) error {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
+
+	fmt.Printf(" done.\n")
+
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
 
