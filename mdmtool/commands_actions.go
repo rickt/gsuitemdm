@@ -3,6 +3,7 @@ package main
 //
 // MDMTool commands
 //
+//
 
 import (
 	"bytes"
@@ -247,124 +248,6 @@ func (dc *DeleteCommand) run(c *kingpin.ParseContext) error {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
-	body, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println(string(body))
-
-	return nil
-}
-
-//
-// DIRECTORY
-//
-
-// Add the "directory" command
-func addDirectoryCommand(mdmtool *kingpin.Application) {
-	c := &DirectoryCommand{}
-	dir := mdmtool.Command("dir", "Search the mobile phone directory").Action(c.run)
-	dir.Flag("name", "Search using name").Short('n').StringVar(&c.Name)
-	dir.Flag("email", "Search using email").Short('e').StringVar(&c.Email)
-}
-
-// Setup the "directory" command
-func (ac *DirectoryCommand) run(c *kingpin.ParseContext) error {
-	fmt.Printf("directory goes here\n")
-	return nil
-}
-
-//
-// UPDATE DATASTORE
-//
-func addUpdateDatastoreCommand(mdmtool *kingpin.Application) {
-	c := &UpdateDatastoreCommand{}
-	ud := mdmtool.Command("updatedb", "Update the DB").Action(c.run)
-	ud.Flag("verbose", "Enable verbose mode").Short('v').BoolVar(&c.Verbose)
-
-}
-
-// Setup the "updatedb" command
-func (ld *UpdateDatastoreCommand) run(c *kingpin.ParseContext) error {
-	var rb gsuitemdm.UpdateRequest
-
-	// Setup the request body
-	rb.Key = m.Config.APIKey
-
-	// Marshal the JSON
-	js, err := json.Marshal(rb)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Printf("Updating Datastore... ")
-
-	// Build the http request
-	req, err := http.NewRequest("POST", m.Config.UpdateDatastoreURL, bytes.NewBuffer(js))
-	if err != nil {
-		log.Fatal(err)
-	}
-	req.Header.Set("Content-Type", "application/json")
-
-	// Create an http client
-	client := &http.Client{}
-
-	// Send the request and get a nice response
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer resp.Body.Close()
-
-	fmt.Printf(" done.\n")
-
-	body, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println(string(body))
-
-	return nil
-}
-
-//
-// UPDATE SHEET
-//
-func addUpdateSheetCommand(mdmtool *kingpin.Application) {
-	c := &UpdateSheetCommand{}
-	us := mdmtool.Command("updatesheet", "Update the Google Sheet").Action(c.run)
-	us.Flag("verbose", "Enable verbose mode").Short('v').BoolVar(&c.Verbose)
-
-}
-
-// Setup the "updatesheet" command
-func (ld *UpdateSheetCommand) run(c *kingpin.ParseContext) error {
-	var rb gsuitemdm.UpdateRequest
-
-	// Setup the request body
-	rb.Key = m.Config.APIKey
-
-	// Marshal the JSON
-	js, err := json.Marshal(rb)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Printf("Updating Google Sheet... ")
-
-	// Build the http request
-	req, err := http.NewRequest("POST", m.Config.UpdateSheetURL, bytes.NewBuffer(js))
-	if err != nil {
-		log.Fatal(err)
-	}
-	req.Header.Set("Content-Type", "application/json")
-
-	// Create an http client
-	client := &http.Client{}
-
-	// Send the request and get a nice response
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer resp.Body.Close()
-
-	fmt.Printf(" done.\n")
-
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
 
