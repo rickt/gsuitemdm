@@ -2,23 +2,24 @@
 A command line utility enabling fast & easy MDM ops on G Suite MDM-protected mobile devices. 
 
 ## Search
+Quickly search for mobile devices
 
 ```
 $ mdmtool search -n doe
 ----------------------+------------------+----------------+------------------+-----------------+---------------+--------------------+---------------
 Domain                | Model            | Phone Number   | Serial #         | IMEI            | Status        | Last Sync          | Owner
 ----------------------+------------------+----------------+------------------+-----------------+---------------+--------------------+---------------
-foo.com               | iPhone 5S        | (213) 555-1212 | ABC123ABC123     | 012345678901234 | APPROVED      | 1 hour ago         | Jane Doe
-bar.com               | iPhone XR        | (323) 555-1212 | DEF456DEF456     | 357341093918792 | BLOCKED       | 11 hours ago       | John Doe
+foo.com               | iPhone 5S        | (213) 555-1212 | ABC123ABC123     | 123456789098765 | APPROVED      | 1 hour ago         | Jane Doe
+bar.com               | iPhone XR        | (323) 555-1212 | ZX81TRS80C64     | 234567890987654 | BLOCKED       | 11 hours ago       | John Doe
 ----------------------+------------------+----------------+------------------+-----------------+---------------+--------------------+---------------
+Search returned 2 results.
 ```
-
 * Search using device owner name:
 	* `$ mdmtool search -n john`
 * Search using device owner email address:
 	* `$ mdmtool search -e foo@bar.com`
 * Search using device IMEI:
-	* `$ mdmtool search -i 012345678909876`
+	* `$ mdmtool search -i 123456789098765`
 * Search using device serial number:
 	* `$ mdmtool search -n ZX81TRS80C64`
 * Search using notes (stored in a device tracking Google Sheet):
@@ -41,8 +42,8 @@ Actions perform the requested Admin SDK action on a mobile device. All actions r
 
 All actions require a valid (Y/N) confirmation response before being executed. 
 ```
-$ mdmtool wipe -i 012345678909876 -d foo.com
-WARNING: Are you sure you want to WIPE device IMEI=012345678909876 in domain foo.com? [y/n]: 
+$ mdmtool wipe -i 123456789098765 -d foo.com
+WARNING: Are you sure you want to WIPE device IMEI=123456789098765 in domain foo.com? [y/n]: 
 ```
 
 ### Action Details
@@ -65,3 +66,14 @@ WARNING: Are you sure you want to WIPE device IMEI=012345678909876 in domain foo
 | `updatedatastore` | Gets fresh data from Admin SDK for all devices, merge w/Google Sheet data, save to Datastore |
 | ` updatesheet`    | Updates Google Sheet with fresh data from Datastore                                          |
 
+## Directory
+```
+$ mdmtool dir -n doe
+----------------------+----------------+------------------------------------------
+Name                  | Phone Number   | Email 
+----------------------+----------------+------------------------------------------
+Jane Doe              | (213) 555-1212 | jane@foo.com
+John Doe              | (323) 555-1212 | john@bar.com
+----------------------+----------------+------------------------------------------
+Search returned 2 results.
+```
