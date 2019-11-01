@@ -14,6 +14,22 @@ bar.com               | iPhone XR        | (323) 555-1212 | DEF456DEF456     | 3
 ----------------------+------------------+----------------+------------------+-----------------+---------------+--------------------+---------------
 ```
 
+* Search using device owner name:
+	* `$ mdmtool search -n john`
+* Search using device owner email address:
+	* `$ mdmtool search -e foo@bar.com`
+* Search using device IMEI:
+	* `$ mdmtool search -i 01234567890987654321`
+* Search using device serial number:
+	* `$ mdmtool search -n ZX81TRS80C64`
+* Search using notes (stored in a device tracking Google Sheet):
+	* `$ mdmtool search -o lost`
+* Search using phone number (stored in a device tracking Google Sheet):
+	* `$ mdmtool search -p 2135551212`
+* Search using device status:
+	* `$ mdmtool search -t BLOCKED`
+
+
 ### Actions
 Actions perform the requested Admin SDK action. All actions require `-i IMEI` or `-s SN` as well as `-d DOMAIN`, e.g.
 * `Approve` 
@@ -27,10 +43,13 @@ Actions perform the requested Admin SDK action. All actions require `-i IMEI` or
 
 A confirmation dialog before any action requires a (Y/N) response. 
 
+#### Action Details
 | Action  | What it does                 | Details on what it does                                                              |
 |---------|------------------------------|--------------------------------------------------------------------------------------|
 | Approve | Approves a mobile device     | Allows a user to sign into G Suite on their mobile device                            |
 | Block   | Blocks a mobile device       | Remotely log out signed-in users, disable ability to login to mobile device          |
 | Delete  | Deletes a mobile device      | Removes a device from MDM; use only when replacing a mobile device with a new one    |
 | Wipe    | Remote-wipes a mobile device | Forcibly remove all data & content from a device; device returns to factory settings |
+
+### Updates
 
