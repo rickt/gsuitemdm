@@ -16,7 +16,7 @@ bar.com               | iPhone XR        | (323) 555-1212 | DEF456DEF456     | 3
 
 ### Actions
 Actions perform the requested Admin SDK action. All actions require `-i IMEI` or `-s SN` as well as `-d DOMAIN`, e.g.
-* `Approve`: Approves a mobile device. Device must be in PENDING or BLOCKED state to be approved. 
+* `Approve` - Approves a mobile device. Device must be in PENDING or BLOCKED state to be approved. 
 	* `$ mdmtool approve -i IMEI -d DOMAIN`
 * `Block`
 	* `$ mdmtool block -s SN -d DOMAIN`
