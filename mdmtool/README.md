@@ -16,13 +16,13 @@ bar.com               | iPhone XR        | (323) 555-1212 | DEF456DEF456     | 3
 
 ### Actions
 Actions perform the requested Admin SDK action. All actions require `-i IMEI` or `-s SN` as well as `-d DOMAIN`, e.g.
-* `Approve` - Approves a mobile device. Device must be in PENDING or BLOCKED state to be approved. 
+* `Approve` 
 	* `$ mdmtool approve -i IMEI -d DOMAIN`
-* `Block` - Blocks a mobile device by immediately signing out the G Suite account from all Google apps on the device. Device must be in APPROVED or PENDING state to be blocked. 
+* `Block` 
 	* `$ mdmtool block -s SN -d DOMAIN`
-* `Delete` - Deletes a mobile device. This action performs a BLOCK and forces reinstallation of the MDM profile on the device. Device must be in APPROVED, BLOCKED, PENDING, WIPED or WIPING states to be deleted. 
+* `Delete` 
 	* `$ mdmtool delete -i IMEI -d DOMAIN`
-* `Wipe` - Remote-wipes a mobile device. This action removes ALL DATA AND CONTENTS of the device. Device can be in any state to be wiped. 
+* `Wipe` 
 	* `$ mdmtool wipe -s SN -d DOMAIN`
 
 A confirmation dialog before any action requires a (Y/N) response. 
