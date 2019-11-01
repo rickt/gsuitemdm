@@ -234,8 +234,8 @@ func (ld *ListDomainsCommand) run(c *kingpin.ParseContext) error {
 //
 func addUpdateDatastoreCommand(mdmtool *kingpin.Application) {
 	c := &UpdateDatastoreCommand{}
-	ld := mdmtool.Command("updatedb", "Update the DB").Action(c.run)
-	ld.Flag("verbose", "Enable verbose mode").Short('v').BoolVar(&c.Verbose)
+	ud := mdmtool.Command("updatedb", "Update the DB").Action(c.run)
+	ud.Flag("verbose", "Enable verbose mode").Short('v').BoolVar(&c.Verbose)
 
 }
 
@@ -279,8 +279,8 @@ func (ld *UpdateDatastoreCommand) run(c *kingpin.ParseContext) error {
 //
 func addUpdateSheetCommand(mdmtool *kingpin.Application) {
 	c := &UpdateSheetCommand{}
-	ld := mdmtool.Command("updatesheet", "Update the Google Sheet").Action(c.run)
-	ld.Flag("verbose", "Enable verbose mode").Short('v').BoolVar(&c.Verbose)
+	us := mdmtool.Command("updatesheet", "Update the Google Sheet").Action(c.run)
+	us.Flag("verbose", "Enable verbose mode").Short('v').BoolVar(&c.Verbose)
 
 }
 
