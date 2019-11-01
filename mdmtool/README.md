@@ -56,4 +56,8 @@ A confirmation dialog before any action requires a (Y/N) response.
 	* `$ mdmtool updateshet`
 
 ### Update Details
+| Update Type     | Details on what it does                                                                      |
+|-----------------|----------------------------------------------------------------------------------------------|
+| updatedatastore | Gets fresh data from Admin SDK for all devices, merge w/Google Sheet data, save to Datastore |
+| updatesheet     | Updates Google Sheet with fresh data from Datastore                                          |
 
