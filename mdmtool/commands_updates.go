@@ -27,7 +27,7 @@ func addUpdateDatastoreCommand(mdmtool *kingpin.Application) {
 }
 
 // Setup the "updatedb" command
-func (ld *UpdateDatastoreCommand) run(c *kingpin.ParseContext) error {
+func (ud *UpdateDatastoreCommand) run(c *kingpin.ParseContext) error {
 	var rb gsuitemdm.UpdateRequest
 
 	// Setup the request body
@@ -77,7 +77,7 @@ func addUpdateSheetCommand(mdmtool *kingpin.Application) {
 }
 
 // Setup the "updatesheet" command
-func (ld *UpdateSheetCommand) run(c *kingpin.ParseContext) error {
+func (us *UpdateSheetCommand) run(c *kingpin.ParseContext) error {
 	var rb gsuitemdm.UpdateRequest
 
 	// Setup the request body

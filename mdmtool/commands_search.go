@@ -6,12 +6,15 @@ package main
 //
 
 import (
+	"bytes"
+	"encoding/json"
+	"errors"
 	"fmt"
-	// "github.com/rickt/gsuitemdm"
+	"github.com/rickt/gsuitemdm"
 	"gopkg.in/alecthomas/kingpin.v2"
-	// "io/ioutil"
-	// "log"
-	// "net/http"
+	"io/ioutil"
+	"log"
+	"net/http"
 )
 
 //
@@ -27,8 +30,125 @@ func addDirectoryCommand(mdmtool *kingpin.Application) {
 }
 
 // Setup the "directory" command
-func (ac *DirectoryCommand) run(c *kingpin.ParseContext) error {
+func (dr *DirectoryCommand) run(c *kingpin.ParseContext) error {
 	fmt.Printf("directory goes here\n")
+	return nil
+}
+
+//
+// SEARCH
+//
+
+// Add the "search" command
+func addSearchCommand(mdmtool *kingpin.Application) {
+	c := &SearchCommand{}
+	search := mdmtool.Command("search", "Search for mobile devices").Action(c.run)
+	search.Flag("all", "Show all mobile devices").Short('a').BoolVar(&c.All)
+	search.Flag("domain", "Restrict search to a specific G Suite domain (optional)").Short('d').StringVar(&c.Domain)
+	search.Flag("email", "Search for a device using email address").Short('e').StringVar(&c.Email)
+	search.Flag("imei", "Search for a device using IMEI").Short('i').StringVar(&c.IMEI)
+	search.Flag("name", "Search for a device using staff name").Short('n').StringVar(&c.Name)
+	search.Flag("notes", "Search for a device using notes").Short('o').StringVar(&c.Notes)
+	search.Flag("phone", "Search for a device using phone number").Short('p').StringVar(&c.Phone)
+	search.Flag("sn", "Search for a device using serial number").Short('s').StringVar(&c.SN)
+	search.Flag("status", "Search for a device using MDM device status").Short('t').StringVar(&c.Status)
+	search.Flag("verbose", "Enable verbose mode").Short('v').BoolVar(&c.Verbose)
+}
+
+// Setup the "search" command
+func (sc *SearchCommand) run(c *kingpin.ParseContext) error {
+	// Check runtime options
+	if sc.All != true && sc.Email == "" && sc.IMEI == "" && sc.Name == "" && sc.Notes == "" && sc.Phone == "" && sc.SN == "" && sc.Status == "" {
+		return errors.New("with \"search\" command you must specify one of --all, --email, --imei, --name, --phone, --sn or --status")
+	}
+
+	// Check runtime options: cannot use other search operators when using --all
+	if sc.All == true && (sc.Email != "" || sc.IMEI != "" || sc.Name != "" || sc.Notes != "" || sc.Phone != "" || sc.SN != "" || sc.Status != "") {
+		return errors.New("with \"search --all\" you cannot also specify --email, --imei, --name, --phone, --sn or --status")
+	}
+
+	// Runtime options are good, lets setup the request body
+	var rb gsuitemdm.SearchRequest
+
+	// What kind of search are we doing?
+	switch {
+
+	// All
+	case sc.All == true:
+		rb.QType = "all"
+		break
+
+	// Email
+	case sc.Email != "":
+		rb.QType = "email"
+		rb.Q = sc.Email
+		break
+
+	// IMEI
+	case sc.IMEI != "":
+		rb.QType = "imei"
+		rb.Q = sc.IMEI
+		break
+
+	// Name
+	case sc.Name != "":
+		rb.QType = "name"
+		rb.Q = sc.Name
+		break
+
+	// Notes
+	case sc.Notes != "":
+		rb.QType = "notes"
+		rb.Q = sc.Notes
+		break
+
+	// Phone
+	case sc.Phone != "":
+		rb.QType = "phone"
+		rb.Q = sc.Phone
+		break
+
+	// Serial Number
+	case sc.SN != "":
+		rb.QType = "sn"
+		rb.Q = sc.SN
+		break
+
+	// Status
+	case sc.Status != "":
+		rb.QType = "status"
+		rb.Q = sc.Status
+		break
+	}
+
+	// Setup the rest of the SEARCH request
+	rb.Domain = sc.Domain
+	rb.Key = m.Config.APIKey
+
+	// Marshal the JSON
+	js, err := json.Marshal(rb)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Build the http request
+	req, err := http.NewRequest("POST", m.Config.SearchDatastoreURL, bytes.NewBuffer(js))
+	if err != nil {
+		log.Fatal(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	// Create an http client
+	client := &http.Client{}
+
+	// Send the request and get a nice response
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
 	return nil
 }
 

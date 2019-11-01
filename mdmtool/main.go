@@ -31,6 +31,7 @@ func main() {
 	addBlockCommand(mdmtool)           // block
 	addDeleteCommand(mdmtool)          // delete
 	addDirectoryCommand(mdmtool)       // directory
+	addSearchCommand(mdmtool)          // search
 	addUpdateDatastoreCommand(mdmtool) // updatedb
 	addUpdateSheetCommand(mdmtool)     // updatesheet
 	addWipeCommand(mdmtool)            // wipe

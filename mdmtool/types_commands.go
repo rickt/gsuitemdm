@@ -38,6 +38,7 @@ type SearchCommand struct {
 	Email   string
 	IMEI    string
 	Name    string
+	Notes   string
 	Phone   string
 	SN      string
 	Status  string
