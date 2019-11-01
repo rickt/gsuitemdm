@@ -107,7 +107,7 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 	if request.Domain != "" && gs.IsDomainConfigured(request.Domain) == false {
 		// Domain specified is invalid
 		log.Printf("Invalid domain specified")
-		http.Error(w, "Invalid domain specified", 200)
+		http.Error(w, "Invalid domain specified", 400)
 		return
 	}
 

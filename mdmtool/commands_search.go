@@ -157,13 +157,20 @@ func (sc *SearchCommand) run(c *kingpin.ParseContext) error {
 	var reply []gsuitemdm.DatastoreMobileDevice
 	err = json.Unmarshal(body, &reply)
 
-	// If no results returned, exit
+	// If this was a bad request, or no results returned, exit
 	if len(reply) < 1 {
-		fmt.Printf("Search returned no results.\n")
+		// Was this a bad request?
+		if resp.Status == "400 Bad Request" {
+			fmt.Printf("%s\n", body)
+		}
+		if resp.Status == "204 No Content" {
+			// Or was this a good response (http status=200) but just with no data?
+			fmt.Printf("Search returned 0 results.\n")
+		}
 		return nil
 	}
 
-	// Sort the data
+	// Okay, we have good data, sort it
 	sort.Sort(gsuitemdm.DatastoreMobileDevices{reply})
 
 	// Range through the returned data and pretty-print it
@@ -172,6 +179,7 @@ func (sc *SearchCommand) run(c *kingpin.ParseContext) error {
 		printDeviceData(reply[k], sc.Verbose)
 	}
 	printLine()
+	fmt.Printf("Search returned %d results.\n", len(reply))
 
 	return nil
 }
