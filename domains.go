@@ -51,21 +51,6 @@ func (mdms *GSuiteMDMService) IsDomainConfigured(domain string) bool {
 	return ok
 }
 
-// List all configured domains
-func (mdms *GSuiteMDMService) ListAllDomains(verbose bool) {
-	// Range through the slice of configured domains and print out some nice info
-	for _, domain := range mdms.C.Domains {
-		if verbose == true {
-			fmt.Printf("%s:\n", domain.DomainName)
-			fmt.Printf("	customerid: %s\n", domain.CustomerID)
-			fmt.Printf("	credentialsfile: %s\n", domain.CredentialsFile)
-			fmt.Printf("	adminuser: %s\n", domain.AdminUser)
-		} else {
-			fmt.Printf("	%s\n", domain.DomainName)
-		}
-	}
-}
-
 // Verify specified domain
 func (mdms *GSuiteMDMService) VerifySpecifiedDomain(domain string) ([]string, error) {
 	var domains []string
