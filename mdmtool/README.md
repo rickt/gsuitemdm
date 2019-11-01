@@ -81,3 +81,9 @@ John Doe              | (323) 555-1212 | john@bar.com
 ----------------------+----------------+------------------------------------------
 Search returned 2 results.
 ```
+* Search for phone number using device owner name:
+	* `$ mdmtool dir -n john`
+* Search for phone number using device owner email address:
+	* `$ mdmtool dir -e foo@bar.com`
+
+
