@@ -1,7 +1,7 @@
 package main
 
 //
-// MDMTool commands
+// MDMTool action commands (approve, block, delete, wipe)
 //
 //
 

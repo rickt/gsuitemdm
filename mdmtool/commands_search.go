@@ -1,7 +1,7 @@
 package main
 
 //
-// MDMTool commands
+// MDMTool search commands (dir, search)
 //
 //
 
@@ -173,12 +173,19 @@ func (sc *SearchCommand) run(c *kingpin.ParseContext) error {
 	// Okay, we have good data, sort it
 	sort.Sort(gsuitemdm.DatastoreMobileDevices{reply})
 
+	// Only print final line if verbose mode was NOT requested
+	if sc.Verbose != true {
+		printHeaderLine()
+	}
+
 	// Range through the returned data and pretty-print it
-	printHeaderLine()
 	for k := range reply {
 		printDeviceData(reply[k], sc.Verbose)
 	}
-	printLine()
+	// Only print final line if verbose mode was NOT requested
+	if sc.Verbose != true {
+		printLine()
+	}
 	fmt.Printf("Search returned %d results.\n", len(reply))
 
 	return nil

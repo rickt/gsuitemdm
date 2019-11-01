@@ -1,12 +1,14 @@
 package main
 
+//
+// MDMTool main code
+//
+
 import (
 	"gopkg.in/alecthomas/kingpin.v2"
 	"log"
 	"os"
 )
-
-// MDMTool main code
 
 var (
 	appname    string = "mdmtool"
