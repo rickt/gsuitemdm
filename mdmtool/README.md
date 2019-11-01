@@ -41,10 +41,8 @@ Actions perform the requested Admin SDK action on a mobile device. All actions r
 
 All actions require a valid (Y/N) confirmation response before being executed. 
 ```
-$ mdmtool wipe -i 012345678909876 -d hypermediasystems.com
-WARNING: Are you sure you want to WIPE device IMEI=357333095976027 in domain hypermediasystems.com? [y/n]: n
-mdmtool: error: Approval not granted, no change made to device.
-$
+$ mdmtool wipe -i 012345678909876 -d foo.com
+WARNING: Are you sure you want to WIPE device IMEI=012345678909876 in domain foo.com? [y/n]: 
 ```
 
 ### Action Details
