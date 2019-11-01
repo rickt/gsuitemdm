@@ -74,6 +74,8 @@ func (ac *ApproveCommand) run(c *kingpin.ParseContext) error {
 		log.Fatal(err)
 	}
 
+	fmt.Printf("Approving device... ")
+
 	// Build the http request
 	req, err := http.NewRequest("POST", m.Config.ApproveDeviceURL, bytes.NewBuffer(js))
 	if err != nil {
@@ -90,6 +92,9 @@ func (ac *ApproveCommand) run(c *kingpin.ParseContext) error {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
+
+	fmt.Printf(" done.\n")
+
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
 
@@ -153,6 +158,8 @@ func (bc *BlockCommand) run(c *kingpin.ParseContext) error {
 		log.Fatal(err)
 	}
 
+	fmt.Printf("Blocking device... ")
+
 	// Build the http request
 	req, err := http.NewRequest("POST", m.Config.BlockDeviceURL, bytes.NewBuffer(js))
 	if err != nil {
@@ -169,6 +176,9 @@ func (bc *BlockCommand) run(c *kingpin.ParseContext) error {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
+
+	fmt.Printf(" done.\n")
+
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
 
@@ -232,6 +242,8 @@ func (dc *DeleteCommand) run(c *kingpin.ParseContext) error {
 		log.Fatal(err)
 	}
 
+	fmt.Printf("Deleting device... ")
+
 	// Build the http request
 	req, err := http.NewRequest("POST", m.Config.DeleteDeviceURL, bytes.NewBuffer(js))
 	if err != nil {
@@ -248,6 +260,9 @@ func (dc *DeleteCommand) run(c *kingpin.ParseContext) error {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
+
+	fmt.Printf(" done.\n")
+
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
 
@@ -311,6 +326,8 @@ func (wc *WipeCommand) run(c *kingpin.ParseContext) error {
 		log.Fatal(err)
 	}
 
+	fmt.Printf("Wiping device... ")
+
 	// Build the http request
 	req, err := http.NewRequest("POST", m.Config.WipeDeviceURL, bytes.NewBuffer(js))
 	if err != nil {
@@ -327,6 +344,9 @@ func (wc *WipeCommand) run(c *kingpin.ParseContext) error {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
+
+	fmt.Printf(" done.\n")
+
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
 
