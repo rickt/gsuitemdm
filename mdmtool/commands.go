@@ -5,12 +5,15 @@ package main
 //
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/rickt/gsuitemdm"
 	"gopkg.in/alecthomas/kingpin.v2"
+	"io/ioutil"
 	"log"
+	"net/http"
 )
 
 //
@@ -33,36 +36,61 @@ func (ac *ApproveCommand) run(c *kingpin.ParseContext) error {
 		return errors.New("with \"approve\" command you must specify either --imei or --sn")
 	}
 
-	// Runtime options are good
-	var req gsuitemdm.ActionRequest
+	// Runtime options are good, lets setup the request body
+	var approval bool
+	var rb gsuitemdm.ActionRequest
 
 	// How are we identifying the device to be approved?
 	switch {
 
 	// IMEI
 	case ac.IMEI != "":
-		req.IMEI = ac.IMEI
+		rb.IMEI = ac.IMEI
+		approval = checkUserConfirmation(fmt.Sprintf("\nWARNING: Are you sure you want to APPROVE device IMEI=%s in domain %s?", ac.IMEI, ac.Domain))
 		break
 
 	// Serial Number
 	case ac.SN != "":
-		req.SN = ac.SN
+		rb.SN = ac.SN
+		approval = checkUserConfirmation(fmt.Sprintf("\nWARNING: Are you sure you want to APPROVE device SN=%s in domain %s?", ac.SN, ac.Domain))
 		break
 	}
 
-	// Setup the rest of the request
-	req.Action = "approve"
-	req.Domain = ac.Domain
-	req.Key = m.Config.APIKey
+	// Check if approval was given
+	if approval == false {
+		fmt.Printf("\nApproval not given, exiting\n")
+		return nil
+
+	}
+
+	// Approval has been given, lets setup the rest of the request
+	rb.Action = "approve"
+	rb.Confirm = true
+	rb.Domain = ac.Domain
+	rb.Key = m.Config.APIKey
 
 	// Marshal the JSON
-	js, err := json.MarshalIndent(req, "", "   ")
+	js, err := json.Marshal(rb)
 	if err != nil {
-		log.Fatal("Error marshaling JSON")
+		log.Fatal(err)
 		return nil
 	}
 
-	fmt.Printf("%s\n", js)
+	// Build the http request
+	req, err := http.NewRequest("POST", m.Config.ApproveDeviceURL, bytes.NewBuffer(js))
+	req.Header.Set("Content-Type", "application/json")
+
+	// Create an http client
+	client := &http.Client{}
+
+	// Send the request and get a nice response
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
 
 	return nil
 }
