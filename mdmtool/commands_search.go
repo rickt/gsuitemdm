@@ -90,9 +90,6 @@ func (dr *DirectoryCommand) run(c *kingpin.ParseContext) error {
 	// Unmarshal the JSON
 	var dirdata []gsuitemdm.DirectoryData
 	err = json.Unmarshal(body, &dirdata)
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	// If this was a bad request, or no results returned, exit
 	if len(dirdata) < 1 {
@@ -246,9 +243,6 @@ func (sc *SearchCommand) run(c *kingpin.ParseContext) error {
 	// Unmarshal the JSON
 	var reply []gsuitemdm.DatastoreMobileDevice
 	err = json.Unmarshal(body, &reply)
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	// If this was a bad request, or no results returned, exit
 	if len(reply) < 1 {
