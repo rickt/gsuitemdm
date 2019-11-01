@@ -25,8 +25,8 @@ func addApproveCommand(mdmtool *kingpin.Application) {
 	c := &ApproveCommand{}
 	approve := mdmtool.Command("approve", "Approve a mobile device").Action(c.run)
 	approve.Flag("domain", "The G Suite domain to which the mobile device belongs to (required)").Required().Short('d').StringVar(&c.Domain)
-	approve.Flag("imei", "Approve using a mobile device IMEI number").Short('i').StringVar(&c.IMEI)
-	approve.Flag("sn", "Approve using a mobile device serial number").Short('s').StringVar(&c.SN)
+	approve.Flag("imei", "Approve a device using IMEI").Short('i').StringVar(&c.IMEI)
+	approve.Flag("sn", "Approve a device using Serial number").Short('s').StringVar(&c.SN)
 }
 
 // Setup the "approve" command
@@ -58,9 +58,7 @@ func (ac *ApproveCommand) run(c *kingpin.ParseContext) error {
 
 	// Check if approval was given
 	if approval == false {
-		fmt.Printf("Approval not given, exiting\n")
-		return nil
-
+		return errors.New("Approval not granted, no change made to device.")
 	}
 
 	// Approval has been given, lets setup the rest of the APPROVE request
@@ -73,11 +71,13 @@ func (ac *ApproveCommand) run(c *kingpin.ParseContext) error {
 	js, err := json.Marshal(rb)
 	if err != nil {
 		log.Fatal(err)
-		return nil
 	}
 
 	// Build the http request
 	req, err := http.NewRequest("POST", m.Config.ApproveDeviceURL, bytes.NewBuffer(js))
+	if err != nil {
+		log.Fatal(err)
+	}
 	req.Header.Set("Content-Type", "application/json")
 
 	// Create an http client
@@ -104,8 +104,8 @@ func addBlockCommand(mdmtool *kingpin.Application) {
 	c := &BlockCommand{}
 	block := mdmtool.Command("block", "Block a mobile device").Action(c.run)
 	block.Flag("domain", "The G Suite domain to which the mobile device belongs to (required)").Required().Short('d').StringVar(&c.Domain)
-	block.Flag("imei", "Block using a mobile device IMEI number").Short('i').StringVar(&c.IMEI)
-	block.Flag("sn", "Block using a mobile device serial number").Short('s').StringVar(&c.SN)
+	block.Flag("imei", "Block a device using IMEI").Short('i').StringVar(&c.IMEI)
+	block.Flag("sn", "Block a device using Serial number").Short('s').StringVar(&c.SN)
 }
 
 // Setup the "block" command
@@ -137,9 +137,7 @@ func (bc *BlockCommand) run(c *kingpin.ParseContext) error {
 
 	// Check if approval was given
 	if approval == false {
-		fmt.Printf("Approval not given, exiting\n")
-		return nil
-
+		return errors.New("Approval not granted, no change made to device.")
 	}
 
 	// Approval has been given, lets setup the rest of the BLOCK request
@@ -152,11 +150,13 @@ func (bc *BlockCommand) run(c *kingpin.ParseContext) error {
 	js, err := json.Marshal(rb)
 	if err != nil {
 		log.Fatal(err)
-		return nil
 	}
 
 	// Build the http request
 	req, err := http.NewRequest("POST", m.Config.BlockDeviceURL, bytes.NewBuffer(js))
+	if err != nil {
+		log.Fatal(err)
+	}
 	req.Header.Set("Content-Type", "application/json")
 
 	// Create an http client
