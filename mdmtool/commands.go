@@ -188,8 +188,68 @@ func addDeleteCommand(mdmtool *kingpin.Application) {
 }
 
 // Setup the "delete" command
-func (ac *DeleteCommand) run(c *kingpin.ParseContext) error {
-	fmt.Printf("delete goes here\n")
+func (dc *DeleteCommand) run(c *kingpin.ParseContext) error {
+	// Check runtime options
+	if (dc.IMEI == "" && dc.SN == "") || (dc.IMEI != "" && dc.SN != "") {
+		return errors.New("with \"delete\" command you must specify either --imei or --sn")
+	}
+
+	// Runtime options are good, lets setup the request body
+	var approval bool
+	var rb gsuitemdm.ActionRequest
+
+	// How are we identifying the device to be deleted?
+	switch {
+
+	// IMEI
+	case dc.IMEI != "":
+		rb.IMEI = dc.IMEI
+		approval = checkUserConfirmation(fmt.Sprintf("WARNING: Are you sure you want to DELETE device IMEI=%s in domain %s?", dc.IMEI, dc.Domain))
+		break
+
+	// Serial Number
+	case dc.SN != "":
+		rb.SN = dc.SN
+		approval = checkUserConfirmation(fmt.Sprintf("WARNING: Are you sure you want to DELETE device SN=%s in domain %s?", dc.SN, dc.Domain))
+		break
+	}
+
+	// Check if approval was given
+	if approval == false {
+		return errors.New("Approval not granted, no change made to device.")
+	}
+
+	// Approval has been given, lets setup the rest of the DELETE request
+	rb.Action = "delete"
+	rb.Confirm = true
+	rb.Domain = dc.Domain
+	rb.Key = m.Config.APIKey
+
+	// Marshal the JSON
+	js, err := json.Marshal(rb)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Build the http request
+	req, err := http.NewRequest("POST", m.Config.DeleteDeviceURL, bytes.NewBuffer(js))
+	if err != nil {
+		log.Fatal(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	// Create an http client
+	client := &http.Client{}
+
+	// Send the request and get a nice response
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+
 	return nil
 }
 
