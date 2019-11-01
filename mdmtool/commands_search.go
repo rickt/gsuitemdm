@@ -173,7 +173,7 @@ func (sc *SearchCommand) run(c *kingpin.ParseContext) error {
 	// Okay, we have good data, sort it
 	sort.Sort(gsuitemdm.DatastoreMobileDevices{reply})
 
-	// Only print final line if verbose mode was NOT requested
+	// Only print header line if verbose mode was NOT requested
 	if sc.Verbose != true {
 		printHeaderLine()
 	}
