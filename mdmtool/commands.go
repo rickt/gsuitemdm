@@ -212,24 +212,6 @@ func (ac *DirectoryCommand) run(c *kingpin.ParseContext) error {
 }
 
 //
-// LIST DOMAINS
-//
-
-// Add the "listdomains" command
-func addListDomainsCommand(mdmtool *kingpin.Application) {
-	c := &ListDomainsCommand{}
-	ld := mdmtool.Command("listdomains", "List all configured G Suite domains").Action(c.run)
-	ld.Flag("verbose", "Enable verbose mode").Short('v').BoolVar(&c.Verbose)
-
-}
-
-// Setup the "listdomains" command
-func (ld *ListDomainsCommand) run(c *kingpin.ParseContext) error {
-	fmt.Printf("list domains goes here\n")
-	return nil
-}
-
-//
 // UPDATE DATASTORE
 //
 func addUpdateDatastoreCommand(mdmtool *kingpin.Application) {
