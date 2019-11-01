@@ -135,7 +135,7 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 	}
 
 	// Ensure domain for this device is accurate
-	nd.Domain = strings.Split(device.Email, "@")
+	nd.Domain = strings.Split(device.Email[0], "@")
 
 	// If existing data exists for this device in the Google Sheet, preserve it
 	for _, shv := range mdms.SheetData {
