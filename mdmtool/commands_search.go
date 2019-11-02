@@ -108,7 +108,7 @@ func (dr *DirectoryCommand) run(c *kingpin.ParseContext) error {
 	sort.Sort(gsuitemdm.AllDirectoryData{dirdata})
 
 	// Print a nice header line
-	printPhoneHeaderLine()
+	printDirectoryHeaderLine()
 
 	// Range through the directory entries and pretty-print then
 	for k := range dirdata {
@@ -116,7 +116,7 @@ func (dr *DirectoryCommand) run(c *kingpin.ParseContext) error {
 	}
 
 	// Print a nice footer line
-	printPhoneLine()
+	printDirectoryLine()
 
 	fmt.Printf("Search returned %d results.\n", len(dirdata))
 
