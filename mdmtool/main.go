@@ -26,7 +26,7 @@ func main() {
 	}
 
 	// Create an MDMTool app
-	mdmtool := kingpin.New(appname, "HMS G Suite MDM Tool")
+	mdmtool := kingpin.New(appname, "A G Suite MDM Tool")
 
 	// Add the commands
 	addApproveCommand(mdmtool)         // approve
