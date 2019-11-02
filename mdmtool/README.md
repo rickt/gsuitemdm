@@ -6,6 +6,52 @@ A command line utility enabling fast & easy MDM ops on [G Suite MDM-protected mo
 ## Requirements
 Requires all [G Suite MDM Cloud Functions](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions) to be setup, properly deployed and working. Change mdmtool configuration file to point to your own Cloud Function URLs and your own API key. 
 
+## Actions
+Actions perform the requested [Admin SDK administrative operation](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/action) on a mobile device. 
+
+All actions require `-i IMEI` or `-s SN` as well as `-d DOMAIN`, e.g.
+* `Approve` 
+	* `$ mdmtool approve -i IMEI -d DOMAIN`
+* `Block` 
+	* `$ mdmtool block -s SN -d DOMAIN`
+* `Delete` 
+	* `$ mdmtool delete -i IMEI -d DOMAIN`
+* `Wipe` 
+	* `$ mdmtool wipe -s SN -d DOMAIN`
+
+All actions require a valid (Y/N) confirmation response before being executed, e.g.
+```
+$ mdmtool wipe -i 123456789098765 -d foo.com
+WARNING: Are you sure you want to WIPE device IMEI=123456789098765 in domain foo.com? [y/n]: 
+```
+
+### Action Types
+| Action  | What it does                 | Details on what it does                                                              |
+|---------|------------------------------|--------------------------------------------------------------------------------------|
+| `Approve` | Approves a mobile device     | Allows a user to sign into G Suite on their mobile device                            |
+| `Block`   | Blocks a mobile device       | Remotely log out signed-in users, disable ability to login to mobile device          |
+| `Delete`  | Deletes a mobile device      | Removes a device from MDM; use only when replacing a mobile device with a new one    |
+| `Wipe`    | Remote-wipes a mobile device | Forcibly remove all data & content from a device; device returns to factory settings |
+
+See the [Mobiledevices: action Admin SDK docs](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/action) for full details on G Suite MDM administrative actions. 
+
+## Directory
+Search for user phone numbers.
+```
+$ mdmtool dir -n doe
+----------------------+----------------+------------------------------------------
+Name                  | Phone Number   | Email 
+----------------------+----------------+------------------------------------------
+Jane Doe              | (213) 555-1212 | jane@foo.com
+John Doe              | (323) 555-1212 | john@bar.com
+----------------------+----------------+------------------------------------------
+Search returned 2 results.
+```
+* Search for phone number using device owner name:
+	* `$ mdmtool dir -n john`
+* Search for phone number using device owner email address:
+	* `$ mdmtool dir -e john@bar.com`
+
 ## Search
 Search for mobile device data.
 
@@ -34,36 +80,6 @@ Search returned 2 results.
 * Search using device status:
 	* `$ mdmtool search -t BLOCKED`
 
-## Actions
-Actions perform the requested [Admin SDK administrative operation](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/action) on a mobile device. 
-
-All actions require `-i IMEI` or `-s SN` as well as `-d DOMAIN`, e.g.
-* `Approve` 
-	* `$ mdmtool approve -i IMEI -d DOMAIN`
-* `Block` 
-	* `$ mdmtool block -s SN -d DOMAIN`
-* `Delete` 
-	* `$ mdmtool delete -i IMEI -d DOMAIN`
-* `Wipe` 
-	* `$ mdmtool wipe -s SN -d DOMAIN`
-
-All actions require a valid (Y/N) confirmation response before being executed, e.g.
-```
-$ mdmtool wipe -i 123456789098765 -d foo.com
-WARNING: Are you sure you want to WIPE device IMEI=123456789098765 in domain foo.com? [y/n]: 
-```
-
-### Action Types
-| Action  | What it does                 | Details on what it does                                                              |
-|---------|------------------------------|--------------------------------------------------------------------------------------|
-| `Approve` | Approves a mobile device     | Allows a user to sign into G Suite on their mobile device                            |
-| `Block`   | Blocks a mobile device       | Remotely log out signed-in users, disable ability to login to mobile device          |
-| `Delete`  | Deletes a mobile device      | Removes a device from MDM; use only when replacing a mobile device with a new one    |
-| `Wipe`    | Remote-wipes a mobile device | Forcibly remove all data & content from a device; device returns to factory settings |
-
-
-See the [Mobiledevices: action Admin SDK docs](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/action) for full details on G Suite MDM administrative actions. 
-
 ## Updates
 * `Update Datastore`
 	* `$ mdmtool udpatedb`
@@ -75,22 +91,5 @@ See the [Mobiledevices: action Admin SDK docs](https://developers.google.com/adm
 |-------------------|----------------------------------------------------------------------------------------------|
 | `updatedatastore` | Gets fresh data from Admin SDK for all devices, merge w/Google Sheet data, save to Datastore |
 | `updatesheet`    | Updates Google Sheet with fresh data from Datastore                                          |
-
-## Directory
-Search for user phone numbers.
-```
-$ mdmtool dir -n doe
-----------------------+----------------+------------------------------------------
-Name                  | Phone Number   | Email 
-----------------------+----------------+------------------------------------------
-Jane Doe              | (213) 555-1212 | jane@foo.com
-John Doe              | (323) 555-1212 | john@bar.com
-----------------------+----------------+------------------------------------------
-Search returned 2 results.
-```
-* Search for phone number using device owner name:
-	* `$ mdmtool dir -n john`
-* Search for phone number using device owner email address:
-	* `$ mdmtool dir -e john@bar.com`
 
 
