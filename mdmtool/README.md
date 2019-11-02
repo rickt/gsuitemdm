@@ -33,7 +33,9 @@ Search returned 2 results.
 	* `$ mdmtool search -t BLOCKED`
 
 ## Actions
-Actions perform the requested Admin SDK administrative operation on a mobile device. All actions require `-i IMEI` or `-s SN` as well as `-d DOMAIN`, e.g.
+Actions perform the requested [Admin SDK administrative operation](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/action) on a mobile device. 
+
+All actions require `-i IMEI` or `-s SN` as well as `-d DOMAIN`, e.g.
 * `Approve` 
 	* `$ mdmtool approve -i IMEI -d DOMAIN`
 * `Block` 
@@ -43,11 +45,13 @@ Actions perform the requested Admin SDK administrative operation on a mobile dev
 * `Wipe` 
 	* `$ mdmtool wipe -s SN -d DOMAIN`
 
-All actions require a valid (Y/N) confirmation response before being executed. 
+All actions require a valid (Y/N) confirmation response before being executed, e.g.
 ```
 $ mdmtool wipe -i 123456789098765 -d foo.com
 WARNING: Are you sure you want to WIPE device IMEI=123456789098765 in domain foo.com? [y/n]: 
 ```
+
+### Action Types
 | Action  | What it does                 | Details on what it does                                                              |
 |---------|------------------------------|--------------------------------------------------------------------------------------|
 | Approve | Approves a mobile device     | Allows a user to sign into G Suite on their mobile device                            |
@@ -64,6 +68,7 @@ See the [Mobiledevices: action Admin SDK docs](https://developers.google.com/adm
 * `Update Google Sheet`
 	* `$ mdmtool updateshet`
 
+### Update Types
 | Update Type       | Details on what it does                                                                      |
 |-------------------|----------------------------------------------------------------------------------------------|
 | `updatedatastore` | Gets fresh data from Admin SDK for all devices, merge w/Google Sheet data, save to Datastore |
