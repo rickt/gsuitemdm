@@ -4,7 +4,7 @@
 A command line utility enabling fast & easy MDM ops on [G Suite MDM-protected mobile devices](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices).
 
 ## Requirements
-Requires all [G Suite MDM Cloud Functions](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions) to be setup, properly deployed and working. Change mdmtool configuration file to point to your own Cloud Function URLs and your own API key. 
+Requires all [G Suite MDM Cloud Functions](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions) to be setup, properly deployed and working. Change [mdmtool configuration file](https://github.com/rickt/gsuitemdm/blob/master/mdmtool/mdmtool_conf_example.json) to point to your own Cloud Function URLs and your own API key. 
 
 ## Actions
 Actions perform the requested [Admin SDK administrative operation](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/action) on a mobile device. 
@@ -89,7 +89,7 @@ Search returned 2 results.
 ### Update Types
 | Update Type       | Details on what it does                                                                      |
 |-------------------|----------------------------------------------------------------------------------------------|
-| `updatedatastore` | Gets fresh data from Admin SDK for all devices, merge w/Google Sheet data, save to Datastore |
+| `updatedatastore` | Updates Datastore with fresh data from Admin SDK for all devices, merge w/Google Sheet data, save to Datastore |
 | `updatesheet`    | Updates Google Sheet with fresh data from Datastore                                          |
 
 
