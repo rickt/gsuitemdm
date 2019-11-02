@@ -33,7 +33,7 @@ Search returned 2 results.
 	* `$ mdmtool search -t BLOCKED`
 
 ## Actions
-Actions perform the requested Admin SDK action on a mobile device. All actions require `-i IMEI` or `-s SN` as well as `-d DOMAIN`, e.g.
+Actions perform the requested Admin SDK administrative operation on a mobile device. All actions require `-i IMEI` or `-s SN` as well as `-d DOMAIN`, e.g.
 * `Approve` 
 	* `$ mdmtool approve -i IMEI -d DOMAIN`
 * `Block` 
@@ -48,6 +48,8 @@ All actions require a valid (Y/N) confirmation response before being executed.
 $ mdmtool wipe -i 123456789098765 -d foo.com
 WARNING: Are you sure you want to WIPE device IMEI=123456789098765 in domain foo.com? [y/n]: 
 ```
+
+See the [Admin SDK docs](https://developers.google.com/admin-sdk/directory/v1/guides/manage-mobile-devices) for full details on administrative actions. 
 
 ### Action Details
 | Action  | What it does                 | Details on what it does                                                              |
