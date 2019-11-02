@@ -1,7 +1,9 @@
 # mdmtool
-A command line utility enabling fast & easy MDM ops on [G Suite MDM-protected mobile devices](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices).
 
 ## Overview
+A command line utility enabling fast & easy MDM ops on [G Suite MDM-protected mobile devices](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices).
+
+## Requirements
 Requires all [G Suite MDM Cloud Functions](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions) to be setup, properly deployed and working. Change mdmtool configuration file to point to your own Cloud Function URLs and your own API key. 
 
 ## Search
