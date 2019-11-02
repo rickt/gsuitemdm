@@ -54,10 +54,10 @@ WARNING: Are you sure you want to WIPE device IMEI=123456789098765 in domain foo
 ### Action Types
 | Action  | What it does                 | Details on what it does                                                              |
 |---------|------------------------------|--------------------------------------------------------------------------------------|
-| ` Approve` | Approves a mobile device     | Allows a user to sign into G Suite on their mobile device                            |
-| ` Block`   | Blocks a mobile device       | Remotely log out signed-in users, disable ability to login to mobile device          |
-| ` Delete `  | Deletes a mobile device      | Removes a device from MDM; use only when replacing a mobile device with a new one    |
-| ` Wipe `    | Remote-wipes a mobile device | Forcibly remove all data & content from a device; device returns to factory settings |
+| `Approve` | Approves a mobile device     | Allows a user to sign into G Suite on their mobile device                            |
+| `Block`   | Blocks a mobile device       | Remotely log out signed-in users, disable ability to login to mobile device          |
+| `Delete`  | Deletes a mobile device      | Removes a device from MDM; use only when replacing a mobile device with a new one    |
+| `Wipe`    | Remote-wipes a mobile device | Forcibly remove all data & content from a device; device returns to factory settings |
 
 
 See the [Mobiledevices: action Admin SDK docs](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/action) for full details on G Suite MDM administrative actions. 
@@ -71,8 +71,8 @@ See the [Mobiledevices: action Admin SDK docs](https://developers.google.com/adm
 ### Update Types
 | Update Type       | Details on what it does                                                                      |
 |-------------------|----------------------------------------------------------------------------------------------|
-| ` updatedatastore ` | Gets fresh data from Admin SDK for all devices, merge w/Google Sheet data, save to Datastore |
-| ` updatesheet `    | Updates Google Sheet with fresh data from Datastore                                          |
+| `updatedatastore` | Gets fresh data from Admin SDK for all devices, merge w/Google Sheet data, save to Datastore |
+| `updatesheet`    | Updates Google Sheet with fresh data from Datastore                                          |
 
 ## Directory
 Search for user phone numbers.
