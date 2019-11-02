@@ -1,8 +1,8 @@
 # mdmtool
-A command line utility enabling fast & easy MDM ops on G Suite MDM-protected mobile devices. 
+A command line utility enabling fast & easy MDM ops on [G Suite MDM-protected mobile devices](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices).
 
 ## Overview
-Requires all G Suite MDM Cloud Functions to be setup and working. Change mdmtool configuration file to point to your own Cloud Function URLs and your own API key. 
+Requires all [G Suite MDM Cloud Functions](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions) to be setup and working. Change mdmtool configuration file to point to your own Cloud Function URLs and your own API key. 
 
 ## Search
 Search for mobile device data.
@@ -49,7 +49,7 @@ $ mdmtool wipe -i 123456789098765 -d foo.com
 WARNING: Are you sure you want to WIPE device IMEI=123456789098765 in domain foo.com? [y/n]: 
 ```
 
-See the [Admin SDK docs](https://developers.google.com/admin-sdk/directory/v1/guides/manage-mobile-devices) for full details on administrative actions. 
+See the [Mobiledevices: action Admin SDK docs](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/action) for full details on G Suite MDM administrative actions. 
 
 ### Action Details
 | Action  | What it does                 | Details on what it does                                                              |
