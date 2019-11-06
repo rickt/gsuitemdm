@@ -6,7 +6,6 @@ package main
 
 import (
 	"bufio"
-	"encoding/json"
 	"fmt"
 	"github.com/dustin/go-humanize"
 	"github.com/rickt/gsuitemdm"
@@ -40,22 +39,20 @@ func checkUserConfirmation(s string) bool {
 }
 
 // Load MDMTool configuration
-func loadMDMToolConfig(file string) (MDMToolConfig, error) {
-	var c MDMToolConfig
-
-	// Open the MDMTool configuration file
-	cf, err := os.Open(file)
-	defer cf.Close()
-	if err != nil {
-		return c, err
+func loadMDMToolConfig() (MDMToolConfig, error) {
+	c := MDMToolConfig{
+		APIKey:             apikey,
+		ApproveDeviceURL:   approvedeviceurl,
+		BlockDeviceURL:     blockdeviceurl,
+		DeleteDeviceURL:    deletedeviceurl,
+		DirectoryURL:       directoryurl,
+		SearchDatastoreURL: searchdatastoreurl,
+		UpdateDatastoreURL: updatedatastoreurl,
+		UpdateSheetURL:     updatesheeturl,
+		WipeDeviceURL:      wipedeviceurl,
 	}
 
-	// Decode the JSON
-	jp := json.NewDecoder(cf)
-	jp.Decode(&c)
-
 	return c, nil
-
 }
 
 // Print out mobile device data (Datastore edition)

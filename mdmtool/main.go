@@ -10,17 +10,28 @@ import (
 	"os"
 )
 
+const (
+	apikey             string = "XXXX"
+	appname            string = "mdmtool"
+	approvedeviceurl   string = "https://us-central1-PROJECTID.cloudfunctions.net/ApproveDevice"
+	blockdeviceurl     string = "https://us-central1-PROJECTID.cloudfunctions.net/BlockDevice"
+	deletedeviceurl    string = "https://us-central1-PROJECTID.cloudfunctions.net/DeleteDevice"
+	directoryurl       string = "https://us-central1-PROJECTID.cloudfunctions.net/Directory"
+	searchdatastoreurl string = "https://us-central1-PROJECTID.cloudfunctions.net/SearchDatastore"
+	updatedatastoreurl string = "https://us-central1-PROJECTID.cloudfunctions.net/UpdateDatastore"
+	updatesheeturl     string = "https://us-central1-PROJECTID.cloudfunctions.net/UpdateSheet"
+	wipedeviceurl      string = "https://us-central1-PROJECTID.cloudfunctions.net/WipeDevice"
+)
+
 var (
-	appname    string = "mdmtool"
-	configfile string = "mdmtool_conf.json"
-	m                 = new(MDMTool)
+	m = new(MDMTool)
 )
 
 func main() {
 	var err error
 
 	// Load MDMTool config
-	m.Config, err = loadMDMToolConfig(configfile)
+	m.Config, err = loadMDMToolConfig()
 	if err != nil {
 		log.Fatal("Error loading MDMTool configuration")
 	}
