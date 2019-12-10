@@ -42,4 +42,5 @@ $ curl -X POST -d '{"key": "0123456789", "qtype": "email", "q": "johnd@foo.com"}
 
 ## TODO ##
 * Add "all" query type to return all phone numbers
+* Add option to return Slack-formatted data
 
