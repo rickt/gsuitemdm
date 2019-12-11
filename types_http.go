@@ -29,11 +29,12 @@ type AllDirectoryData struct {
 
 // Search
 type SearchRequest struct {
-	Debug  bool   `json:"debug"`
-	Domain string `json:"domain"`
-	Key    string `json:"key"`
-	QType  string `json:"qtype"`
-	Q      string `json:"q"`
+	Debug        bool   `json:"debug"`
+	Domain       string `json:"domain"`
+	ReturnFormat string `json:"format"`
+	Key          string `json:"key"`
+	QType        string `json:"qtype"`
+	Q            string `json:"q"`
 }
 
 // Update
