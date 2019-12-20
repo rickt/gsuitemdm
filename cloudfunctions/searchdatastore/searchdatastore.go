@@ -142,6 +142,8 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(js)
+		// Write a log entry
+		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: " + strconv.Itoa(len(devices)) + " results returned"})
 		return
 	}
 
@@ -212,13 +214,13 @@ func SearchDatastore(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(js)
 		// Write a log entry
-		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "searchdatastore Success: " + strconv.Itoa(len(searchdata)) + " results returned"})
+		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: " + strconv.Itoa(len(searchdata)) + " results returned"})
 		return
 	} else {
 		// No data to return
 		http.Error(w, "", 204)
 		// Write a log entry
-		sl.Log(logging.Entry{Severity: logging.Notice, Payload: "searchdatastore Success: 0 results returned"})
+		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: 0 results returned"})
 		return
 	}
 }

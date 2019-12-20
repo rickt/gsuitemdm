@@ -171,8 +171,8 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Finished
-	sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success"})
+	// Finished, write a log entry
+	sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: IMEI=" + device.IMEI})
 	fmt.Fprintf(w, "%s Success\n", appname)
 
 	return
