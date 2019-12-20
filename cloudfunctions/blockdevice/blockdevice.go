@@ -182,7 +182,7 @@ func BlockDevice(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Finished, write a log entry
-	sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: IMEI=" + device.IMEI})
+	sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: SN=" + device.SN + " Owner=" + device.Email})
 	fmt.Fprintf(w, "%s Success\n", appname)
 
 	return
