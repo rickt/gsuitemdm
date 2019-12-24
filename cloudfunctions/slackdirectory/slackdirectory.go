@@ -33,6 +33,7 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Not null, lets decode the message body
+	log.Printf("request=%v\n", r)
 	err = json.NewDecoder(r.Body).Decode(&slackrequest)
 	if err != nil {
 		log.Printf("Error decoding Slack JSON message body: %s", err)
