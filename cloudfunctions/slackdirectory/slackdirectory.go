@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -113,6 +114,9 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 
 	// Do we have any data to return? If so, return it
 	if len(dirdata) > 0 {
+		// Sort our data first
+		sort.Sort(gsuitemdm.AllDirectoryData{dirdata})
+
 		// We have valid search data to return
 		var s string
 		s = fmt.Sprintf("Users matching \"%s\": (%d)\n", text, len(dirdata))
