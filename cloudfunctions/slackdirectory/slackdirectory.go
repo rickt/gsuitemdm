@@ -129,6 +129,7 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 		var s string
 		s = fmt.Sprintf("I'm sorry, but I was not able to find a user or group using your search term \"%s\"! :confused:\n", text)
 		w.Write([]byte(s))
+		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: 0 results returned for user=@" + user + ", q=" + text})
 		return
 	}
 }
