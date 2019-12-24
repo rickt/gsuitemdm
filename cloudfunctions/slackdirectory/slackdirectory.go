@@ -19,8 +19,8 @@ var (
 	slacktoken string = os.Getenv("SLACKTOKEN")
 )
 
-// Search Google Datastore for a mobile device owner and return the associated phone number
-func Directory(w http.ResponseWriter, r *http.Request) {
+// Search Google Datastore for a mobile device owner and return the associated phone number to Slack
+func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var devices []*gsuitemdm.DatastoreMobileDevice
 	var l *logging.Client
@@ -92,9 +92,8 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 	// Search for directory entries using the search type specified
 	var dirdata []gsuitemdm.DirectoryData
 
-	// Range through the list of devices and perform the correct type of search
+	// Range through the list of devices and search for a name using the text sent in the request from Slack
 	for k := range devices {
-
 		if strings.Contains(strings.ToUpper(devices[k].Name), strings.ToUpper(slackrequest.Text)) {
 			// Only return data if PhoneNumber exists
 			if devices[k].PhoneNumber != "" {
@@ -118,6 +117,7 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
+		// TODO need to fancy-format for Slack
 		w.Write(js)
 		return
 	} else {
