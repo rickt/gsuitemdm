@@ -38,18 +38,21 @@ type SearchRequest struct {
 	SlackToken   string `json:"slacktoken"`
 }
 
-// Slack Search Request
+// Slack Search Request (nicked from https://github.com/nlopes/slack)
 type SlackRequest struct {
-	Token        string `json:"token"`
-	Team_Id      string `json:"team_id"`
-	Team_Domain  string `json:"team_domain"`
-	ChannelId    string `json:"channel_id"`
-	ChannellName string `json:"channel_name"`
-	UserId       string `json:"user_id"`
-	UserName     string `json:"user_name"`
-	Command      string `json:"command"`
-	Text         string `json:"text"`
-	ResponseURL  string `json:"response_url"`
+	Token          string `json:"token"`
+	TeamID         string `json:"team_id"`
+	TeamDomain     string `json:"team_domain"`
+	EnterpriseID   string `json:"enterprise_id,omitempty"`
+	EnterpriseName string `json:"enterprise_name,omitempty"`
+	ChannelID      string `json:"channel_id"`
+	ChannelName    string `json:"channel_name"`
+	UserID         string `json:"user_id"`
+	UserName       string `json:"user_name"`
+	Command        string `json:"command"`
+	Text           string `json:"text"`
+	ResponseURL    string `json:"response_url"`
+	TriggerID      string `json:"trigger_id"`
 }
 
 // Update
