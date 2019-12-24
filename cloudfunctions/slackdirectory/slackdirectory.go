@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -24,7 +25,7 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var devices []*gsuitemdm.DatastoreMobileDevice
 	var l *logging.Client
-	var slackrequest gsuitemdm.SlackRequest
+	var text, token, user string
 
 	// Null message body?
 	if r.Body == nil {
@@ -32,17 +33,21 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Not null, lets decode the message body
-	log.Printf("request=%v\n", r)
-	err = json.NewDecoder(r.Body).Decode(&slackrequest)
+	// Not null, lets decode the x-www-form-urlencoded message body
+	err = r.ParseForm()
 	if err != nil {
-		log.Printf("Error decoding Slack JSON message body: %s", err)
-		http.Error(w, "Error decoding Slack JSON message body", 400)
+		log.Printf("Error decoding Slack x-www-form-urlencoded message body: %s", err)
+		http.Error(w, "Error decoding Slack x-www-form-urlencoded message body", 400)
 		return
 	}
 
+	// Extract the pieces of the request we care about
+	text = r.Form.Get("text")
+	token = r.Form.Get("token")
+	user = r.Form.Get("user_name")
+
 	// Check the key
-	if slackrequest.Token != slacktoken {
+	if token != slacktoken {
 		log.Printf("Error: incorrect token sent with request")
 		http.Error(w, "Not authorized, incorrect token", 401)
 		return
@@ -66,7 +71,7 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 	sl := l.Logger(appname)
 
 	// Make sure query is not zero length
-	if len(slackrequest.Text) < 1 {
+	if len(text) < 1 {
 		http.Error(w, "Query search data cannot be zero length", 400)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Query search data cannot be zero length"})
 		return
@@ -95,7 +100,7 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 
 	// Range through the list of devices and search for a name using the text sent in the request from Slack
 	for k := range devices {
-		if strings.Contains(strings.ToUpper(devices[k].Name), strings.ToUpper(slackrequest.Text)) {
+		if strings.Contains(strings.ToUpper(devices[k].Name), strings.ToUpper(text)) {
 			// Only return data if PhoneNumber exists
 			if devices[k].PhoneNumber != "" {
 				var p gsuitemdm.DirectoryData
@@ -117,9 +122,11 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 			sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error marshaling JSON: " + err.Error()})
 			return
 		}
-		w.Header().Set("Content-Type", "application/json")
+		// w.Header().Set("Content-Type", "application/json")
 		// TODO need to fancy-format for Slack
 		w.Write(js)
+		// Write a log entry
+		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: " + strconv.Itoa(len(dirdata)) + " results returned for user @" + user})
 		return
 	} else {
 		// No data to return
