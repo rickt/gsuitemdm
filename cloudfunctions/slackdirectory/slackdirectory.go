@@ -115,10 +115,14 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 	if len(dirdata) > 0 {
 		// We have valid search data to return
 		var s string
-		s = fmt.Sprintf("Users matching \"%s\": (%d) dirdata=%v devices=%v\n", text, len(dirdata), dirdata, devices)
+		s = fmt.Sprintf("Users matching \"%s\": (%d)\n", text, len(dirdata))
+
+		// range
+		for n := range dirdata {
+			s = s + fmt.Sprintf("%s: :dir_phone: %s :dir_email: %s\n", dirdata[n].Name, dirdata[n].PhoneNumber, dirdata[n].Email)
+		}
 
 		// Write the data
-		// TODO need to fancy-format for Slack
 		w.Write([]byte(s))
 
 		// Write a log entry
