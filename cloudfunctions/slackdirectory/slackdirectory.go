@@ -109,6 +109,7 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 				dirdata = append(dirdata, p)
 				break
 			}
+			break
 		}
 	}
 
