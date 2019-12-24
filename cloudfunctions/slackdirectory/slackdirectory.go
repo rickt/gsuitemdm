@@ -116,7 +116,7 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 	if len(dirdata) > 0 {
 		// We have valid search data to return
 		var s string
-		s = fmt.Sprintf("Users matching \"%s\": (%d)\n", text, len(dirdata))
+		s = fmt.Sprintf("Users matching \"%s\": (%d) dirdata=%v\n", text, len(dirdata), dirdata)
 
 		// w.Header().Set("Content-Type", "application/json")
 		// TODO need to fancy-format for Slack
