@@ -1,4 +1,4 @@
-package directory
+package slackdirectory
 
 import (
 	"cloud.google.com/go/datastore"
