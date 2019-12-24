@@ -117,12 +117,12 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 		var s string
 		s = fmt.Sprintf("Users matching \"%s\": (%d)\n", text, len(dirdata))
 		for n := range dirdata {
-			s = s + fmt.Sprintf("%s: :dir_phone: %s :dir_email: %s\n", dirdata[n].Name, dirdata[n].PhoneNumber, dirdata[n].Email)
+			s = s + fmt.Sprintf("%s: :dir_phone: %s :dir_email: `%s`\n", dirdata[n].Name, dirdata[n].PhoneNumber, dirdata[n].Email)
 		}
 		// Write the data
 		w.Write([]byte(s))
 		// Write a log entry
-		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: " + strconv.Itoa(len(dirdata)) + " results returned for user @" + user})
+		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: " + strconv.Itoa(len(dirdata)) + " results returned for user=@" + user + ", q=" + text})
 		return
 	} else {
 		// No data to return, say sorry
