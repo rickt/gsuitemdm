@@ -100,15 +100,11 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 	// Range through the list of devices and search for a name using the text sent in the request from Slack
 	for k := range devices {
 		if strings.Contains(strings.ToUpper(devices[k].Name), strings.ToUpper(text)) {
-			// Only return data if PhoneNumber exists
-			if devices[k].PhoneNumber != "" {
-				var p gsuitemdm.DirectoryData
-				p.Name = devices[k].Name
-				p.Email = devices[k].Email
-				p.PhoneNumber = "(" + devices[k].PhoneNumber[0:3] + ") " + devices[k].PhoneNumber[3:6] + "-" + devices[k].PhoneNumber[6:10]
-				dirdata = append(dirdata, p)
-				break
-			}
+			var p gsuitemdm.DirectoryData
+			p.Name = devices[k].Name
+			p.Email = devices[k].Email
+			p.PhoneNumber = "(" + devices[k].PhoneNumber[0:3] + ") " + devices[k].PhoneNumber[3:6] + "-" + devices[k].PhoneNumber[6:10]
+			dirdata = append(dirdata, p)
 		}
 	}
 
