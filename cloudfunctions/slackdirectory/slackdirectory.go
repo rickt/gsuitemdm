@@ -4,7 +4,6 @@ import (
 	"cloud.google.com/go/datastore"
 	"cloud.google.com/go/logging"
 	"context"
-	"encoding/json"
 	"fmt"
 	"github.com/rickt/gsuitemdm"
 	"log"
@@ -116,15 +115,12 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 	// Do we have any data to return? If so, marshal into JSON and return it
 	if len(dirdata) > 0 {
 		// We have valid search data to return
-		js, err := json.MarshalIndent(dirdata, "", "   ")
-		if err != nil {
-			http.Error(w, fmt.Sprintf("Error marshaling JSON: %s", err), 500)
-			sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error marshaling JSON: " + err.Error()})
-			return
-		}
+		var s string
+		s = fmt.Sprintf("Users matching \"%s\": (%d)\n", text, len(dirdata))
+
 		// w.Header().Set("Content-Type", "application/json")
 		// TODO need to fancy-format for Slack
-		w.Write(js)
+		w.Write([]byte(s))
 		// Write a log entry
 		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: " + strconv.Itoa(len(dirdata)) + " results returned for user @" + user})
 		return
