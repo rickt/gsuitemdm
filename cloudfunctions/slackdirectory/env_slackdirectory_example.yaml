@@ -1,3 +1,3 @@
 APPNAME: slackdirectory
-CONFIGFILE: cloudfunction_conf.json
+CONFIGFILE: slackdirectory_conf.json
 KEY: 0123456789

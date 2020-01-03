@@ -1,3 +1,3 @@
 APPNAME: deletedevice
-CONFIGFILE: cloudfunction_conf.json
+CONFIGFILE: deletedevice_conf.json
 KEY: 0123456789

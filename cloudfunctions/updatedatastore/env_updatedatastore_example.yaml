@@ -1,3 +1,3 @@
 APPNAME: updatedatastore
-CONFIGFILE: cloudfunction_conf.json
+CONFIGFILE: updatedatastore_conf.json
 KEY: 0123456789
