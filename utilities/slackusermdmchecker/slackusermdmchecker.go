@@ -25,7 +25,6 @@ var (
 	mdmstatusurl string = os.Getenv("MDMSTATUSURL")
 	page         int    = 1
 	pages        int    = 5
-	recipients   string = os.Getenv("RECIPIENTS")
 )
 
 // Sort funcs for users
