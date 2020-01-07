@@ -39,31 +39,34 @@ func (s Users) Swap(i, j int) {
 	s[i], s[j] = s[j], s[i]
 }
 
-// Build email
-func buildtextemail(cu, ncu Users) []byte {
+// Build HTML email
+func buildhtmlemail(cu, ncu Users) []byte {
 	// Basic setup
 	from := mail.NewEmail(os.Getenv("FROM_NAME"), os.Getenv("FROM_ADDR"))
 	to := mail.NewEmail(os.Getenv("RECIPIENTS_NAME"), os.Getenv("RECIPIENTS_ADDR"))
 	subject := "Company MDM Compliance Report"
+	replyto := mail.NewEmail(os.Getenv("REPLYTO_NAME"), os.Getenv("REPLYTO_ADDR"))
 
 	// Create the plaintext email body
 	var body string
 
 	// Start with non-compliant users
-	body = fmt.Sprintf("Active GIGANIK Slack users using a personal phone or company phone with no MDM (%d):\n", len(ncu))
+	body = fmt.Sprintf("<p><strong>Active GIGANIK Slack staff using a personal phone or company phone with no MDM to login to Slack (%d):</strong><br>", len(ncu))
 	for _, x := range ncu {
-		body = body + fmt.Sprintf("   @%s (\"%s\" <%s>)\n", x.SlackName, x.SlackUserName, x.SlackEmail)
+		body = body + fmt.Sprintf("&nbsp;&nbsp;&nbsp;%s (<a href=\"%s=%s\">@%s</a> &lt;%s&gt;)<br>", x.SlackUserName, os.Getenv("SLACKURL"), x.SlackUserId, x.SlackName, x.SlackEmail)
 	}
-	body = body + "\n"
+	body = body + "</p>"
 	// Now the users with MDM
-	body = body + fmt.Sprintf("\nActive GIGANIK Slack users using a company phone with MDM (%d):\n", len(cu))
+	body = body + fmt.Sprintf("<p><strong>Active GIGANIK Slack staff using an MDM-protected company phone to login to Slack (%d):\n</strong><br>", len(cu))
 	for _, x := range cu {
-		body = body + fmt.Sprintf("   @%s (\"%s\" <%s>)\n", x.SlackName, x.SlackUserName, x.SlackEmail)
+		body = body + fmt.Sprintf("&nbsp;&nbsp;&nbsp;%s (<a href=\"%s=%s\">@%s</a> &lt;%s&gt;)<br>", x.SlackUserName, os.Getenv("SLACKURL"), x.SlackUserId, x.SlackName, x.SlackEmail)
 	}
+	body = body + "</p>"
 
 	// Build the message
-	content := mail.NewContent("text/plain", body)
+	content := mail.NewContent("text/html", body)
 	m := mail.NewV3MailInit(from, subject, to, content)
+	m.SetReplyTo(replyto)
 
 	return mail.GetRequestBody(m)
 }
@@ -163,8 +166,7 @@ func sendemail(cu, ncu Users) {
 	req.Method = "POST"
 
 	// Create the email body
-	// TODO: add HTML email
-	var Body []byte = buildtextemail(cu, ncu)
+	var Body []byte = buildhtmlemail(cu, ncu)
 	req.Body = Body
 
 	// Make the request to the Sendgrid API
