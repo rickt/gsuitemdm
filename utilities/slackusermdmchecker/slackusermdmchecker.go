@@ -1,4 +1,4 @@
-package main
+package slackusermdmchecker
 
 import (
 	"bytes"
@@ -179,7 +179,8 @@ func sendemail(cu, ncu Users) {
 	}
 }
 
-func main() {
+// Generate a list of naughty and nice users
+func SlackUserMDMChecker(w http.ResponseWriter, r *http.Request) {
 	// User map
 	var um map[string]*UserInfo
 	um = make(map[string]*UserInfo)
