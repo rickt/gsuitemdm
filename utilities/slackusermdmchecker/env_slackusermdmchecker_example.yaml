@@ -1,0 +1,12 @@
+APPNAME: slackusermdmchecker
+FROM_ADDR: mdm-compliance-reporter@yourdomain.com
+FROM_NAME: "Company MDM Compliance Reporter"
+GSUITEMDMTOKEN: YOURGSUITEMDMAPITOKENGOESHERE
+MDMSTATUSURL: "https://us-central1-YOURPROJECTID.cloudfunctions.net/SearchDatastore"
+RECIPIENTS_ADDR: mdm-compliance-list@yourdomain.com
+RECIPIENTS_NAME: "MDM Compliance Report List"
+REPLYTO_ADDR: no-reply@yourdomain.com
+REPLYTO_NAME: "MDM Compliance Reporter (Do Not Reply)"
+SENDGRID_API_KEY: YOURSENDGRIDAPIKEYGOESHERE
+SLACKTOKEN: YOURSLACKTOKENGOESHERE
+SLACKURL: "https://YOURSLACKDOMAINGOESHERE.slack.com/app_redirect?channel"
