@@ -1,11 +1,15 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/sendgrid/sendgrid-go"
+	"github.com/sendgrid/sendgrid-go/helpers/mail"
 	"log"
 	"net/http"
 	"os"
+	"sort"
 	"strings"
 )
 
@@ -18,44 +22,88 @@ const (
 
 // Globals
 var (
-	page  int = 1
-	pages int = 5
+	mdmstatusurl string = os.Getenv("MDMSTATUSURL")
+	page         int    = 1
+	pages        int    = 5
+	recipients   string = os.Getenv("RECIPIENTS")
 )
+
+// Sort funcs for users
+func (s Users) Len() int {
+	return len(s)
+}
+func (s Users) Less(i, j int) bool {
+	return s[i].SlackName < s[j].SlackName
+}
+func (s Users) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+// Build email
+func buildtextemail(cu, ncu Users) []byte {
+	// Basic setup
+	from := mail.NewEmail(os.Getenv("FROM_NAME"), os.Getenv("FROM_ADDR"))
+	to := mail.NewEmail(os.Getenv("RECIPIENTS_NAME"), os.Getenv("RECIPIENTS_ADDR"))
+	subject := "Company MDM Compliance Report"
+
+	// Create the plaintext email body
+	var body string
+
+	// Start with non-compliant users
+	body = fmt.Sprintf("Active GIGANIK Slack users using a personal phone or company phone with no MDM (%d):\n", len(ncu))
+	for _, x := range ncu {
+		body = body + fmt.Sprintf("   @%s (\"%s\" <%s>)\n", x.SlackName, x.SlackUserName, x.SlackEmail)
+	}
+	body = body + "\n"
+	// Now the users with MDM
+	body = body + fmt.Sprintf("\nActive GIGANIK Slack users using a company phone with MDM (%d):\n", len(cu))
+	for _, x := range cu {
+		body = body + fmt.Sprintf("   @%s (\"%s\" <%s>)\n", x.SlackName, x.SlackUserName, x.SlackEmail)
+	}
+
+	// Build the message
+	content := mail.NewContent("text/plain", body)
+	m := mail.NewV3MailInit(from, subject, to, content)
+
+	return mail.GetRequestBody(m)
+}
 
 // Helper func to do a case-insensitive search
 func caseinsensitivecontains(a, b string) bool {
 	return strings.Contains(strings.ToUpper(a), strings.ToUpper(b))
 }
 
-// Get user info from the Slack API
-func getuserinfo(userid string) *SlackUser {
-	var su *SlackUser
+// Get MDM status
+func getmdmstatus(email string) bool {
+	var mr MDMRequest
 
-	// Build the url
-	uu := fmt.Sprintf("%s?token=%s&user=%s", slackuserinfourl, os.Getenv("SLACKTOKEN"), userid)
+	mr.Key = os.Getenv("GSUITEMDMTOKEN")
+	mr.QType = "email"
+	mr.Q = email
+
+	req, err := json.Marshal(mr)
+	if err != nil {
+		log.Fatal("error: %s", err)
+	}
+
 	// Create the request
-	req, err := http.NewRequest("GET", uu, nil)
+	resp, err := http.Post(mdmstatusurl, "application/json", bytes.NewBuffer(req))
 	if err != nil {
 		log.Fatal("error: %s", err)
 	}
-	// Create the http client
-	client := &http.Client{}
-	// Get the response
-	response, err := client.Do(req)
-	if err != nil {
-		log.Fatal("error: %s", err)
-	}
-	defer response.Body.Close()
-	// Decode the JSON response into our user var
-	if err := json.NewDecoder(response.Body).Decode(&su); err != nil {
-		log.Println(err)
-	}
+	defer resp.Body.Close()
 
-	return su
+	if resp.StatusCode == 200 {
+		// User has MDM
+		return true
+	} else {
+		// User does not have MDM
+		return false
+	}
 }
 
 // Get Slack access logs
-func getaccesslogs(page int) *SlackAccessLog {
+func getslackaccesslogs(page int) *SlackAccessLog {
 	var sal *SlackAccessLog
 
 	// Build the url
@@ -81,6 +129,54 @@ func getaccesslogs(page int) *SlackAccessLog {
 	return sal
 }
 
+// Get user info from the Slack API
+func getslackuserinfo(userid string) *SlackUser {
+	var su *SlackUser
+
+	// Build the url
+	uu := fmt.Sprintf("%s?token=%s&user=%s", slackuserinfourl, os.Getenv("SLACKTOKEN"), userid)
+	// Create the request
+	req, err := http.NewRequest("GET", uu, nil)
+	if err != nil {
+		log.Fatal("error: %s", err)
+	}
+	// Create the http client
+	client := &http.Client{}
+	// Get the response
+	response, err := client.Do(req)
+	if err != nil {
+		log.Fatal("error: %s", err)
+	}
+	defer response.Body.Close()
+	// Decode the JSON response into our user var
+	if err := json.NewDecoder(response.Body).Decode(&su); err != nil {
+		log.Println(err)
+	}
+
+	return su
+}
+
+// Send email
+func sendemail(cu, ncu Users) {
+	// Create the Sendgrid API request
+	req := sendgrid.GetRequest(os.Getenv("SENDGRID_API_KEY"), "/v3/mail/send", "https://api.sendgrid.com")
+	req.Method = "POST"
+
+	// Create the email body
+	// TODO: add HTML email
+	var Body []byte = buildtextemail(cu, ncu)
+	req.Body = Body
+
+	// Make the request to the Sendgrid API
+	resp, err := sendgrid.API(req)
+	if err != nil {
+		log.Fatal("error: %s", err)
+	}
+	if resp.StatusCode == 202 {
+		fmt.Printf("\nEmail sent.\n\n")
+	}
+}
+
 func main() {
 	// User map
 	var um map[string]*UserInfo
@@ -90,7 +186,7 @@ func main() {
 	for page := 1; page < pages; page++ {
 		// Get this page
 		var sal *SlackAccessLog
-		sal = getaccesslogs(page)
+		sal = getslackaccesslogs(page)
 		// Range through the log entries in this page of the response
 		for _, le := range sal.Logins {
 			// We only care about mobile users
@@ -99,9 +195,10 @@ func main() {
 				if _, ok := um[le.UserID]; !ok {
 					// It doesn't exist, get more info about the user from the Slack API
 					var su *SlackUser
-					su = getuserinfo(le.UserID)
+					su = getslackuserinfo(le.UserID)
 					// Add this user to the user map
 					um[le.UserID] = &UserInfo{
+						GSuiteMDM:     getmdmstatus(su.User.Profile.Email),
 						SlackEmail:    su.User.Profile.Email,
 						SlackName:     le.Username,
 						SlackUserId:   le.UserID,
@@ -112,12 +209,40 @@ func main() {
 		}
 	}
 
-	// Show us the users who do not have MDM enabled
+	// Range through our map and find MDM-compliant/non-compliant users
+	var cu, ncu Users
 	for _, v := range um {
-		if v.GSuiteMDM == false {
-			fmt.Printf("%10.10s | %16.16s | %-17.17s | %-40.40s | %v\n", v.SlackUserId, v.SlackName, v.SlackUserName, v.SlackEmail, v.GSuiteMDM)
+		switch {
+		case v.GSuiteMDM == true:
+			// User has MDM
+			cu = append(cu, v)
+			break
+
+		case v.GSuiteMDM == false:
+			// User does not have MDM
+			ncu = append(ncu, v)
+			break
 		}
 	}
+
+	// Sort the data
+	sort.Sort(cu)
+	sort.Sort(ncu)
+
+	// Print out a report
+	fmt.Printf("GIGANIK Slack users with no MDM (%d):\n", len(ncu))
+	for _, x := range ncu {
+		fmt.Printf("\t@%s (\"%s\" <%s>)\n", x.SlackName, x.SlackUserName, x.SlackEmail)
+	}
+	fmt.Printf("\n")
+	fmt.Printf("GIGANIK Slack users with MDM (%d):\n", len(cu))
+	for _, x := range cu {
+		fmt.Printf("\t@%s (\"%s\" <%s>)\n", x.SlackName, x.SlackUserName, x.SlackEmail)
+	}
+
+	// Send email
+	sendemail(cu, ncu)
+
 }
 
 // EOF

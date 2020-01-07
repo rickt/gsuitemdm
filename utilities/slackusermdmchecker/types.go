@@ -6,7 +6,9 @@ import ()
 // Internal storage types
 //
 
-// User info type
+// User info types
+type Users []*UserInfo
+
 type UserInfo struct {
 	GSuiteName     string
 	GSuiteEmail    string
@@ -16,6 +18,13 @@ type UserInfo struct {
 	SlackUserAgent string
 	SlackUserId    string
 	SlackUserName  string
+}
+
+// MDM request type
+type MDMRequest struct {
+	Key   string `json:"key"`
+	QType string `json:"qtype"`
+	Q     string `json:"q"`
 }
 
 //
