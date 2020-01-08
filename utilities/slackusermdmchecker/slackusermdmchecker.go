@@ -11,10 +11,12 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"time"
 )
 
 // Constants
 const (
+	datelayout                  = "January 2, 2006"
 	slackaccesslogsurl   string = "https://slack.com/api/team.accessLogs"
 	slackuserinfourl     string = "https://slack.com/api/users.info"
 	slackmobileuseragent string = "com.tinyspeck.chatlyio"
@@ -22,7 +24,7 @@ const (
 
 // Globals
 var (
-	mdmstatusurl string = os.Getenv("MDMSTATUSURL")
+	mdmstatusurl string = os.Getenv("GSUITEMDMURL") + "/SearchDatastore"
 	page         int    = 1
 	pages        int    = 5
 )
@@ -43,23 +45,26 @@ func buildhtmlemail(cu, ncu Users) []byte {
 	// Basic setup
 	from := mail.NewEmail(os.Getenv("FROM_NAME"), os.Getenv("FROM_ADDR"))
 	to := mail.NewEmail(os.Getenv("RECIPIENTS_NAME"), os.Getenv("RECIPIENTS_ADDR"))
-	subject := "Company MDM Compliance Report"
+	t := time.Now()
+	subject := "Company MDM Compliance Report for " + t.Format(datelayout)
 	replyto := mail.NewEmail(os.Getenv("REPLYTO_NAME"), os.Getenv("REPLYTO_ADDR"))
 
 	// Create the plaintext email body
 	var body string
 
 	// Start with non-compliant users
-	body = fmt.Sprintf("<p><strong>Active GIGANIK Slack staff using a personal phone or company phone with no MDM to login to Slack (%d):</strong><br>", len(ncu))
+	body = fmt.Sprintf("<p><strong>(%d) Active GIGANIK Slack staff using a personal phone or company phone with no MDM to login to Slack:</strong><br>", len(ncu))
 	for _, x := range ncu {
 		body = body + fmt.Sprintf("&nbsp;&nbsp;&nbsp;%s (<a href=\"%s=%s\">@%s</a> &lt;%s&gt;)<br>", x.SlackUserName, os.Getenv("SLACKURL"), x.SlackUserId, x.SlackName, x.SlackEmail)
 	}
 	body = body + "</p>"
 	// Now the users with MDM
-	body = body + fmt.Sprintf("<p><strong>Active GIGANIK Slack staff using an MDM-protected company phone to login to Slack (%d):\n</strong><br>", len(cu))
+	body = body + fmt.Sprintf("<p><strong>(%d) Active GIGANIK Slack staff using an MDM-protected company phone to login to Slack:\n</strong><br>", len(cu))
 	for _, x := range cu {
 		body = body + fmt.Sprintf("&nbsp;&nbsp;&nbsp;%s (<a href=\"%s=%s\">@%s</a> &lt;%s&gt;)<br>", x.SlackUserName, os.Getenv("SLACKURL"), x.SlackUserId, x.SlackName, x.SlackEmail)
 	}
+	body = body + "</p>"
+	body = body + fmt.Sprintf("<p>This email generated & sent by %s/%s.", os.Getenv("GSUITEMDMURL"), os.Getenv("APPNAME"))
 	body = body + "</p>"
 
 	// Build the message

@@ -1,8 +1,8 @@
-APPNAME: slackusermdmchecker
+APPNAME: SlackUserMDMChecker
 FROM_ADDR: mdm-compliance-reporter@yourdomain.com
 FROM_NAME: "Company MDM Compliance Reporter"
 GSUITEMDMTOKEN: YOURGSUITEMDMAPITOKENGOESHERE
-MDMSTATUSURL: "https://us-central1-YOURPROJECTID.cloudfunctions.net/SearchDatastore"
+GSUITEMDMURL: "https://us-central1-YOURPROJECTID.cloudfunctions.net"
 RECIPIENTS_ADDR: mdm-compliance-list@yourdomain.com
 RECIPIENTS_NAME: "MDM Compliance Report List"
 REPLYTO_ADDR: no-reply@yourdomain.com
