@@ -10,3 +10,4 @@ REPLYTO_NAME: "MDM Compliance Reporter (Do Not Reply)"
 SENDGRID_API_KEY: YOURSENDGRIDAPIKEYGOESHERE
 SLACKTOKEN: YOURSLACKTOKENGOESHERE
 SLACKURL: "https://YOURSLACKDOMAINGOESHERE.slack.com/app_redirect?channel"
+SRCURL: "https://github.com/rickt/gsuitemdm"
