@@ -65,7 +65,7 @@ func buildhtmlemail(cu, ncu Users) []byte {
 	}
 	body = body + "</p>"
 	body = body + fmt.Sprintf("<p><br>This email generated & sent every weekday at 06:45PST by %s.<br>", os.Getenv("APPNAME"))
-	body = body + fmt.Sprintf("Generate & send a new MDM compliance report email anytime by visiting <a href=\"%s/%s\">this URL</a>.<br>", os.Getenv("GSUITEMDMURL"), os.Getenv("APPNAME"))
+	body = body + fmt.Sprintf("Instantly generate & send a fresh MDM compliance report email anytime by clicking <a href=\"%s/%s\">this URL</a>.<br>", os.Getenv("GSUITEMDMURL"), os.Getenv("APPNAME"))
 	body = body + fmt.Sprintf("Source code available <a href=\"%s\">here</a>.<br>", os.Getenv("SRCURL"))
 	body = body + "</p>"
 
