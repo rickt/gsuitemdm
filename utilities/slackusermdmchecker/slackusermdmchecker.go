@@ -46,20 +46,20 @@ func buildhtmlemail(cu, ncu Users) []byte {
 	from := mail.NewEmail(os.Getenv("FROM_NAME"), os.Getenv("FROM_ADDR"))
 	to := mail.NewEmail(os.Getenv("RECIPIENTS_NAME"), os.Getenv("RECIPIENTS_ADDR"))
 	t := time.Now()
-	subject := "Company MDM Compliance Report for " + t.Format(datelayout)
+	subject := "Company Slack + MDM Compliance Report for " + t.Format(datelayout)
 	replyto := mail.NewEmail(os.Getenv("REPLYTO_NAME"), os.Getenv("REPLYTO_ADDR"))
 
 	// Create the plaintext email body
 	var body string
 
 	// Start with non-compliant users
-	body = fmt.Sprintf("<p><strong>(%d) Active GIGANIK Slack staff using a personal phone or company phone with no MDM to login to Slack:</strong><br>", len(ncu))
+	body = fmt.Sprintf("<p><strong>(%d) non-compliant accounts using a personal phone or company phone with no MDM/non-matching MDM to login to Slack:</strong><br>", len(ncu))
 	for _, x := range ncu {
 		body = body + fmt.Sprintf("&nbsp;&nbsp;&nbsp;%s (<a href=\"%s=%s\">@%s</a> &lt;%s&gt;)<br>", x.SlackUserName, os.Getenv("SLACKURL"), x.SlackUserId, x.SlackName, x.SlackEmail)
 	}
 	body = body + "</p>"
 	// Now the users with MDM
-	body = body + fmt.Sprintf("<p><strong>(%d) Active GIGANIK Slack staff using an MDM-protected company phone to login to Slack:\n</strong><br>", len(cu))
+	body = body + fmt.Sprintf("<p><strong>(%d) compliant accounts using a company phone with matching MDM to login to Slack:\n</strong><br>", len(cu))
 	for _, x := range cu {
 		body = body + fmt.Sprintf("&nbsp;&nbsp;&nbsp;%s (<a href=\"%s=%s\">@%s</a> &lt;%s&gt;)<br>", x.SlackUserName, os.Getenv("SLACKURL"), x.SlackUserId, x.SlackName, x.SlackEmail)
 	}
