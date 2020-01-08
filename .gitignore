@@ -1,6 +1,26 @@
 # rickt
-env.yaml
-go.sum
-rickt_conf.json
+.*swp
 credentials_*.json
+deploy.sh
+env.yaml
+go.mod
+go.sum
+env_approvedevice.yaml
+env_blockdevice.yaml
+env_deletedevice.yaml
+env_directory.yaml
+env_searchdatastore.yaml
+env_slackdirectory.yaml
+env_slackusermdmchecker.yaml
+env_updatedatastore.yaml
+env_updatesheet.yaml
+env_wipedevice.yaml
+*_conf.json
+mdmtool/mdmtool
+mdmtool/tmp
+mdmtool.exe
+mdmtool_conf.json
+NOTES.txt
+rickt_conf.json
+slackusermdmchecker
 
