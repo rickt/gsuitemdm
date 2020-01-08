@@ -237,18 +237,18 @@ func SlackUserMDMChecker(w http.ResponseWriter, r *http.Request) {
 	sort.Sort(ncu)
 
 	// Print out a report
-	fmt.Printf("GIGANIK Slack users with no MDM (%d):\n", len(ncu))
-	for _, x := range ncu {
-		fmt.Printf("\t@%s (\"%s\" <%s>)\n", x.SlackName, x.SlackUserName, x.SlackEmail)
-	}
-	fmt.Printf("\n")
-	fmt.Printf("GIGANIK Slack users with MDM (%d):\n", len(cu))
-	for _, x := range cu {
-		fmt.Printf("\t@%s (\"%s\" <%s>)\n", x.SlackName, x.SlackUserName, x.SlackEmail)
-	}
+	fmt.Fprintf(w, "(%d) Active GIGANIK Slack staff using a personal phone or company phone with no MDM to login to Slack.\n", len(ncu))
+	fmt.Fprintf(w, "\n")
+	fmt.Fprintf(w, "(%d) Active GIGANIK Slack staff using an MDM-protected company phone to login to Slack\n", len(cu))
 
 	// Send email
 	sendemail(cu, ncu)
+	fmt.Fprintf(w, "\n")
+	fmt.Fprintf(w, "Email sent.\n")
+	fmt.Fprintf(w, "\n")
+	fmt.Fprintf(w, "%s Success\n", os.Getenv("APPNAME"))
+
+	return
 
 }
 
