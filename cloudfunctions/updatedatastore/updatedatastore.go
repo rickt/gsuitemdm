@@ -88,7 +88,7 @@ func UpdateDatastore(w http.ResponseWriter, r *http.Request) {
 		// Get data about this domain's devices from the Admin SDK
 		err = gs.GetAdminSDKDevices(domain)
 		if err != nil {
-			sl.Log(logging.Entry{Severity: logging.Error, Payload: "UpdateDatastore(): Error getting Admin SDK data for " + domain})
+			sl.Log(logging.Entry{Severity: logging.Error, Payload: "UpdateDatastore(): Error getting Admin SDK data for " + domain + ": " + fmt.Sprintf("%s", err)})
 			return
 		}
 
