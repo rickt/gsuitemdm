@@ -143,7 +143,11 @@ func (mdms *GSuiteMDMService) UpdateDatastoreDevice(device *admin.MobileDevice) 
 			nd.Color = shv.Color
 			nd.RAM = shv.RAM
 			nd.Notes = shv.Notes
-			nd.PhoneNumber = strings.Replace(shv.PhoneNumber, " ", "", -1)
+			if shv.PhoneNumber == "" {
+				nd.PhoneNumber = ""
+			} else {
+				nd.PhoneNumber = strings.Replace(shv.PhoneNumber, " ", "", -1)
+			}
 			break
 		}
 	}
