@@ -12,12 +12,15 @@ import (
 	"net/http"
 	"os"
 	"strings"
+
+	secretmanager "cloud.google.com/go/secretmanager/apiv1beta1"
+	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1beta1"
 )
 
 var (
-	appname    string = os.Getenv("APPNAME")
-	configfile string = os.Getenv("CONFIGFILE")
-	key        string = os.Getenv("KEY")
+	appname      string = os.Getenv("APPNAME")
+	sm_apikey_id string = os.Getenv("SM_APIKEY_ID")
+	sm_config_id string = os.Getenv("SM_CONFIG_ID")
 )
 
 // Approve a mobile device using the G Suite Admin SDK
@@ -46,8 +49,31 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// We need to check the API key, but it's in Secret Manager. So, get a
+	// context and build a Secret Manager client
+	ctx := context.Background()
+	client, err := secretmanager.NewClient(ctx)
+	if err != nil {
+		log.Printf("Error creating Secret Manager client: %s", err)
+		http.Error(w, "Error creating Secret Manager client", 400)
+		return
+	}
+
+	// Build the Secret Manager request
+	smreq := &secretmanagerpb.AccessSecretVersionRequest{
+		Name: sm_apikey_id,
+	}
+
+	// Call the Secret Manager API and get the API key
+	smres, err := client.AccessSecretVersion(ctx, smreq)
+	if err != nil {
+		log.Printf("Error retrieving API key from Secret Manager: %s", err)
+		http.Error(w, "Error retrieving API key from Secret Manager", 400)
+		return
+	}
+
 	// Check the key
-	if request.Key != key {
+	if request.Key != string(smres.Payload.Data) {
 		log.Printf("Error: incorrect key sent with request")
 		http.Error(w, "Not authorized", 401)
 		return
@@ -65,11 +91,21 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get a context
-	ctx := context.Background()
+	// Create a Secret Manager request so we can retrieve app configuration
+	smreq = &secretmanagerpb.AccessSecretVersionRequest{
+		Name: sm_config_id,
+	}
+
+	// Call the Secret Manager API and get app configuration
+	smres, err = client.AccessSecretVersion(ctx, smreq)
+	if err != nil {
+		log.Printf("Error retrieving app configuration from Secret Manager: %s", err)
+		http.Error(w, "Error retrieving app configuration from Secret Manager", 400)
+		return
+	}
 
 	// Get a G Suite MDM Service
-	gs, err := gsuitemdm.New(ctx, configfile)
+	gs, err := gsuitemdm.New(ctx, string(smres.Payload.Data))
 	if err != nil {
 		// Log to stderr, will be captured as a basic Stackdriver log
 		log.Printf("Error: gsuitemdm cloudfunction %s could not start: %s", err)
