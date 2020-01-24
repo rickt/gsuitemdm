@@ -10,8 +10,10 @@ import (
 	"fmt"
 	"golang.org/x/oauth2/google"
 	admin "google.golang.org/api/admin/directory/v1"
-	"io/ioutil"
 	"strings"
+
+	secretmanager "cloud.google.com/go/secretmanager/apiv1beta1"
+	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1beta1"
 )
 
 // Authenticate with a domain, get an admin.Service
@@ -21,14 +23,35 @@ func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid, domain, scope s
 		switch {
 		// Domain found!
 		case d.DomainName == domain:
-			// Read in this domain's service account JSON credentials file
-			creds, err := ioutil.ReadFile(d.CredentialsFile)
+			/*
+				// Read in this domain's service account JSON credentials file
+				creds, err := ioutil.ReadFile(d.CredentialsFile)
+				if err != nil {
+					return nil, err
+				}
+			*/
+
+			// Get credentials for this domain from Secret Manager. First, get a
+			// context and a Secret Manager client
+			ctx := context.Background()
+			client, err := secretmanager.NewClient(ctx)
+			if err != nil {
+				return nil, err
+			}
+
+			// Build the Secret Manager request
+			smreq := &secretmanagerpb.AccessSecretVersionRequest{
+				Name: d.SecretID,
+			}
+
+			// Call the Secret Manager API and get the domain credentials
+			smres, err := client.AccessSecretVersion(ctx, smreq)
 			if err != nil {
 				return nil, err
 			}
 
 			// create JWT config using the credentials file
-			jwt, err := google.JWTConfigFromJSON(creds, scope)
+			jwt, err := google.JWTConfigFromJSON(smres.Payload.Data, scope)
 			if err != nil {
 				return nil, err
 			}
