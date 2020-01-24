@@ -104,6 +104,9 @@ type DomainConf struct {
 	// in the specific G Suite domain.
 	AdminUser string `json:"adminuser"`
 
+	// Credentials Secret for this G Suite domain
+	SecretID string `json:"secretid"`
+
 	// JSON credentials file for this domain's GCP service account.
 	// This GCP service account must be:
 	// 1) Granted Domain-Wide Delegation authority. See https://developers.google.com/admin-sdk/directory/v1/guides/delegation
