@@ -50,7 +50,7 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 
 	// Get the API key from Secret Manager
-	apikey, err := getSecret(ctx, sm_apikey_id)
+	apikey, err := gsuitemdm.GetSecret(ctx, sm_apikey_id)
 	if err != nil {
 		log.Printf("Error retrieving API key from Secret Manager", err)
 		http.Error(w, "Error retrieving API key from Secret Manager", 400)
@@ -80,7 +80,7 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get our app configuration from Secret Manager
-	config, err := getSecret(ctx, sm_config_id)
+	config, err := gsuitemdm.GetSecret(ctx, sm_config_id)
 	if err != nil {
 		log.Printf("Error retrieving app configuration from Secret Manager: %s", err)
 		http.Error(w, "Error retrieving app configuration from Secret Manager", 400)
