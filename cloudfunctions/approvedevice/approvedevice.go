@@ -72,6 +72,9 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// TODO remove
+	log.Printf("API key = ", string(smres.Payload.Data))
+
 	// Check the key
 	if request.Key != string(smres.Payload.Data) {
 		log.Printf("Error: incorrect key sent with request")
