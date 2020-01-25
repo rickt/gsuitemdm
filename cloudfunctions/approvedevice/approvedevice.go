@@ -52,8 +52,8 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 	// Get the API key from Secret Manager
 	apikey, err := getSecret(ctx, sm_apikey_id)
 	if err != nil {
-		log.Printf("Secret Manager error: %s", err)
-		http.Error(w, "Secret Manager error", 400)
+		log.Printf("Error retrieving API key from Secret Manager", err)
+		http.Error(w, "Error retrieving API key from Secret Manager", 400)
 		return
 	}
 
@@ -79,13 +79,8 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Create a Secret Manager request so we can retrieve app configuration
-	smreq = &secretmanagerpb.AccessSecretVersionRequest{
-		Name: sm_config_id,
-	}
-
-	// Call the Secret Manager API and get app configuration
-	smres, err = client.AccessSecretVersion(ctx, smreq)
+	// Get our app configuration from Secret Manager
+	config, err := getSecret(ctx, sm_config_id)
 	if err != nil {
 		log.Printf("Error retrieving app configuration from Secret Manager: %s", err)
 		http.Error(w, "Error retrieving app configuration from Secret Manager", 400)
@@ -93,7 +88,7 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get a G Suite MDM Service
-	gs, err := gsuitemdm.New(ctx, string(smres.Payload.Data))
+	gs, err := gsuitemdm.New(ctx, config)
 	if err != nil {
 		// Log to stderr, will be captured as a basic Stackdriver log
 		log.Printf("Error: gsuitemdm cloudfunction %s could not start: %s", err)
