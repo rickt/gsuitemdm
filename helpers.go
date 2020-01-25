@@ -82,6 +82,7 @@ func loadConfig(config string) (GSuiteMDMConfig, error) {
 }
 
 // Load main configuration file and return a config struct
+// TODO: remove this func when all CF's have been converted to use Secret Manager
 func loadConfigFile(file string) (GSuiteMDMConfig, error) {
 
 	var c GSuiteMDMConfig
