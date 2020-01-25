@@ -58,7 +58,7 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// TODO remove
-	log.Printf("API key = %s", apikey)
+	log.Printf("sm_apikey_id=%s, request.Key=%s", apikey, request.Key)
 
 	// Check the key
 	if request.Key != apikey {
