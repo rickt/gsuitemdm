@@ -57,9 +57,6 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO remove
-	log.Printf("DEBUG sm_apikey_id=%s, request.Key=%s", strings.TrimSuffix(apikey, "\n"), request.Key)
-
 	// Check the key
 	if request.Key != strings.TrimSuffix(apikey, "\n") {
 		log.Printf("Error: incorrect key sent with request")
