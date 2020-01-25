@@ -13,7 +13,7 @@ import (
 )
 
 // Get a secret from Secret Manager
-func (mdms *GSuiteMDMService) GetSecret(ctx context.Context, sid string) (string, error) {
+func getSecret(ctx context.Context, sid string) (string, error) {
 	// Create a Secret Manager client
 	client, err := secretmanager.NewClient(ctx)
 	if err != nil {
