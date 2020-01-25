@@ -49,34 +49,19 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// We need to check the API key, but it's in Secret Manager. So, get a
-	// context and build a Secret Manager client
-	ctx := context.Background()
-	client, err := secretmanager.NewClient(ctx)
+	// Get the API key from Secret Manager
+	apikey, err := getSecret(ctx, sm_apikey_id)
 	if err != nil {
-		log.Printf("Error creating Secret Manager client: %s", err)
-		http.Error(w, "Error creating Secret Manager client", 400)
-		return
-	}
-
-	// Build the Secret Manager request
-	smreq := &secretmanagerpb.AccessSecretVersionRequest{
-		Name: sm_apikey_id,
-	}
-
-	// Call the Secret Manager API and get the API key
-	smres, err := client.AccessSecretVersion(ctx, smreq)
-	if err != nil {
-		log.Printf("Error retrieving API key from Secret Manager: %s", err)
-		http.Error(w, "Error retrieving API key from Secret Manager", 400)
+		log.Printf("Secret Manager error: %s", err)
+		http.Error(w, "Secret Manager error", 400)
 		return
 	}
 
 	// TODO remove
-	log.Printf("API key = ", string(smres.Payload.Data))
+	log.Printf("API key = %s", apikey)
 
 	// Check the key
-	if request.Key != string(smres.Payload.Data) {
+	if request.Key != apikey {
 		log.Printf("Error: incorrect key sent with request")
 		http.Error(w, "Not authorized", 401)
 		return
