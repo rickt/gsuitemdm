@@ -71,8 +71,18 @@ func getEmailDomain(email string) string {
 	return components[1]
 }
 
+// Load configuration and return a config struct
+func loadConfig(config string) (GSuiteMDMConfig, error) {
+	var c GSuiteMDMConfig
+
+	jp := json.NewDecoder(strings.NewReader(config))
+	jp.Decode(&c)
+
+	return c, nil
+}
+
 // Load main configuration file and return a config struct
-func loadConfig(file string) (GSuiteMDMConfig, error) {
+func loadConfigFile(file string) (GSuiteMDMConfig, error) {
 
 	var c GSuiteMDMConfig
 

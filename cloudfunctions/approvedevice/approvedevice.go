@@ -58,10 +58,10 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// TODO remove
-	log.Printf("sm_apikey_id=%s, request.Key=%s", apikey, request.Key)
+	log.Printf("DEBUG sm_apikey_id=%s, request.Key=%s", strings.TrimSuffix(apikey, "\n"), request.Key)
 
 	// Check the key
-	if request.Key != apikey {
+	if request.Key != strings.TrimSuffix(apikey, "\n") {
 		log.Printf("Error: incorrect key sent with request")
 		http.Error(w, "Not authorized", 401)
 		return

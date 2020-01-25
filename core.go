@@ -9,12 +9,12 @@ import (
 )
 
 // Create a new G Suite MDM Service
-func New(ctx context.Context, file string) (*GSuiteMDMService, error) {
+func New(ctx context.Context, config string) (*GSuiteMDMService, error) {
 	var cf GSuiteMDMConfig
 	var err error
 
-	// Load in main configuration file and get a config struct back
-	cf, err = loadConfig(file)
+	// Load in configuration and get a config struct back
+	cf, err = loadConfig(config)
 	if err != nil {
 		return nil, err
 	}
