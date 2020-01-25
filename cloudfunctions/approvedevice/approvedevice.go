@@ -12,9 +12,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-
-	secretmanager "cloud.google.com/go/secretmanager/apiv1beta1"
-	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1beta1"
 )
 
 var (
@@ -48,6 +45,9 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error decoding JSON message body", 400)
 		return
 	}
+
+	// Get a context
+	ctx := context.Background()
 
 	// Get the API key from Secret Manager
 	apikey, err := getSecret(ctx, sm_apikey_id)
