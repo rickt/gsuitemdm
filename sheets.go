@@ -5,6 +5,7 @@ package gsuitemdm
 //
 
 import (
+  "context"
 	"errors"
 	"fmt"
 	"github.com/Iwark/spreadsheet"
@@ -12,7 +13,6 @@ import (
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	admin "google.golang.org/api/admin/directory/v1"
-	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
@@ -29,7 +29,7 @@ func (mdms *GSuiteMDMService) GetSheetData() error {
 	// Retrieve the credentials necessary to read/write to/from the Google Sheet from Secret Manager
 	creds, err := GetSecret(ctx, mdms.C.SheetCredsID)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// Get an authenticated http client
@@ -172,8 +172,17 @@ func (mdms *GSuiteMDMService) SearchSheetForDevice(device *admin.MobileDevice) (
 
 // Update the Google Sheet
 func (mdms *GSuiteMDMService) UpdateSheet(mergeddata []DatastoreMobileDevice) error {
+	// We need to get the credentials to read the Google Sheet from Secret Manager
+	ctx := context.Background()
+
+	// Retrieve the credentials necessary to read/write to/from the Google Sheet from Secret Manager
+	creds, err := GetSecret(ctx, mdms.C.SheetCredsID)
+	if err != nil {
+		return err
+	}
+
 	// Get an authenticated http client
-	client, err := mdms.HttpClient(mdms.C.SheetCreds)
+	client, err := mdms.HttpClient(creds)
 	if err != nil {
 		return err
 	}
