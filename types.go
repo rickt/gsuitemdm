@@ -23,27 +23,27 @@ type GSuiteMDMConfig struct {
 	// Required G Suite Admin SDK scope to perform ACTION operations (delete, wipe, block, etc).
 	// See SearchScope for more details
 	ActionScope string `json:"actionscope"`
-	
+
 	// Default sort order of devices returned by the Admin API query parameter: orderBy.
 	// Refer to https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/list
 	APIQueryOrderBy string `json:"apiqueryorderby"`
 
 	// Default sort order of devices returned by Cloud Datastore
 	DatastoreQueryOrderBy string `json:"datastorequeryorderby"`
-	
+
 	// Global debug mode?
 	Debug bool `json:"globaldebug"`
 
 	// Datastore namekey
 	DSNamekey string `json:"dsnamekey"`
-	
+
 	// Project ID of the GCP project
 	ProjectID string `json:"projectid"`
-	
+
 	// What type of Remote Wipe will we use for the "wipe" command? Possible values are:
 	// Refer to https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/action
 	RemoteWipeType string `json:"remotewipetype"`
-	
+
 	// Required G Suite Admin API scope to perform SEARCH operations. Since we are using the
 	// Mobiledevices: list method of the G Suite Admin API, refer to
 	// https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/list
@@ -51,7 +51,7 @@ type GSuiteMDMConfig struct {
 	// Default value for this should be: "https://www.googleapis.com/auth/admin.directory.device.mobile.readonly"
 	// and there should likely be no good reason to change it.
 	SearchScope string `json:"searchscope"`
-	
+
 	// Default type of search.
 	// This refers to the STATUS of the mobile device as seen in the G Suite Admin console.
 	// Possible values are:
@@ -65,16 +65,16 @@ type GSuiteMDMConfig struct {
 	//		Device Wiping
 	//
 	SearchType string `json:"searchtype"`
-	
+
 	// GCP Secret Manager ID of the credentials with necessary permissions to write to the Google Sheet
-	SheetCredsID string `json:"sheetcreds"`
-	
+	SheetCredsID string `json:"sheetcredsid"`
+
 	// ID of the google spreadsheet to update
 	SheetID string `json:"sheetid"`
-	
+
 	// Required Sheets API scope to update the Google Sheet
 	SheetScope string `json:"sheetscope"`
-	
+
 	// Who to write the spreadsheet as
 	SheetWho string `json:"sheetwho"`
 
@@ -83,7 +83,7 @@ type GSuiteMDMConfig struct {
 
 	// Version of gsuitemdm
 	Version string `json:"version"`
-	
+
 	// G Suite domains that mdmtool knows about.
 	Domains Domains `json:"domains"`
 }
@@ -97,10 +97,10 @@ type DomainConf struct {
 	// This will need to be a user/email address that has Administrator/Super Administrator role
 	// in the specific G Suite domain.
 	AdminUser string `json:"adminuser"`
-	
+
 	// Immutable Customer ID of G Suite domain
 	CustomerID string `json:"companyid"`
-	
+
 	// FQDN of G Suite domain
 	DomainName string `json:"domainname"`
 
