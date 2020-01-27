@@ -13,11 +13,11 @@ import (
 )
 
 // Get a secret from Secret Manager
-func GetSecret(ctx context.Context, sid string) (string, error) {
+func GetSecret(ctx context.Context, sid string) ([]byte, error) {
 	// Create a Secret Manager client
 	client, err := secretmanager.NewClient(ctx)
 	if err != nil {
-		return "", errors.New("Error creating Secret Manager client: " + err.Error())
+		return []byte(""), errors.New("Error creating Secret Manager client: " + err.Error())
 	}
 
 	// Build the Secret Manager request
@@ -28,11 +28,11 @@ func GetSecret(ctx context.Context, sid string) (string, error) {
 	// Call the Secret Manager API and get the requested secret using its ID
 	smres, err := client.AccessSecretVersion(ctx, smreq)
 	if err != nil {
-		return "", errors.New("Error retrieving secret: " + err.Error())
+		return []byte(""), errors.New("Error retrieving secret: " + err.Error())
 	}
 
 	// Return the specified secret
-	return string(smres.Payload.Data), nil
+	return smres.Payload.Data, nil
 }
 
 // EOF

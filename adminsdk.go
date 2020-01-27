@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"golang.org/x/oauth2/google"
+	"log"
 	admin "google.golang.org/api/admin/directory/v1"
 	"strings"
 
@@ -41,12 +42,14 @@ func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid, domain, scope s
 			if err != nil {
 				return nil, err
 			}
+			log.Printf("smres = %v", smres)
 
 			// Retrieve this domain's configuration from Secret Manager
 			config, err := GetSecret(ctx, string(smres.Payload.Data))
 			if err != nil {
 				return nil, err
 			}
+			log.Printf("config = %v", config)
 
 			// create JWT config using the credentials file
 			jwt, err := google.JWTConfigFromJSON([]byte(config), scope)
