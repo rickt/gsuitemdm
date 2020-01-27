@@ -1,5 +1,9 @@
 package directory
 
+//
+// GSuiteMDM directory Cloud Function
+//
+
 import (
 	"cloud.google.com/go/datastore"
 	"cloud.google.com/go/logging"
@@ -14,9 +18,9 @@ import (
 )
 
 var (
-	appname    string = os.Getenv("APPNAME")
-	configfile string = os.Getenv("CONFIGFILE")
-	key        string = os.Getenv("KEY")
+	appname      string = os.Getenv("APPNAME")
+	sm_apikey_id string = os.Getenv("SM_APIKEY_ID")
+	sm_config_id string = os.Getenv("SM_CONFIG_ID")
 )
 
 // Search Google Datastore for a mobile device owner and return the associated phone number
@@ -40,18 +44,34 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Check the key
-	if request.Key != key {
-		log.Printf("Error: incorrect key sent with request")
+	// Get a context
+	ctx := context.Background()
+
+	// Get the API key from Secret Manager
+	apikey, err := gsuitemdm.GetSecret(ctx, sm_apikey_id)
+	if err != nil {
+		log.Printf("Error retrieving API key from Secret Manager", err)
+		http.Error(w, "Error retrieving API key from Secret Manager", 400)
+		return
+	}
+
+	// Check that the API key sent with the request matches
+	if request.Key != strings.TrimSuffix(apikey, "\n") {
+		log.Printf("Error: Incorrect key sent with request")
 		http.Error(w, "Not authorized", 401)
 		return
 	}
 
-	// Get a context
-	ctx := context.Background()
+	// Get our app configuration from Secret Manager
+	config, err := gsuitemdm.GetSecret(ctx, sm_config_id)
+	if err != nil {
+		log.Printf("Error retrieving app configuration from Secret Manager: %s", err)
+		http.Error(w, "Error retrieving app configuration from Secret Manager", 400)
+		return
+	}
 
 	// Get a G Suite MDM Service
-	gs, err := gsuitemdm.New(ctx, configfile)
+	gs, err := gsuitemdm.New(ctx, config)
 	if err != nil {
 		// Log to stderr, will be captured as a basic Stackdriver log
 		log.Printf("Error: gsuitemdm cloudfunction %s could not start: %s", err)
@@ -71,21 +91,24 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 
 	// Ok, lets go deeper and check the message body. Was qtype= specified, and is it zero length?
 	if len(request.QType) < 1 {
-		http.Error(w, "Query type not specified", 400)
+	  log.Printf("Error: Query type not specified")
+		http.Error(w, "Error: Query type not specified", 400)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Query type not specified"})
 		return
 	}
 
 	// Do we support the specified query type? Directory supports only "email" and "name"
 	if request.QType != "email" && request.QType != "name" {
-		http.Error(w, "Invalid query type specified", 400)
+	  log.Printf("Error: Invalid query type specified")
+		http.Error(w, "Error: Invalid query type specified", 400)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Invalid query type specified"})
 		return
 	}
 
 	// Query type is valid, lets check if the query string (q=) is not zero length
 	if len(request.Q) < 1 {
-		http.Error(w, "Query search data cannot be zero length", 400)
+	  log.Printf("Error: Query search data cannot be zero length")
+		http.Error(w, "Error: Query search data cannot be zero length", 400)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Query search data cannot be zero length"})
 		return
 	}
@@ -93,6 +116,7 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 	// Query type is valid and query string (q=) is not zero length, lets get the Datastore data
 	dc, err := datastore.NewClient(ctx, gs.C.ProjectID)
 	if err != nil {
+	  log.Printf("Error creating Datastore client: %s", err)
 		http.Error(w, fmt.Sprintf("Error creating Datastore client: %s", err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error creating Datastore client: " + err.Error()})
 		return
@@ -103,6 +127,7 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 		Order(gs.C.DatastoreQueryOrderBy),
 		&devices)
 	if err != nil {
+	  log.Printf("Error querying Datastore for all devices: %s", err)
 		http.Error(w, fmt.Sprintf("Error querying Datastore for all devices: %s", err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error querying Datastore for all devices: " + err.Error()})
 		return
@@ -144,7 +169,8 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 			}
 
 		default:
-			http.Error(w, "Invalid query type specified", 400)
+		  log.Printf("Error: Invalid query type specified")
+			http.Error(w, "Error: Invalid query type specified", 400)
 			sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Invalid query type specified"})
 			return
 		}
@@ -155,6 +181,7 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 		// We have valid search data to return
 		js, err := json.MarshalIndent(dirdata, "", "   ")
 		if err != nil {
+		  log.Printf("Error marshaling JSON: %s", err)
 			http.Error(w, fmt.Sprintf("Error marshaling JSON: %s", err), 500)
 			sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error marshaling JSON: " + err.Error()})
 			return
