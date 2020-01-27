@@ -89,7 +89,7 @@ Search returned 2 results.
 ### Update Types
 | Update Type       | Details on what it does                                                                      |
 |-------------------|----------------------------------------------------------------------------------------------|
-| `updatedatastore` | Updates Datastore with fresh data from Admin SDK for all devices, merge w/Google Sheet data, save to Datastore |
+| `updatedb`        | Updates Datastore with fresh data from Admin SDK for all devices, merge w/Google Sheet data, save to Datastore |
 | `updatesheet`    | Updates Google Sheet with fresh data from Datastore                                          |
 
 
