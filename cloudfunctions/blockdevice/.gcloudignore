@@ -1,5 +1,6 @@
 README.md
 deploy.sh
 env_*_example.yaml
+.gcloudignore
 .git
 .gitignore
