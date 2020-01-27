@@ -14,6 +14,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -91,7 +92,7 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 
 	// Ok, lets go deeper and check the message body. Was qtype= specified, and is it zero length?
 	if len(request.QType) < 1 {
-	  log.Printf("Error: Query type not specified")
+		log.Printf("Error: Query type not specified")
 		http.Error(w, "Error: Query type not specified", 400)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Query type not specified"})
 		return
@@ -99,7 +100,7 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 
 	// Do we support the specified query type? Directory supports only "email" and "name"
 	if request.QType != "email" && request.QType != "name" {
-	  log.Printf("Error: Invalid query type specified")
+		log.Printf("Error: Invalid query type specified")
 		http.Error(w, "Error: Invalid query type specified", 400)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Invalid query type specified"})
 		return
@@ -107,7 +108,7 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 
 	// Query type is valid, lets check if the query string (q=) is not zero length
 	if len(request.Q) < 1 {
-	  log.Printf("Error: Query search data cannot be zero length")
+		log.Printf("Error: Query search data cannot be zero length")
 		http.Error(w, "Error: Query search data cannot be zero length", 400)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Query search data cannot be zero length"})
 		return
@@ -116,7 +117,7 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 	// Query type is valid and query string (q=) is not zero length, lets get the Datastore data
 	dc, err := datastore.NewClient(ctx, gs.C.ProjectID)
 	if err != nil {
-	  log.Printf("Error creating Datastore client: %s", err)
+		log.Printf("Error creating Datastore client: %s", err)
 		http.Error(w, fmt.Sprintf("Error creating Datastore client: %s", err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error creating Datastore client: " + err.Error()})
 		return
@@ -127,7 +128,7 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 		Order(gs.C.DatastoreQueryOrderBy),
 		&devices)
 	if err != nil {
-	  log.Printf("Error querying Datastore for all devices: %s", err)
+		log.Printf("Error querying Datastore for all devices: %s", err)
 		http.Error(w, fmt.Sprintf("Error querying Datastore for all devices: %s", err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error querying Datastore for all devices: " + err.Error()})
 		return
@@ -169,7 +170,7 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 			}
 
 		default:
-		  log.Printf("Error: Invalid query type specified")
+			log.Printf("Error: Invalid query type specified")
 			http.Error(w, "Error: Invalid query type specified", 400)
 			sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Invalid query type specified"})
 			return
@@ -181,17 +182,20 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 		// We have valid search data to return
 		js, err := json.MarshalIndent(dirdata, "", "   ")
 		if err != nil {
-		  log.Printf("Error marshaling JSON: %s", err)
+			log.Printf("Error marshaling JSON: %s", err)
 			http.Error(w, fmt.Sprintf("Error marshaling JSON: %s", err), 500)
 			sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error marshaling JSON: " + err.Error()})
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(js)
+		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: " + strconv.Itoa(len(dirdata)) + " results returned"})
 		return
 	} else {
 		// No data to return
 		http.Error(w, "", 204)
+		// Write a log entry
+		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: 0 results returned"})
 		return
 	}
 }

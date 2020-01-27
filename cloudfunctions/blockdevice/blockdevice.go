@@ -49,7 +49,7 @@ func BlockDevice(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error decoding JSON message body", 400)
 		return
 	}
-	
+
 	// Get a context
 	ctx := context.Background()
 
@@ -67,21 +67,21 @@ func BlockDevice(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Not authorized", 401)
 		return
 	}
-	
-  // Correct action specified?
+
+	// Correct action specified?
 	if request.Action != "block" {
-	  log.Printf("Error: Invalid action specified")
+		log.Printf("Error: Invalid action specified")
 		http.Error(w, "Invalid request (invalid action specified)", 400)
 		return
 	}
 
 	// Check if the request is valid
 	if (request.IMEI == "" && request.SN == "") || (request.IMEI != "" && request.SN != "") {
-	  log.Printf("Error: Invalid request (IMEI or SN not specified)")
+		log.Printf("Error: Invalid request (IMEI or SN not specified)")
 		http.Error(w, "Invalid request (IMEI or SN not specified)", 400)
 		return
 	}
-	
+
 	// Get our app configuration from Secret Manager
 	config, err := gsuitemdm.GetSecret(ctx, sm_config_id)
 	if err != nil {
@@ -120,7 +120,7 @@ func BlockDevice(w http.ResponseWriter, r *http.Request) {
 	// Ok, the action + domain are valid, lets get the Datastore data
 	dc, err := datastore.NewClient(ctx, gs.C.ProjectID)
 	if err != nil {
-	  log.Printf("Error creating Datastore client: %s", err)
+		log.Printf("Error creating Datastore client: %s", err)
 		http.Error(w, fmt.Sprintf("Error creating Datastore client: %s", err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error creating Datastore client: " + err.Error()})
 		return
@@ -132,7 +132,7 @@ func BlockDevice(w http.ResponseWriter, r *http.Request) {
 		Order(gs.C.DatastoreQueryOrderBy),
 		&devices)
 	if err != nil {
-	  log.Printf("Error querying Datastore for devices in domain %s: %s", request.Domain, err)
+		log.Printf("Error querying Datastore for devices in domain %s: %s", request.Domain, err)
 		http.Error(w, fmt.Sprintf("Error querying Datastore for devices in domain %s: %s", request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error querying Datastore for devices in domain " + request.Domain + ": " + err.Error()})
 		return
@@ -164,7 +164,7 @@ func BlockDevice(w http.ResponseWriter, r *http.Request) {
 
 	// Did we find the specified device?
 	if found != true {
-	  log.Printf("Error: Device not found")
+		log.Printf("Error: Device not found")
 		http.Error(w, "Error: Device not found", 400)
 		return
 	}
@@ -172,14 +172,14 @@ func BlockDevice(w http.ResponseWriter, r *http.Request) {
 	// Check if device has the correct G Suite MDM status. Valid states for block are:
 	// APPROVED, PENDING and UNPROVISIONED
 	if device.Status != "APPROVED" && device.Status != "PENDING" && device.Status != "UNPROVISIONED" {
-	  log.Printf("Error: Device found but not in APPROVED, PENDING or UNPROVISIONED states")
+		log.Printf("Error: Device found but not in APPROVED, PENDING or UNPROVISIONED states")
 		http.Error(w, fmt.Sprintf("Error: Device found but not in APPROVED, PENDING or UNPROVISIONED states (status=%s)\n", device.Status), 400)
 		return
 	}
 
 	// Was `confirm: true` sent along with the request?
 	if request.Confirm != true {
-	  log.Printf("Error: Device found and in APPROVED, PENDING or UNPROVISIONED states but no CONFIRM sent")
+		log.Printf("Error: Device found and in APPROVED, PENDING or UNPROVISIONED states but no CONFIRM sent")
 		fmt.Fprintf(w, "Error: Device found and in APPROVED, PENDING or UNPROVISIONED states but no CONFIRM sent (status=%s)\n", device.Status)
 		return
 	}
@@ -187,7 +187,7 @@ func BlockDevice(w http.ResponseWriter, r *http.Request) {
 	// Confirm was sent, lets block the device. Get this domain's CustomerID first
 	cid, err = gs.GetDomainCustomerID(request.Domain)
 	if err != nil {
-	  log.Printf("Error getting CustomerID for domain %s: %s", request.Domain, err)
+		log.Printf("Error getting CustomerID for domain %s: %s", request.Domain, err)
 		http.Error(w, fmt.Sprintf("Error getting CustomerID for domain %s: %s", request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error getting CustomerID for domain " + request.Domain + ": " + err.Error()})
 		return
@@ -196,7 +196,7 @@ func BlockDevice(w http.ResponseWriter, r *http.Request) {
 	// Authenticate with the Admin SDK for this domain
 	as, err = gs.AuthenticateWithDomain(cid, request.Domain, gs.C.ActionScope)
 	if err != nil {
-	  log.Printf("Error authenticating with the Admin SDK for domain %s: %s", request.Domain, err)
+		log.Printf("Error authenticating with the Admin SDK for domain %s: %s", request.Domain, err)
 		http.Error(w, fmt.Sprintf("Error authenticating with the Admin SDK for domain %s: %s", request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error authenticating with the Admin SDK for domain " + request.Domain + ": " + err.Error()})
 		return
@@ -205,7 +205,7 @@ func BlockDevice(w http.ResponseWriter, r *http.Request) {
 	// Block the device
 	err = as.Mobiledevices.Action(cid, device.ResourceId, aa).Do()
 	if err != nil {
-	  log.Printf("Error blocking device %s in domain %s: %s", device.ResourceId, request.Domain, err)
+		log.Printf("Error blocking device %s in domain %s: %s", device.ResourceId, request.Domain, err)
 		http.Error(w, fmt.Sprintf("Error blocking device %s in domain %s: %s", device.ResourceId, request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error blocking device " + device.ResourceId + "in domain " + request.Domain + ": " + err.Error()})
 		return
