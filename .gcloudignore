@@ -1,0 +1,6 @@
+deploy.sh
+go.mod
+go.sum
+.git
+.gitignore
+
