@@ -1,7 +1,7 @@
 package gsuitemdm
 
 //
-// Various helper functions
+// GSuiteMDM various helper functions
 //
 
 import (

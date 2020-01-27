@@ -1,5 +1,9 @@
 package deletedevice
 
+//
+// GSuiteMDM deletedevice Cloud Function
+//
+
 import (
 	"cloud.google.com/go/datastore"
 	"cloud.google.com/go/logging"
@@ -15,9 +19,9 @@ import (
 )
 
 var (
-	appname    string = os.Getenv("APPNAME")
-	configfile string = os.Getenv("CONFIGFILE")
-	key        string = os.Getenv("KEY")
+	appname      string = os.Getenv("APPNAME")
+	sm_apikey_id string = os.Getenv("SM_APIKEY_ID")
+	sm_config_id string = os.Getenv("SM_CONFIG_ID")
 )
 
 // Wipe a mobile device using the G Suite Admin SDK
@@ -42,31 +46,49 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error decoding JSON message body", 400)
 		return
 	}
+	
+	// Get a context
+	ctx := context.Background()
 
-	// Check the key
-	if request.Key != key {
-		log.Printf("Error: incorrect key sent with request")
+	// Get the API key from Secret Manager
+	apikey, err := gsuitemdm.GetSecret(ctx, sm_apikey_id)
+	if err != nil {
+		log.Printf("Error retrieving API key from Secret Manager", err)
+		http.Error(w, "Error retrieving API key from Secret Manager", 400)
+		return
+	}
+
+	// Check that the API key sent with the request matches
+	if request.Key != strings.TrimSuffix(apikey, "\n") {
+		log.Printf("Error: Incorrect key sent with request")
 		http.Error(w, "Not authorized", 401)
 		return
 	}
 
 	// Correct action specified?
 	if request.Action != "delete" {
+	  log.Printf("Error: Invalid action specified")
 		http.Error(w, "Invalid request (invalid action specified)", 400)
 		return
 	}
 
 	// Check if the request is valid
 	if (request.IMEI == "" && request.SN == "") || (request.IMEI != "" && request.SN != "") {
+	  log.Printf("Error: Invalid request (IMEI or SN not specified)")
 		http.Error(w, "Invalid request (IMEI or SN not specified)", 400)
 		return
 	}
 
-	// Get a context
-	ctx := context.Background()
+	// Get our app configuration from Secret Manager
+	config, err := gsuitemdm.GetSecret(ctx, sm_config_id)
+	if err != nil {
+		log.Printf("Error retrieving app configuration from Secret Manager: %s", err)
+		http.Error(w, "Error retrieving app configuration from Secret Manager", 400)
+		return
+	}
 
 	// Get a G Suite MDM Service
-	gs, err := gsuitemdm.New(ctx, configfile)
+	gs, err := gsuitemdm.New(ctx, config)
 	if err != nil {
 		// Log to stderr, will be captured as a basic Stackdriver log
 		log.Printf("Error: gsuitemdm cloudfunction %s could not start: %s", err)
@@ -95,6 +117,7 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 	// Ok, the action + domain are valid, lets get the Datastore data
 	dc, err := datastore.NewClient(ctx, gs.C.ProjectID)
 	if err != nil {
+	  log.Printf("Error creating Datastore client: %s", err)
 		http.Error(w, fmt.Sprintf("Error creating Datastore client: %s", err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error creating Datastore client: " + err.Error()})
 		return
@@ -106,6 +129,7 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 		Order(gs.C.DatastoreQueryOrderBy),
 		&devices)
 	if err != nil {
+	  log.Printf("Error querying Datastore for devices in domain %s: %s", request.Domain, err)
 		http.Error(w, fmt.Sprintf("Error querying Datastore for devices in domain %s: %s", request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error querying Datastore for devices in domain " + request.Domain + ": " + err.Error()})
 		return
@@ -137,19 +161,22 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 
 	// Did we find the specified device?
 	if found != true {
+	  log.Printf("Error: Device not found")
 		http.Error(w, "Error: Device not found", 400)
 		return
 	}
 
 	// Was `confirm: true` sent along with the request?
 	if request.Confirm != true {
-		fmt.Fprintf(w, "Notice: Device found, but no CONFIRM sent, will not approve\n")
+	  log.Print("Error: Device found, but no CONFIRM sent")
+		fmt.Fprintf(w, "Error: Device found, but no CONFIRM sent\n")
 		return
 	}
 
 	// Confirm was sent, lets delete the device. Get this domain's CustomerID first
 	cid, err = gs.GetDomainCustomerID(request.Domain)
 	if err != nil {
+	  log.Printf("Error getting CustomerID for domain %s: %s", request.Domain, err)
 		http.Error(w, fmt.Sprintf("Error getting CustomerID for domain %s: %s", request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error getting CustomerID for domain " + request.Domain + ": " + err.Error()})
 		return
@@ -158,6 +185,7 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 	// Authenticate with the Admin SDK for this domain
 	as, err = gs.AuthenticateWithDomain(cid, request.Domain, gs.C.ActionScope)
 	if err != nil {
+	  log.Printf("Error authenticating with the Admin SDK for domain %s: %s", request.Domain, err)
 		http.Error(w, fmt.Sprintf("Error authenticating with the Admin SDK for domain %s: %s", request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error authenticating with the Admin SDK for domain " + request.Domain + ": " + err.Error()})
 		return
@@ -166,6 +194,7 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 	// Delete the device
 	err = as.Mobiledevices.Delete(cid, device.ResourceId).Do()
 	if err != nil {
+	  log.Printf("Error deleting device %s in domain %s: %s", device.ResourceId, request.Domain, err)
 		http.Error(w, fmt.Sprintf("Error deleting device %s in domain %s: %s", device.ResourceId, request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error deleting device " + device.ResourceId + " in domain " + request.Domain + ": " + err.Error()})
 		return
