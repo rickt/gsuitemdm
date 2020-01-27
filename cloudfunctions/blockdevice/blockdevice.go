@@ -61,7 +61,7 @@ func BlockDevice(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Check the key
+	// Check that the API key sent with the request matches
 	if request.Key != strings.TrimSuffix(apikey, "\n") {
 		log.Printf("Error: Incorrect key sent with request")
 		http.Error(w, "Not authorized", 401)
