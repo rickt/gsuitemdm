@@ -83,7 +83,7 @@ func (mdms *GSuiteMDMService) GetSheetData() error {
 
 // Create an authenticated http(s) client, used to read/write the Google Sheet
 func (mdms *GSuiteMDMService) HttpClient(creds string) (*http.Client, error) {
-	// Get a nice juicy JWT config struct using our credentials
+	// Create JWT config using the credentials
 	conf, err := google.JWTConfigFromJSON([]byte(creds), mdms.C.SheetScope)
 	if err != nil {
 		return nil, err

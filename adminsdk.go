@@ -29,7 +29,7 @@ func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid, domain, scope s
 				return nil, err
 			}
 
-			// create JWT config using the credentials
+			// Create JWT config using the credentials
 			jwt, err := google.JWTConfigFromJSON([]byte(creds), scope)
 			if err != nil {
 				return nil, err

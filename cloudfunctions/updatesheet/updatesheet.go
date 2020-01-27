@@ -1,5 +1,9 @@
 package updatesheet
 
+//
+// GSuiteMDM updatesheet Cloud Function
+//
+
 import (
 	"cloud.google.com/go/logging"
 	"context"
@@ -9,12 +13,13 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 var (
-	appname    string = os.Getenv("APPNAME")
-	configfile string = os.Getenv("CONFIGFILE")
-	key        string = os.Getenv("KEY")
+	appname      string = os.Getenv("APPNAME")
+	sm_apikey_id string = os.Getenv("SM_APIKEY_ID")
+	sm_config_id string = os.Getenv("SM_CONFIG_ID")
 )
 
 // Update the Google Sheet with fresh data from Google Datastore
@@ -37,18 +42,34 @@ func UpdateSheet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Check the key
-	if request.Key != key {
-		log.Printf("Error: incorrect key sent with request")
+	// Get a context
+	ctx := context.Background()
+
+	// Get the API key from Secret Manager
+	apikey, err := gsuitemdm.GetSecret(ctx, sm_apikey_id)
+	if err != nil {
+		log.Printf("Error retrieving API key from Secret Manager", err)
+		http.Error(w, "Error retrieving API key from Secret Manager", 400)
+		return
+	}
+
+	// Check that the API key sent with the request matches
+	if request.Key != strings.TrimSpace(apikey) {
+		log.Printf("Error: Incorrect key sent with request")
 		http.Error(w, "Not authorized", 401)
 		return
 	}
 
-	// Get a context
-	ctx := context.Background()
+	// Get our app configuration from Secret Manager
+	config, err := gsuitemdm.GetSecret(ctx, sm_config_id)
+	if err != nil {
+		log.Printf("Error retrieving app configuration from Secret Manager: %s", err)
+		http.Error(w, "Error retrieving app configuration from Secret Manager", 400)
+		return
+	}
 
 	// Get a G Suite MDM Service
-	gs, err := gsuitemdm.New(ctx, configfile)
+	gs, err := gsuitemdm.New(ctx, config)
 	if err != nil {
 		// Log to stderr, will be captured as a basic Stackdriver log
 		log.Printf("Error: gsuitemdm cloudfunction %s could not start: %s", err)
@@ -69,6 +90,7 @@ func UpdateSheet(w http.ResponseWriter, r *http.Request) {
 	// Get Google Sheet data
 	err = gs.GetSheetData()
 	if err != nil {
+	  log.Printf("Error retrieving Google Sheet data: %s", err)
 		sl.Log(logging.Entry{Severity: logging.Error, Payload: "Error retrieving Google Sheet data: " + fmt.Sprintf("%s", err)})
 		return
 	}
@@ -76,6 +98,7 @@ func UpdateSheet(w http.ResponseWriter, r *http.Request) {
 	// Get existing Datastore data
 	err = gs.GetDatastoreData()
 	if err != nil {
+	  log.Printf("Error retrieving Google Datastore data: %s", err)
 		sl.Log(logging.Entry{Severity: logging.Error, Payload: "Error retrieving Google Datastore data: " + fmt.Sprintf("%s", err)})
 		return
 	}
@@ -87,12 +110,13 @@ func UpdateSheet(w http.ResponseWriter, r *http.Request) {
 	// Update the Google Sheet
 	err = gs.UpdateSheet(md)
 	if err != nil {
+	  log.Printf("Error updating Google Sheet: %s", err)
 		sl.Log(logging.Entry{Severity: logging.Error, Payload: "Error updating Google Sheet: " + fmt.Sprintf("%s", err)})
 		return
 	}
 
 	// Finished
-	sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success"})
+	sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success RemoteIP=" + gsuitemdm.GetIP(r)})
 	fmt.Fprintf(w, "%s Success\n", appname)
 
 	return
