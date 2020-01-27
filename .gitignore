@@ -1,4 +1,5 @@
 # rickt
+.gcloudignore
 .*swp
 deploy.sh
 go.mod
