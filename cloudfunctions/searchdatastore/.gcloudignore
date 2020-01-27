@@ -1,7 +1,5 @@
 README.md
 deploy.sh
 env_*_example.yaml
-go.mod
-go.sum
 .git
 .gitignore
