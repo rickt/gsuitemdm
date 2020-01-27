@@ -59,19 +59,21 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 
 	// Check the key
 	if request.Key != strings.TrimSuffix(apikey, "\n") {
-		log.Printf("Error: incorrect key sent with request")
+		log.Printf("Error: Incorrect key sent with request")
 		http.Error(w, "Not authorized", 401)
 		return
 	}
 
 	// Correct action specified?
 	if request.Action != "approve" {
+	  log.Printf("Error: Invalid action specified")
 		http.Error(w, "Invalid request (invalid action specified)", 400)
 		return
 	}
 
 	// Check if the request is valid
 	if (request.IMEI == "" && request.SN == "") || (request.IMEI != "" && request.SN != "") {
+	  log.Printf("Error: Invalid request (IMEI or SN not specified)")
 		http.Error(w, "Invalid request (IMEI or SN not specified)", 400)
 		return
 	}
@@ -107,15 +109,16 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 	if request.Domain == "" || gs.IsDomainConfigured(request.Domain) == false {
 		// Domain specified is invalid
 		log.Printf("Error: Invalid domain specified")
-		http.Error(w, "Error: Invalid domain specified", 400)
+		http.Error(w, "Invalid domain specified", 400)
 		return
 	}
 
 	// Ok, the action + domain are valid, lets get the Datastore data
 	dc, err := datastore.NewClient(ctx, gs.C.ProjectID)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error creating Datastore client: %s", err), 500)
+	  log.Printf("Error creating Datastore client: %s", err)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error creating Datastore client: " + err.Error()})
+		http.Error(w, fmt.Sprintf("Error creating Datastore client: %s", err), 500)
 		return
 	}
 
@@ -125,6 +128,7 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 		Order(gs.C.DatastoreQueryOrderBy),
 		&devices)
 	if err != nil {
+	  log.Printf("Error querying Datastore for devices in domain %s: %s", request.Domain, err)
 		http.Error(w, fmt.Sprintf("Error querying Datastore for devices in domain %s: %s", request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error querying Datastore for devices in domain " + request.Domain + ": " + err.Error()})
 		return
@@ -156,6 +160,7 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 
 	// Did we find the specified device?
 	if found != true {
+	  log.Printf("Error: Device not found")
 		http.Error(w, "Error: Device not found", 400)
 		return
 	}
@@ -163,19 +168,22 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 	// Check if device has the correct G Suite MDM status. Valid states for approve are:
 	// PENDING and BLOCKED
 	if device.Status != "PENDING" && device.Status != "BLOCKED" {
-		http.Error(w, fmt.Sprintf("Error: Device found but cannot be approved (status is already %s)", device.Status), 400)
+	  log.Printf("Error: Device found but not in BLOCKED or PENDING states")
+		http.Error(w, fmt.Sprintf("Error: Device found but not in BLOCKED or PENDING states (status=%s)", device.Status), 400)
 		return
 	}
 
 	// Was `confirm: true` sent along with the request?
 	if request.Confirm != true {
-		http.Error(w, "Error: Device found but cannot be approved because no CONFIRM sent", 400)
+	  log.Printf("Error: Device found and in BLOCKED or PENDING states but no CONFIRM sent")
+		http.Error(w, "Error: Device found and in BLOCKED or PENDING states but no CONFIRM sent", 400)
 		return
 	}
 
 	// Confirm was sent, lets approve the device. Get this domain's CustomerID first
 	cid, err = gs.GetDomainCustomerID(request.Domain)
 	if err != nil {
+	  log.Printf("Error getting CustomerID for domain %s: %s", request.Domain, err)
 		http.Error(w, fmt.Sprintf("Error getting CustomerID for domain %s: %s", request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error getting CustomerID for domain " + request.Domain + ": " + err.Error()})
 		return
@@ -184,6 +192,7 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 	// Authenticate with the Admin SDK for this domain
 	as, err = gs.AuthenticateWithDomain(cid, request.Domain, gs.C.ActionScope)
 	if err != nil {
+	  log.Printf("Error authenticating with the Admin SDK for domain %s: %s", request.Domain, err)
 		http.Error(w, fmt.Sprintf("Error authenticating with the Admin SDK for domain %s: %s", request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error authenticating with the Admin SDK for domain " + request.Domain + ": " + err.Error()})
 		return
@@ -192,6 +201,7 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 	// Approve the device
 	err = as.Mobiledevices.Action(cid, device.ResourceId, aa).Do()
 	if err != nil {
+	  log.Printf("Error approving device %s in domain %s: %s", device.ResourceId, request.Domain, err)
 		http.Error(w, fmt.Sprintf("Error approving device %s in domain %s: %s", device.ResourceId, request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error approving device " + device.ResourceId + " in domain " + request.Domain + ": " + err.Error()})
 		return
