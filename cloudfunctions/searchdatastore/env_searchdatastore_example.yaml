@@ -1,3 +1,3 @@
 APPNAME: searchdatastore
-SM_APIKEY_ID: projects/123456789000/secrets/gsuitemdm_apikey
+SM_SLACKTOKEN_ID: projects/123456789000/secrets/gsuitemdm_slacktoken
 SM_CONFIG_ID: projects/123456789000/secrets/gsuitemdm_conf

@@ -1,5 +1,9 @@
 package slackdirectory
 
+//
+// GSuiteMDM slackdirectory Cloud Function
+//
+
 import (
 	"cloud.google.com/go/datastore"
 	"cloud.google.com/go/logging"
@@ -15,9 +19,9 @@ import (
 )
 
 var (
-	appname    string = os.Getenv("APPNAME")
-	configfile string = os.Getenv("CONFIGFILE")
-	slacktoken string = os.Getenv("SLACKTOKEN")
+	appname      string = os.Getenv("APPNAME")
+	sm_config_id string = os.Getenv("SM_CONFIG_ID")
+	sm_slacktoken_id string = os.Getenv("SM_SLACKTOKEN_ID")
 )
 
 // Search Google Datastore for a mobile device owner and return the associated phone number to Slack
@@ -45,6 +49,17 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 	text = r.Form.Get("text")
 	token = r.Form.Get("token")
 	user = r.Form.Get("user_name")
+	
+  // Get a context
+	ctx := context.Background()
+
+	// Get the Slack token from Secret Manager
+	slacktoken, err := gsuitemdm.GetSecret(ctx, sm_slacktoken_id)
+	if err != nil {
+		log.Printf("Error retrieving Slack token from Secret Manager", err)
+		http.Error(w, "Error retrieving Slack token from Secret Manager", 400)
+		return
+	}
 
 	// Check the key
 	if token != slacktoken {
@@ -53,11 +68,16 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get a context
-	ctx := context.Background()
+	// Get our app configuration from Secret Manager
+	config, err := gsuitemdm.GetSecret(ctx, sm_config_id)
+	if err != nil {
+		log.Printf("Error retrieving app configuration from Secret Manager: %s", err)
+		http.Error(w, "Error retrieving app configuration from Secret Manager", 400)
+		return
+	}
 
 	// Get a G Suite MDM Service
-	gs, err := gsuitemdm.New(ctx, configfile)
+	gs, err := gsuitemdm.New(ctx, config)
 	if err != nil {
 		// Log to stderr, will be captured as a basic Stackdriver log
 		log.Printf("Error: gsuitemdm cloudfunction %s could not start: %s", err)
@@ -126,14 +146,14 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 		// Write the data
 		w.Write([]byte(s))
 		// Write a log entry
-		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: " + strconv.Itoa(len(dirdata)) + " results returned for user=@" + user + ", q=" + text})
+		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: " + strconv.Itoa(len(dirdata)) + " results returned for user=@" + user + ", q=" + text + " RemoteIP=" + gsuitemdm.GetIP(r)})
 		return
 	} else {
 		// No data to return, say sorry
 		var s string
 		s = fmt.Sprintf("I'm sorry, but I was not able to find a user or group using your search term \"%s\"! :confused:\n", text)
 		w.Write([]byte(s))
-		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: 0 results returned for user=@" + user + ", q=" + text})
+		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: 0 results returned for user=@" + user + ", q=" + text + " RemoteIP=" + gsuitemdm.GetIP(r)})
 		return
 	}
 }

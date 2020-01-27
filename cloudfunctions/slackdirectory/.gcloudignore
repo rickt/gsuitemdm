@@ -1,0 +1,5 @@
+README.md
+deploy.sh
+env_*_example.yaml
+.git
+.gitignore
