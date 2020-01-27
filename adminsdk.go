@@ -8,7 +8,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/rickt/gsuitemdm"
 	"golang.org/x/oauth2/google"
 	admin "google.golang.org/api/admin/directory/v1"
 	"strings"
@@ -42,15 +41,15 @@ func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid, domain, scope s
 			if err != nil {
 				return nil, err
 			}
-			
+
 			// Retrieve this domain's configuration from Secret Manager
-	    config, err := gsuitemdm.GetSecret(ctx, smres.Payload.Data)
-	    if err != nil {
-        return nil, err
-	    }
+			config, err := GetSecret(ctx, string(smres.Payload.Data))
+			if err != nil {
+				return nil, err
+			}
 
 			// create JWT config using the credentials file
-			jwt, err := google.JWTConfigFromJSON(config, scope)
+			jwt, err := google.JWTConfigFromJSON([]byte(config), scope)
 			if err != nil {
 				return nil, err
 			}
