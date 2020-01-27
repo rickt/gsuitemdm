@@ -22,7 +22,6 @@ func (s DatastoreMobileDevices) Len() int {
 	return len(s.Mobiledevices)
 }
 func (s DatastoreMobileDevices) Less(i, j int) bool {
-	// return s.Mobiledevices[i].Name < s.Mobiledevices[j].Name
 	return []rune(strings.ToLower(s.Mobiledevices[i].Name))[0] < []rune(strings.ToLower(s.Mobiledevices[j].Name))[0]
 }
 func (s DatastoreMobileDevices) Swap(i, j int) {
@@ -34,8 +33,6 @@ func (s AllDirectoryData) Len() int {
 	return len(s.Data)
 }
 func (s AllDirectoryData) Less(i, j int) bool {
-	// return s.Mobiledevices[i].Name < s.Mobiledevices[j].Name
-	// return []rune(strings.ToLower(s.Mobiledevices[i].Name))[0] < []rune(strings.ToLower(s.Mobiledevices[j].Name))[0]
 	return s.Data[i].Name < s.Data[j].Name
 }
 func (s AllDirectoryData) Swap(i, j int) {
@@ -66,14 +63,13 @@ func checkUserConfirmation(s string) bool {
 
 // Helper function to strip the domain name from an email address
 func getEmailDomain(email string) string {
-
 	components := strings.Split(email, "@")
 
 	return components[1]
 }
 
 // Helper function to get a remote IP from an http.Request
-func getIP(r *http.Request) string {
+func GetIP(r *http.Request) string {
 	fwd := r.Header.Get("X-FORWARDED-FOR")
 	if fwd != "" {
 		return fwd
