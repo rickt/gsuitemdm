@@ -22,9 +22,18 @@ import (
 // Read all mobile device data from the Google Sheet
 func (mdms *GSuiteMDMService) GetSheetData() error {
 	var err error
+	
+	// We need to get the credentials to read the Google Sheet from Secret Manager
+	ctx := context.Background()
+
+	// Retrieve the credentials necessary to read/write to/from the Google Sheet from Secret Manager
+	creds, err := GetSecret(ctx, mdms.C.SheetCredsID)
+	if err != nil {
+		return nil, err
+	}
 
 	// Get an authenticated http client
-	client, err := mdms.HttpClient(mdms.C.SheetCreds)
+	client, err := mdms.HttpClient(creds)
 	if err != nil {
 		return err
 	}
@@ -74,14 +83,8 @@ func (mdms *GSuiteMDMService) GetSheetData() error {
 
 // Create an authenticated http(s) client, used to read/write the Google Sheet
 func (mdms *GSuiteMDMService) HttpClient(creds string) (*http.Client, error) {
-	// Read in the JSON credentials file for the domain/user we will write the Google Sheet as
-	data, err := ioutil.ReadFile(creds)
-	if err != nil {
-		return nil, err
-	}
-
-	// Get a nice juicy JWT config struct using that credentials file
-	conf, err := google.JWTConfigFromJSON(data, mdms.C.SheetScope)
+	// Get a nice juicy JWT config struct using our credentials
+	conf, err := google.JWTConfigFromJSON([]byte(creds), mdms.C.SheetScope)
 	if err != nil {
 		return nil, err
 	}

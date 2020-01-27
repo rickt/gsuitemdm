@@ -24,13 +24,13 @@ func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid, domain, scope s
 			ctx := context.Background()
 
 			// Retrieve this domain's configuration from Secret Manager
-			config, err := GetSecret(ctx, d.SecretID)
+			creds, err := GetSecret(ctx, d.SecretID)
 			if err != nil {
 				return nil, err
 			}
 
-			// create JWT config using the credentials file
-			jwt, err := google.JWTConfigFromJSON([]byte(config), scope)
+			// create JWT config using the credentials
+			jwt, err := google.JWTConfigFromJSON([]byte(creds), scope)
 			if err != nil {
 				return nil, err
 			}
