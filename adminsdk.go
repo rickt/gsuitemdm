@@ -8,6 +8,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/rickt/gsuitemdm"
 	"golang.org/x/oauth2/google"
 	admin "google.golang.org/api/admin/directory/v1"
 	"strings"
@@ -23,14 +24,6 @@ func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid, domain, scope s
 		switch {
 		// Domain found!
 		case d.DomainName == domain:
-			/*
-				// Read in this domain's service account JSON credentials file
-				creds, err := ioutil.ReadFile(d.CredentialsFile)
-				if err != nil {
-					return nil, err
-				}
-			*/
-
 			// Get credentials for this domain from Secret Manager. First, get a
 			// context and a Secret Manager client
 			ctx := context.Background()
@@ -44,14 +37,20 @@ func (mdms *GSuiteMDMService) AuthenticateWithDomain(customerid, domain, scope s
 				Name: d.SecretID,
 			}
 
-			// Call the Secret Manager API and get the domain credentials
+			// Call the Secret Manager API and retrieve the ID of the configuration secret
 			smres, err := client.AccessSecretVersion(ctx, smreq)
 			if err != nil {
 				return nil, err
 			}
+			
+			// Retrieve this domain's configuration from Secret Manager
+	    config, err := gsuitemdm.GetSecret(ctx, smres.Payload.Data)
+	    if err != nil {
+        return nil, err
+	    }
 
 			// create JWT config using the credentials file
-			jwt, err := google.JWTConfigFromJSON([]byte(smres.Payload.Data), scope)
+			jwt, err := google.JWTConfigFromJSON(config, scope)
 			if err != nil {
 				return nil, err
 			}
