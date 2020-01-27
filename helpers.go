@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"regexp"
 	"runtime"
@@ -69,6 +70,15 @@ func getEmailDomain(email string) string {
 	components := strings.Split(email, "@")
 
 	return components[1]
+}
+
+// Helper function to get a remote IP from an http.Request
+func getIP(r *http.Request) string {
+	fwd := r.Header.Get("X-FORWARDED-FOR")
+	if fwd != "" {
+		return fwd
+	}
+	return r.RemoteAddr
 }
 
 // Load configuration and return a config struct
