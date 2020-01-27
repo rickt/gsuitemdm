@@ -1,5 +1,9 @@
 package updatedatastore
 
+//
+// GSuiteMDM updatedatastore Cloud Function
+//
+
 import (
 	"cloud.google.com/go/logging"
 	"context"
@@ -9,12 +13,13 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 var (
-	appname    string = os.Getenv("APPNAME")
-	configfile string = os.Getenv("CONFIGFILE")
-	key        string = os.Getenv("KEY")
+	appname      string = os.Getenv("APPNAME")
+	sm_apikey_id string = os.Getenv("SM_APIKEY_ID")
+	sm_config_id string = os.Getenv("SM_CONFIG_ID")
 )
 
 // Update Google Datastore with fresh mobile device data from the Admin SDK and the Google Sheet
@@ -38,18 +43,34 @@ func UpdateDatastore(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Check the key
-	if request.Key != key {
-		log.Printf("Error: incorrect key sent with request")
+	// Get a context
+	ctx := context.Background()
+
+	// Get the API key from Secret Manager
+	apikey, err := gsuitemdm.GetSecret(ctx, sm_apikey_id)
+	if err != nil {
+		log.Printf("Error retrieving API key from Secret Manager", err)
+		http.Error(w, "Error retrieving API key from Secret Manager", 400)
+		return
+	}
+
+	// Check that the API key sent with the request matches
+	if request.Key != strings.TrimSpace(apikey) {
+		log.Printf("Error: Incorrect key sent with request")
 		http.Error(w, "Not authorized", 401)
 		return
 	}
 
-	// Get a context
-	ctx := context.Background()
+	// Get our app configuration from Secret Manager
+	config, err := gsuitemdm.GetSecret(ctx, sm_config_id)
+	if err != nil {
+		log.Printf("Error retrieving app configuration from Secret Manager: %s", err)
+		http.Error(w, "Error retrieving app configuration from Secret Manager", 400)
+		return
+	}
 
 	// Get a G Suite MDM Service
-	gs, err := gsuitemdm.New(ctx, configfile)
+	gs, err := gsuitemdm.New(ctx, config)
 	if err != nil {
 		// Log to stderr, will be captured as a basic Stackdriver log
 		log.Printf("Error: gsuitemdm cloudfunction %s could not start: %s", err)
@@ -70,6 +91,7 @@ func UpdateDatastore(w http.ResponseWriter, r *http.Request) {
 	// Get existing Datastore data
 	err = gs.GetDatastoreData()
 	if err != nil {
+	  log.Printf("Error getting existing Datastore data: %s", err)
 		sl.Log(logging.Entry{Severity: logging.Error, Payload: "Error getting existing Datastore data: " + fmt.Sprintf("%s", err)})
 		return
 	}
@@ -77,6 +99,7 @@ func UpdateDatastore(w http.ResponseWriter, r *http.Request) {
 	// Get Google Sheet data
 	err = gs.GetSheetData()
 	if err != nil {
+	  log.Printf("Error getting existing Google Sheet data: %s", err)
 		sl.Log(logging.Entry{Severity: logging.Error, Payload: "Error getting Google Sheet data: " + fmt.Sprintf("%s", err)})
 		return
 	}
@@ -88,6 +111,7 @@ func UpdateDatastore(w http.ResponseWriter, r *http.Request) {
 		// Get data about this domain's devices from the Admin SDK
 		err = gs.GetAdminSDKDevices(domain)
 		if err != nil {
+		  log.Printf("Error getting Admin SDK data for %s: %s", domain, err)
 			sl.Log(logging.Entry{Severity: logging.Error, Payload: "UpdateDatastore(): Error getting Admin SDK data for " + domain + ": " + fmt.Sprintf("%s", err)})
 			return
 		}
@@ -96,13 +120,14 @@ func UpdateDatastore(w http.ResponseWriter, r *http.Request) {
 		for _, device := range gs.SDKData.Mobiledevices {
 			err = gs.UpdateDatastoreDevice(device)
 			if err != nil {
+			  log.Printf("Error converting device: %s", err)
 				sl.Log(logging.Entry{Severity: logging.Error, Payload: "Error converting device: " + fmt.Sprintf("%s", err)})
 			}
 		}
 	}
 
 	// Finished
-	sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success"})
+	sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success RemoteIP=" + gsuitemdm.GetIP(r)})
 	fmt.Fprintf(w, "%s Success\n", appname)
 
 	return
