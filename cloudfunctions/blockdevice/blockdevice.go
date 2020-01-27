@@ -1,5 +1,9 @@
 package blockdevice
 
+//
+// GSuiteMDM blockdevice Cloud Function
+//
+
 import (
 	"cloud.google.com/go/datastore"
 	"cloud.google.com/go/logging"

@@ -22,7 +22,7 @@ func GetSecret(ctx context.Context, sid string) (string, error) {
 
 	// Build the Secret Manager request
 	smreq := &secretmanagerpb.AccessSecretVersionRequest{
-		Name: sid,
+		Name: sid + "/versions/latest",
 	}
 
 	// Call the Secret Manager API and get the requested secret using its ID
