@@ -213,7 +213,7 @@ func ApproveDevice(w http.ResponseWriter, r *http.Request) {
 
 	// Finished, write a log entry
 	log.Printf("")
-	sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: SN=" + device.SN + " Owner=" + device.Email + " RemoteIP=" + GetIP(r)})
+	sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: SN=" + device.SN + " Owner=" + device.Email + " RemoteIP=" + gsuitemdm.GetIP(r)})
 	fmt.Fprintf(w, "%s Success\n", appname)
 
 	return

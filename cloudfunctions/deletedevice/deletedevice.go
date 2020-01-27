@@ -46,7 +46,7 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error decoding JSON message body", 400)
 		return
 	}
-	
+
 	// Get a context
 	ctx := context.Background()
 
@@ -67,14 +67,14 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 
 	// Correct action specified?
 	if request.Action != "delete" {
-	  log.Printf("Error: Invalid action specified")
+		log.Printf("Error: Invalid action specified")
 		http.Error(w, "Invalid request (invalid action specified)", 400)
 		return
 	}
 
 	// Check if the request is valid
 	if (request.IMEI == "" && request.SN == "") || (request.IMEI != "" && request.SN != "") {
-	  log.Printf("Error: Invalid request (IMEI or SN not specified)")
+		log.Printf("Error: Invalid request (IMEI or SN not specified)")
 		http.Error(w, "Invalid request (IMEI or SN not specified)", 400)
 		return
 	}
@@ -117,7 +117,7 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 	// Ok, the action + domain are valid, lets get the Datastore data
 	dc, err := datastore.NewClient(ctx, gs.C.ProjectID)
 	if err != nil {
-	  log.Printf("Error creating Datastore client: %s", err)
+		log.Printf("Error creating Datastore client: %s", err)
 		http.Error(w, fmt.Sprintf("Error creating Datastore client: %s", err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error creating Datastore client: " + err.Error()})
 		return
@@ -129,7 +129,7 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 		Order(gs.C.DatastoreQueryOrderBy),
 		&devices)
 	if err != nil {
-	  log.Printf("Error querying Datastore for devices in domain %s: %s", request.Domain, err)
+		log.Printf("Error querying Datastore for devices in domain %s: %s", request.Domain, err)
 		http.Error(w, fmt.Sprintf("Error querying Datastore for devices in domain %s: %s", request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error querying Datastore for devices in domain " + request.Domain + ": " + err.Error()})
 		return
@@ -161,14 +161,14 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 
 	// Did we find the specified device?
 	if found != true {
-	  log.Printf("Error: Device not found")
+		log.Printf("Error: Device not found")
 		http.Error(w, "Error: Device not found", 400)
 		return
 	}
 
 	// Was `confirm: true` sent along with the request?
 	if request.Confirm != true {
-	  log.Print("Error: Device found, but no CONFIRM sent")
+		log.Print("Error: Device found, but no CONFIRM sent")
 		fmt.Fprintf(w, "Error: Device found, but no CONFIRM sent\n")
 		return
 	}
@@ -176,7 +176,7 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 	// Confirm was sent, lets delete the device. Get this domain's CustomerID first
 	cid, err = gs.GetDomainCustomerID(request.Domain)
 	if err != nil {
-	  log.Printf("Error getting CustomerID for domain %s: %s", request.Domain, err)
+		log.Printf("Error getting CustomerID for domain %s: %s", request.Domain, err)
 		http.Error(w, fmt.Sprintf("Error getting CustomerID for domain %s: %s", request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error getting CustomerID for domain " + request.Domain + ": " + err.Error()})
 		return
@@ -185,7 +185,7 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 	// Authenticate with the Admin SDK for this domain
 	as, err = gs.AuthenticateWithDomain(cid, request.Domain, gs.C.ActionScope)
 	if err != nil {
-	  log.Printf("Error authenticating with the Admin SDK for domain %s: %s", request.Domain, err)
+		log.Printf("Error authenticating with the Admin SDK for domain %s: %s", request.Domain, err)
 		http.Error(w, fmt.Sprintf("Error authenticating with the Admin SDK for domain %s: %s", request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error authenticating with the Admin SDK for domain " + request.Domain + ": " + err.Error()})
 		return
@@ -194,14 +194,14 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 	// Delete the device
 	err = as.Mobiledevices.Delete(cid, device.ResourceId).Do()
 	if err != nil {
-	  log.Printf("Error deleting device %s in domain %s: %s", device.ResourceId, request.Domain, err)
+		log.Printf("Error deleting device %s in domain %s: %s", device.ResourceId, request.Domain, err)
 		http.Error(w, fmt.Sprintf("Error deleting device %s in domain %s: %s", device.ResourceId, request.Domain, err), 500)
 		sl.Log(logging.Entry{Severity: logging.Warning, Payload: "Error deleting device " + device.ResourceId + " in domain " + request.Domain + ": " + err.Error()})
 		return
 	}
 
 	// Finished, write a log entry
-	sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: SN=" + device.SN + " Owner=" + device.Email})
+	sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: SN=" + device.SN + " Owner=" + device.Email + " RemoteIP=" + gsuitemdm.GetIP(r)})
 	fmt.Fprintf(w, "%s Success\n", appname)
 
 	return

@@ -189,13 +189,13 @@ func Directory(w http.ResponseWriter, r *http.Request) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(js)
-		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: " + strconv.Itoa(len(dirdata)) + " results returned"})
+		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: " + strconv.Itoa(len(dirdata)) + " results returned RemoteIP=" + gsuitemdm.GetIP(r)})
 		return
 	} else {
 		// No data to return
 		http.Error(w, "", 204)
 		// Write a log entry
-		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: 0 results returned"})
+		sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: 0 results returned RemoteIP=" + gsuitemdm.GetIP(r)})
 		return
 	}
 }
