@@ -61,10 +61,20 @@ See the `HOW-To Configure` section of each cloud function's `README.md` for full
 ### Configuration in Secret Manager ###
 Aside from each cloud function's `.yaml`, all configuration data, API keys and credentials are stored as secrets within Secret Manager. These must be created. 
 
-#### Creating the shared cloud function master configuration
+#### Creating the shared cloud function master configuration secret
 ```
 $ gcloud beta secrets create gsuitemdm_conf --replication-policy automatic \
   --data-file cloudfunctions_conf.json
+```
+
+#### Creating the per-G Suite domain credentials secret
+Assuming we want to configure `foo.com`, `bar.com` and `xyzzy.com` in the `gsuitemdm` system, and we have downloaded the relevant G Suite domain-specific service account JSON credentials files and named them appropriately:
+```
+$ for DOMAIN in foo bar xyzzy
+  do
+     gcloud beta secrets create credentials_${DOMAIN} --replication-policy automatic \
+     --data-file credentials_${DOMAIN}.com.json
+  done
 ```
 
 #### Updating configuration secrets in Secret Manager ####
