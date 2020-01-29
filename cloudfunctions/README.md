@@ -31,13 +31,13 @@ Let's look at each step in detail:
   * Log appropriate actions/events
 
 ## Configuration ##
-All `gsuitemdm` cloud functions share a single master JSON configuration stored in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/).  In order to know where to download this shared master configuration, each cloud function has a tiny `.yaml` file that is deployed along with the cloud function source code to GCP. This `.yaml` file specifies the 2x environment variables pointing to the [Google Secret IDs](https://cloud.google.com/secret-manager/docs/managing-secrets) of the shared master configuration, and is used during cloud function app startup to download the shared master configuration. For example, the [ApproveDevice](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/approvedevice) cloud function's `.yaml` (example) configuration file looks like:
+All `gsuitemdm` cloud functions share a single master JSON configuration stored in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/).  In order to know where to download this shared master configuration from (and because we do not hardcode such things), each cloud function has a tiny `.yaml` file that is deployed along with the source code to GCP. This `.yaml` file specifies the 2x environment variables pointing to the [Google Secret IDs](https://cloud.google.com/secret-manager/docs/managing-secrets) of the shared master configuration, and is used during cloud function app startup to download the shared master configuration. For example, the [ApproveDevice](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/approvedevice) cloud function's `.yaml` (example) configuration file looks like:
 ```
 APPNAME: approvedevice
 SM_APIKEY_ID: projects/12334567890/secrets/gsuitemdm_apikey
 SM_CONFIG_ID: projects/12334567890/secrets/gsuitemdm_conf
 ```
-From this `.yaml`, the ApproveDevice cloud function learns it's app name (`APPNAME` aka `approvedevice`), and the [Google Secret IDs](https://cloud.google.com/secret-manager/docs/managing-secrets) of it's API key (`SM_APIKEY_ID` aka Secret Manager secret `projects/12334567890/secrets/gsuitemdm_conf`), and the shared cloud function configuration (`SM_CONFIG_ID` aka Secret Manager secret `projects/12334567890/secrets/gsuitemdm_apikey`). During app startup, each cloud function retrieves the appropriate secrets from Secret Manager. No other configuration files are necessary. 
+From this `.yaml`, the ApproveDevice cloud function learns it's app name (`APPNAME` aka `approvedevice`), and the [Google Secret IDs](https://cloud.google.com/secret-manager/docs/managing-secrets) of it's API key (`SM_APIKEY_ID` aka Secret Manager secret `projects/12334567890/secrets/gsuitemdm_apikey`), and the shared master configuration (`SM_CONFIG_ID` aka Secret Manager secret `projects/12334567890/secrets/gsuitemdm_conf`). During app startup, each cloud function retrieves the appropriate secrets from Secret Manager. No other configuration files are necessary. 
 
 See the `HOW-To Configure` section of each cloud function's `README.md` for full details.
 
