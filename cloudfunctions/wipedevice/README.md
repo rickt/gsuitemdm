@@ -2,6 +2,17 @@
 
 A [cloud Function](https://cloud.google.com/functions/) component of the [`gsuitemdm`](https://github.com/rickt/gsuitemdm) package that [wipes a mobile device](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/delete) using the [Admin SDK](https://developers.google.com/admin-sdk).
 
+Please note that there are [2 different kinds of "device wipe"](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/action) within the G Suite Admin SDK
+
+1. `admin_account_wipe`
+2. `admin_remote_wipe`
+
+and the type of Admin SDK wipe used by `wipedevice` is configurable within the gsuitemdm shared configuration as per:
+
+```
+"remotewipetype": "admin_account_wipe",
+```
+
 ## HOW-TO Configure `wipedevice` ##
 `wipedevice` uses a `.yaml` file containing several environment variables the cloud function reads during app startup. These environment variables point the app to the shared master cloud function configuration and API key that are stored as [Secret Manager secrets](https://cloud.google.com/secret-manager/docs/managing-secrets). An example `.yaml` file for `wipedevice`:
 
