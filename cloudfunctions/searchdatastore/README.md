@@ -98,3 +98,18 @@ $ curl -X POST -d '{"key": "0123456789", "qtype": "sn", "q": "Z01ABCD0ABCD"}' \
   https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastore
 ```
 
+### `mdmtool` ###
+Similarly, `mdmtool` can be used in many ways to search for devices. Some `mdmtool` examples to return the same data as shown above:
+
+```
+$ mdmtool search -n john
+
+$ mdmtool search -e johnd@foo.com
+
+$ mdmtool search -i 012345678901234
+
+$ mdmtool search -p 2135551212
+
+$ mdmtool search -s Z01ABCD0ABCD
+```
+
