@@ -68,7 +68,7 @@ The `gsuitemdm` system requires the following Secret Manager secrets:
 `gsuitemdm_apikey` | Key used to authenticate API requests
 `gsuitemdm_conf` | Shared cloud function master configuration
 `gsuitemdm_slacktoken` | Token used to authenticate `slackdirectory` API requests from Slack
-`credentials_DOMAINNAME` | Service account credentials JSON for each G Suite DOMAINNAME
+`credentials_DOMAINNAME` | Service account credentials JSON for each G Suite DOMAINNAME (1 per domain)
 
 #### Creating Configuration Secrets ####
 
