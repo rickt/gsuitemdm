@@ -2,7 +2,7 @@
 
 A [cloud Function](https://cloud.google.com/functions/) component of the [`gsuitemdm`](https://github.com/rickt/gsuitemdm) package that [wipes a mobile device](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/delete) using the [Admin SDK](https://developers.google.com/admin-sdk).
 
-Please note that there are [2 different kinds of "device wipe"](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/action) within the G Suite Admin SDK
+Please note that there are [2 different kinds of "device wipe"](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/action) actions available within the G Suite Admin SDK
 
 1. `admin_account_wipe`
 2. `admin_remote_wipe`
@@ -10,7 +10,7 @@ Please note that there are [2 different kinds of "device wipe"](https://develope
 and the type of Admin SDK wipe used by `wipedevice` is configurable within the gsuitemdm shared configuration as per:
 
 ```
-"remotewipetype": "admin_account_wipe",
+"remotewipetype": "admin_account_wipe"
 ```
 
 ## HOW-TO Configure `wipedevice` ##
@@ -31,13 +31,13 @@ $ gcloud functions deploy WipeDevice --runtime go111 --trigger-http \
 ## HOW-TO Use `wipedevice` ##
 
 ### API ###
-Example expected JSON to wipe a device in the domain `foo.com` with IMEI `1234567890987654321`:
+Example expected JSON to wipe a device in the domain `foo.com` with IMEI `111111111111111`:
 ```json
 {
 	"action": "wipe",
 	"confirm": true,
 	"domain": "foo.com",
-	"imei": "1234567890987654321",
+	"imei": "111111111111111",
 	"key": "0123456789"
 }
 ```
@@ -48,13 +48,13 @@ Example command line using `curl` and the above JSON to wipe the abovementioned 
 
 ```
 $ curl -X POST -d \
-  '{"key": "0123456789", "action": "wipe", "imei": "1234567890987654321", "domain": "foo.com", "confirm": true}' \
+  '{"key": "0123456789", "action": "wipe", "imei": "111111111111111", "domain": "foo.com", "confirm": true}' \
   https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/WipeDevice
 ```
 
 ### `mdmtool` ##
-Example command line using `mdmtool` to wipe a device in the domain `foo.com` with IMEI `1234567890987654321`:
+Example command line using `mdmtool` to wipe a device in the domain `foo.com` with IMEI `111111111111111`:
 ```
-$ mdmtool wipe -i 1234567890987654321 -d foo.com
-WARNING: Are you sure you want to WIPE device IMEI=1234567890987654321 in domain foo.com? [y/n]: 
+$ mdmtool wipe -i 111111111111111 -d foo.com
+WARNING: Are you sure you want to WIPE device IMEI=111111111111111 in domain foo.com? [y/n]: 
 ```

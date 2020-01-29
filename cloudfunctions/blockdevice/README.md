@@ -45,5 +45,5 @@ $ curl -X POST -d \
 Example command line using `mdmtool` to block a device in the domain `foo.com` with IMEI `111111111111111`:
 ```
 $ mdmtool block -i 111111111111111 -d foo.com
-WARNING: Are you sure you want to BLOCK device IMEI=1234567890987654321 in domain foo.com? [y/n]: 
+WARNING: Are you sure you want to BLOCK device IMEI=111111111111111 in domain foo.com? [y/n]: 
 ```
