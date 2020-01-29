@@ -5,7 +5,7 @@ The various `gsuitemdm` cloud functions are the core components of the system. E
 ## Design ##
 All of the `gsuitemdm` cloud functions are designed to be as simple as possible, all use the same general design principles and follow [recommended GCP cloud function design principles/best practices](https://cloud.google.com/functions/docs/bestpractices/tips). All `gsuitemdm` cloud functions are super lightweight [http(s)-triggered](https://cloud.google.com/functions/docs/writing/http#writing_http_helloworld-go) mini-webservers. They are deployed to GCP using `gcloud`, and scale up/down as needed. Each cloud function deployment consists of a single `.go` source file and a `.yaml` file containing several environment variables pointing to a shared configuration. 
 
-Each `gsuitemdm` cloud function model has 3 steps:
+The basic `gsuitemdm` cloud function model consists of 3 steps:
 
 1. **Basic Checks**
 2. **`gsuitemdm` service startup & execution of requested action**
