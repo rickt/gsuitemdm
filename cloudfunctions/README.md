@@ -4,15 +4,16 @@ The core components of the `gsuitemdm` system are deployed as [GCP cloud functio
 
 ## List of Cloud Functions ##
 Cloud Function | What the Cloud Function Does | API Endpoint URL
- ApproveDevice	 Approves a mobile device 	 https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/ApproveDevice
- BlockDevice 	 Blocks a mobile device	 https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/BlockDevice
- DeleteDevice	 Deletes a mobile device from company MDM	 https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/DeleteDevice
- Directory	 Company phone directory	 https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/Directory
- SearchDatastore 	 Searches Google Datastore for a mobile device	 https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastore
- SlackDirectory	 Company phone directory specifically for Slack	 https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SlackDirectory
- UpdateDatastore	 Updates a mobile device in Google Datastore with fresh data from the Google Admin SDK	 https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/UpdateDatastore
- UpdateSheet	 Updates the ESS company phone Google Sheet	 https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/UpdateSheet
- WipeDevice	 Wipes a mobile device	 https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/WipeDevice
+--- | --- | ---
+ ApproveDevice	 | Approves a mobile device 	 | https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/ApproveDevice
+ BlockDevice 	 | Blocks a mobile device	 | https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/BlockDevice
+ DeleteDevice	 | Deletes a mobile device from company MDM	 | https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/DeleteDevice
+ Directory	 | Company phone directory	 | https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/Directory
+ SearchDatastore 	 | Searches Google Datastore for a mobile device	 | https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastore
+ SlackDirectory	 | Company phone directory specifically for Slack	 | https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SlackDirectory
+ UpdateDatastore	 | Updates a mobile device in Google Datastore with fresh data from the Google Admin SDK	 | https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/UpdateDatastore
+ UpdateSheet	 | Updates the Google Sheet	 | https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/UpdateSheet
+ WipeDevice	 | Wipes a mobile device	 | https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/WipeDevice
 
 
 ## Design ##
