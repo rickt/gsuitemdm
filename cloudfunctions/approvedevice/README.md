@@ -5,7 +5,7 @@ A [Cloud Function](https://cloud.google.com/functions/) component of the [gsuite
 ## HOW-TO Deploy ##
 ```
 $ gcloud functions deploy ApproveDevice --runtime go111 --trigger-http \
-   --env-vars-file env_approvedevice.yaml
+  --env-vars-file env_approvedevice.yaml
 ```
 
 ## HOW-TO Use `approvedevice` ##
@@ -21,6 +21,9 @@ Example expected JSON to approve a device in the domain `foo.com` with IMEI `123
 	"confirm": true
 }
 ```
+
+Note that if `"confirm": true` is not specified, the device will not be approved. 
+
 Example command line using `curl` and the above JSON to approve the abovementioned device:
 
 ```
