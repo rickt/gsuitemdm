@@ -6,14 +6,14 @@ The various GSuiteMDM cloud functions are the core components of the system. The
 All of the cloud functions are designed to be as simple as possible, and all follow the same general principles, and GCP cloud function design principles/best practices. A cloud function (as used in GSuiteMDM) is an http(s)-triggered mini-webserver. They are deployed to GCP, and scale up/down as needed. A high-level overview of the basic GSuiteMDM cloud functions model is:
 
 1. Basic Checks
-  * HTTP listener starts up, listens for requests
+  * https listener starts up, listens for requests
   * Verify incoming requests don't have a null body and appear to be valid JSON for our API
   * Retrieve the GSuiteMDM API key from Secret Manager
   * Verify that a valid API key was sent in the request
   * Verify that a correct action (specific to each cloud function) was sent in the request
   * Perform basic sanity checks on the action-specific data (specific to each cloud function) that was sent in the request
 2. GSuiteMDM service starts
-  * Retrieve cloud function configuration from Secret Manager
+  * Retrieve the common GSuiteMDM configuration from Secret Manager
   * Retrieve all G Suite domain configurations from Secret Manager
   * Verify that the domain specified in the request is a valid, configured domain
   * Perform any final (specific to each cloud function) request data validation
