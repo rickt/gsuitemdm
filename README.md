@@ -64,9 +64,9 @@ All configuration data, API keys and JSON G Suite domain credentials are stored 
 * Setup GCP project 
 * Setup service account(s) + JSON credentials `foreach` G Suite domain including [G Suite domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation)
 * Create secrets in Secret Manager for: 
- * G Suite domain JSON credentials
- * API key
- * Slack security token
+  * G Suite domain JSON credentials
+  * API key
+  * Slack security token
 * Grant appropriate scopes to service accounts in the Admin Console
 * Setup Google Datastore
 * Setup Google Sheet template to track mobile devices
