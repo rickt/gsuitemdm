@@ -67,7 +67,7 @@ $ gcloud beta secrets create gsuitemdm_conf --replication-policy automatic \
   --data-file cloudfunctions_conf.json
 ```
 
-### Updating configuration secrets in Secret Manager ###
+#### Updating configuration secrets in Secret Manager ####
 ```
 $ gcloud beta secrets versions add gsuitemdm_conf --data-file cloudfunctions_conf_new.json
 ```
