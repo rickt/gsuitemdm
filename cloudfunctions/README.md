@@ -25,7 +25,7 @@ All of the cloud functions are designed to be lightweight and as simple as possi
   * Log appropriate actions/events
 
 ## Configuration ##
-All of the GSuiteMDM cloud functions share a single configuration. This shared configuration is a JSON configuration file, and it lives in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/).  Each cloud function must have a tiny `.yaml` file that points to actual shared app configuration stored in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/). For example, the [ApproveDevice](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/approvedevice) cloud function's `.yaml` (example) configuration file looks like:
+All of the GSuiteMDM cloud functions share a single configuration. This shared configuration is a JSON configuration file, and it lives in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/).  Each cloud function has a tiny `.yaml` file that is deployed to GCP that is used during cloud function startup to download the shared app configuration stored in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/). For example, the [ApproveDevice](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/approvedevice) cloud function's `.yaml` (example) configuration file looks like:
 ```
 APPNAME: approvedevice
 SM_APIKEY_ID: projects/12334567890/secrets/gsuitemdm_apikey
