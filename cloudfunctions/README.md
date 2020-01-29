@@ -70,6 +70,20 @@ The `gsuitemdm` system requires the following Secret Manager secrets:
 `gsuitemdm_slacktoken` | Token used to authenticate `slackdirectory` API requests from Slack
 `credentials_DOMAINNAME` | Service account credentials JSON for each G Suite DOMAINNAME (1 per domain)
 
+So if we had a `gsuitemdm` system configured with the domains `foo.com`, `bar.com` and `xyzzy.com`, we would expect to have the following secrets: 
+
+```
+$ gcloud beta secrets list
+NAME                           CREATED              REPLICATION_POLICY  LOCATIONS
+credentials_bar                2020-01-24T16:09:20  automatic           -
+credentials_foo                2020-01-24T16:09:22  automatic           -
+credentials_xyzzy              2020-01-24T16:09:23  automatic           -
+gsuitemdm_apikey               2020-01-24T22:59:47  automatic           -
+gsuitemdm_conf                 2020-01-27T15:08:50  automatic           -
+gsuitemdm_slacktoken           2020-01-27T22:25:29  automatic           -
+
+```
+
 #### Creating Configuration Secrets ####
 
 ##### Creating the shared cloud function master configuration secret #####
