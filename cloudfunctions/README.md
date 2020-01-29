@@ -102,7 +102,8 @@ $ echo -n "yourslacktokengoeshere" | gcloud beta secrets create gsuitemdm_slackt
 
 ##### Updating configuration secrets in Secret Manager #####
 ```
-$ gcloud beta secrets versions add gsuitemdm_conf --data-file cloudfunctions_conf_new.json
+$ gcloud beta secrets versions add gsuitemdm_conf \
+  --data-file cloudfunctions_conf_new.json
 ```
 
 
@@ -110,7 +111,9 @@ $ gcloud beta secrets versions add gsuitemdm_conf --data-file cloudfunctions_con
 All `gsuitemdm` cloud functions are deployed to GCP in the same manner:
 
 ```
-$ gcloud functions deploy <FUNCTION_NAME> --runtime go111 --trigger-http \
+$ gcloud functions deploy <FUNCTION_NAME> \
+  --runtime go111 \
+  --trigger-http \
   --env-vars-file env_<FUNCTION>.yaml
 ```
 
