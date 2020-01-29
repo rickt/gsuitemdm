@@ -76,7 +76,6 @@ $ curl -X POST -d '{"key": "0123456789", "qtype": "email", "q": "johnd@foo.com"}
 Example command line using `mdmtool` to search for phone numbers including the name "doe":
 ```
 $ mdmtool dir -n doe
-```
 ----------------------+----------------+------------------------------------------
 Name                  | Phone Number   | Email 
 ----------------------+----------------+------------------------------------------
