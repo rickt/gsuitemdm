@@ -11,14 +11,14 @@ All of the `gsuitemdm` cloud functions are designed to be lightweight and as sim
 
 Let's look at each step in detail:
 
-1. Basic Checks
+1. **Basic Checks**
   * https listener starts up, listens for requests
   * Verify incoming requests don't have a null body and appear to be valid JSON for our API
   * Retrieve the GSuiteMDM API key from [Secret Manager](https://cloud.google.com/secret-manager/docs/)
   * Verify that a valid API key was sent in the request
   * Verify that a correct action (specific to each cloud function) was sent in the request
   * Perform basic sanity checks on the action-specific data (specific to each cloud function) that was sent in the request
-2. GSuiteMDM service starts
+2. **`gsuitemdm` service startup & execution of requested action**
   * Retrieve the shared GSuiteMDM configuration from [Secret Manager](https://cloud.google.com/secret-manager/docs/)
   * Retrieve all G Suite domain configurations from [Secret Manager](https://cloud.google.com/secret-manager/docs/)
   * Verify that the domain specified in the request is a valid, configured domain
