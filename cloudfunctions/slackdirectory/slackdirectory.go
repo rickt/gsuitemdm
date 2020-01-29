@@ -19,8 +19,8 @@ import (
 )
 
 var (
-	appname      string = os.Getenv("APPNAME")
-	sm_config_id string = os.Getenv("SM_CONFIG_ID")
+	appname          string = os.Getenv("APPNAME")
+	sm_config_id     string = os.Getenv("SM_CONFIG_ID")
 	sm_slacktoken_id string = os.Getenv("SM_SLACKTOKEN_ID")
 )
 
@@ -49,8 +49,8 @@ func SlackDirectory(w http.ResponseWriter, r *http.Request) {
 	text = r.Form.Get("text")
 	token = r.Form.Get("token")
 	user = r.Form.Get("user_name")
-	
-  // Get a context
+
+	// Get a context
 	ctx := context.Background()
 
 	// Get the Slack token from Secret Manager
