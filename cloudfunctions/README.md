@@ -3,20 +3,19 @@
 The core components of the `gsuitemdm` system are deployed as [GCP cloud functions](https://cloud.google.com/functions/docs/). Each cloud function exists to perform a single mobile device-related task (`approve` a device, `search` for a device, `block` a device, etc), and are used extensively by the included command line tool [`mdmtool`](https://github.com/rickt/gsuitemdm/tree/master/mdmtool) as well as being able to be called via `curl` or whatever http(s) library you prefer.
 
 ## List of Cloud Functions ##
+(where `$CFPREFIX` is the URL prefix of your GCP project, such as `https://us-central1-yourproject.cloudfunctions.net`.
+
 Cloud Function | What the Cloud Function Does | API Endpoint URL
 --- | --- | ---
  `ApproveDevice`	 | Approves a mobile device 	 | `$CFPREFIX/ApproveDevice`
  `BlockDevice` 	 | Blocks a mobile device	 | `$CFPREFIX/BlockDevice`
  `DeleteDevice`	 | Deletes a mobile device from company MDM	 | `$CFPREFIX/DeleteDevice`
  `Directory`	 | Company phone directory	 | `$CFPREFIX/Directory`
- `SearchDatastore` 	 | Searches Google Datastore for a mobile device	 | https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastore
- `SlackDirectory`	 | Company phone directory specifically for Slack	 | https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SlackDirectory
- `UpdateDatastore`	 | Updates a mobile device in Google Datastore with fresh data from the Google Admin SDK	 | https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/UpdateDatastore
- `UpdateSheet`	 | Updates the Google Sheet	 | https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/UpdateSheet
- `WipeDevice`	 | Wipes a mobile device	 | https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/WipeDevice
-
-(where `$CFPREFIX` is the URL prefix of your GCP project, such as `https://us-central1-yourproject.cloudfunctions.net`.
-
+ `SearchDatastore` 	 | Searches Google Datastore for a mobile device	 | `$CFPREFIX/SearchDatastore`
+ `SlackDirectory`	 | Company phone directory specifically for Slack	 | `$CFPREFIX/SlackDirectory`
+ `UpdateDatastore`	 | Updates a mobile device in Google Datastore with fresh data from the Google Admin SDK	 | `$CFPREFIX/UpdateDatastore`
+ `UpdateSheet`	 | Updates the Google Sheet	 | `$CFPREFIX/UpdateSheet`
+ `WipeDevice`	 | Wipes a mobile device	 | `$CFPREFIX/WipeDevice`
 
 ## Design ##
 All of the `gsuitemdm` cloud functions are designed to be as simple as possible, all use the same general design principles and follow [recommended GCP cloud function design principles/best practices](https://cloud.google.com/functions/docs/bestpractices/tips). All `gsuitemdm` cloud functions are super lightweight [http(s)-triggered](https://cloud.google.com/functions/docs/writing/http#writing_http_helloworld-go) mini-webservers. They are deployed to GCP using `gcloud`, and scale up/down as needed. Each cloud function deployment consists of a single `.go` source file and a `.yaml` file containing several environment variables pointing to a shared configuration. 
