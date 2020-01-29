@@ -30,9 +30,10 @@ Example expected JSON to search for devices owned by 'john' (case insensitive ow
 }
 ```
 
-Example expected JSON to search for devices that are currently blocked:
+Example expected JSON to search for devices that are currently blocked in the domain 'foo.com':
 ```json
 {
+	"domain": "foo.com",
 	"key": "0123456789",
 	"q": "BLOCKED",
 	"qtype": "status"
@@ -105,6 +106,8 @@ Similarly, `mdmtool` can be used in many ways to search for devices. Some `mdmto
 $ mdmtool search -n john
 
 $ mdmtool search -e johnd@foo.com
+
+$ mdmtool search -t BLOCKED -d foo.com
 
 $ mdmtool search -i 012345678901234
 
