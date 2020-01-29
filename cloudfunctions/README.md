@@ -58,24 +58,26 @@ From this `.yaml`, the ApproveDevice cloud function learns it's app name (`APPNA
 
 See the `HOW-To Configure` section of each cloud function's `README.md` for full details.
 
-### Configuration in Secret Manager ###
+### Configuration Secrets ###
 Aside from each cloud function's `.yaml`, all configuration data, API keys and credentials are stored as secrets within Secret Manager. These must be created. 
 
-#### Creating the shared cloud function master configuration secret
+#### Creating Configuration Secrets ####
+
+##### Creating the shared cloud function master configuration secret #####
 Use the included `cloudfunctions_conf_example.json` to create your own master configuration.
 ```
 $ gcloud beta secrets create gsuitemdm_conf --replication-policy automatic \
   --data-file cloudfunctions_conf_master.json
 ```
 
-###### Creating the API key ######
+###### Creating the API key secret ######
 All calls to any `gsuitemdm` cloud function must be authenticated by sending along the correct API key. Create the API key by use of `echo` and piping into `gcloud` and specifying STDIN (`-`) as the data file:
 ```
 $ echo -n "yourkeygoeshere" | gcloud beta secrets create gsuitemdm_conf --replication-policy automatic \
   --data-file=-
 ```
 
-#### Creating the per-G Suite domain credentials secrets
+##### Creating the per-G Suite domain credentials secrets #####
 Assuming we want to configure `foo.com`, `bar.com` and `xyzzy.com` in the `gsuitemdm` system, and we have downloaded the relevant G Suite domain-specific service account JSON credentials files for `foo.com`, `bar.com` and `xyzzy.com` and named them appropriately:
 ```
 $ for DOMAIN in foo bar xyzzy
@@ -85,7 +87,9 @@ $ for DOMAIN in foo bar xyzzy
   done
 ```
 
-#### Updating configuration secrets in Secret Manager ####
+#### Updating Configuration Secrets ####
+
+##### Updating configuration secrets in Secret Manager #####
 ```
 $ gcloud beta secrets versions add gsuitemdm_conf --data-file cloudfunctions_conf_new.json
 ```
