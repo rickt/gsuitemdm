@@ -1,15 +1,45 @@
 # gsuitemdm Cloud Function `directory` #
 
-A [Cloud Function](https://cloud.google.com/functions/) component of the [gsuitemdm](https://github.com/rickt/gsuitemdm) package that can be used to search for a phone number using email or name as a search key. 
+A [cloud Function](https://cloud.google.com/functions/) component of the [gsuitemdm](https://github.com/rickt/gsuitemdm) package that can be used to search for a phone number using email or name as a search key. 
 
-## HOW-TO Deploy ##
-`$ gcloud functions deploy Directory --runtime go111 --trigger-http --env-vars-file env.yaml`
+## HOW-TO Configure `directory` ##
+`directory` uses a `.yaml` file containing several environment variables the cloud function reads during app startup. These environment variables point the app to the shared master cloud function configuration and API key that are stored as [Secret Manager secrets](https://cloud.google.com/secret-manager/docs/managing-secrets). An example `.yaml` file for `directory`:
 
-## API Examples ##
+```yaml
+APPNAME: directory
+SM_APIKEY_ID: projects/12334567890/secrets/gsuitemdm_apikey
+SM_CONFIG_ID: projects/12334567890/secrets/gsuitemdm_conf
+```
 
-Example test command line that searches for phone numbers including the name "doe":
+## HOW-TO Deploy `directory` ##
+`$ gcloud functions deploy Directory --runtime go111 --trigger-http \
+   --env-vars-file env_directory.yaml`
+
+## HOW-TO Use `directory` ##
+
+### API ###
+Example expected JSON to search for phone numbers including the name "doe":
 
 ```json
+{
+	"key": "0123456789",
+	"q": "doe",
+	"qtype": "name"
+}
+```
+
+Example expected JSON to search for phone numbers associated with the email address "johnd@foo.com":
+```json
+{
+	"key": "0123456789",
+	"q": "johnd@foo.com",
+	"qtype": "email"
+}
+```
+
+Example command line using `curl` and the above JSON that searches for phone numbers including the name "doe":
+
+```
 $ curl -X POST -d '{"key": "0123456789", "qtype": "name", "q": "doe"}' \ 
   https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/Directory
 [
@@ -26,10 +56,10 @@ $ curl -X POST -d '{"key": "0123456789", "qtype": "name", "q": "doe"}' \
 ]
 ```
 
-Example test command line that searches for phone numbers associated with the email address "johnd@foo.com":
+Example command line using `curl` and the above JSON that searches for phone numbers associated with the email address "johnd@foo.com":
 
-```json
-$ curl -X POST -d '{"key": "0123456789", "qtype": "email", "q": "johnd@foo.com"}' \ 
+```
+$ curl -X POST -d '{"key": "0123456789", "qtype": "email", "q": "johnd@foo.com"}' \
   https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/Directory
 [
    {
@@ -40,5 +70,14 @@ $ curl -X POST -d '{"key": "0123456789", "qtype": "email", "q": "johnd@foo.com"}
 ]
 ```
 
-## TODO ##
-
+### `mdmtool` ###
+Example command line using `mdmtool` to search for phone numbers associated with the email address "johnd@foo.com":
+```
+$ mdmtool search -e johnd@foo.com
+----------------------+------------------+----------------+------------------+-----------------+---------------+--------------------+---------------
+Domain                | Model            | Phone Number   | Serial #         | IMEI            | Status        | Last Sync          | Owner
+----------------------+------------------+----------------+------------------+-----------------+---------------+--------------------+---------------
+foo.com               | iPhone 11 Pro    | (213) 555-1212 | G123ABC456DEF    | 12345678909876  | APPROVED      | 2 hours ago        | John Doe
+----------------------+------------------+----------------+------------------+-----------------+---------------+--------------------+---------------
+Search returned 1 results.
+```
