@@ -56,29 +56,20 @@ Out of the box, GSuiteMDM offers 3 main things to help G Suite MDM administrator
 All configuration data, API keys and JSON G Suite domain credentials are stored as secrets in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/). Learn more about [`gsuitemdm` configuration](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration) or [`gsuitemdm` secrets](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration-secrets).
 
 ## Status
-READY FOR PUBLIC USE
+* In production
+* Ready for public use
 
-## Updates
-* 20191022: All features tested, working, ready for public use
-* 20191021: Converted to POST for security reasons
-* 20191015: Basic features all ported into package & working (Admin SDK API, Datastore, Sheets, Data conversion & merging)
-* 20191014: Started conversion to go package
-
-## TODO
-* [DONE] Add PhoneNumber API cloud function
-* [DONE] Port all MDM device action operations (Approve/Block/Wipe Account/Wipe Device) into package
-* [DONE] Port all search operations into package
 
 ## Setup Notes
-
-### GCP Project Setup
-gsuitemdm needs a GCP project to run inside. Pick an existing GCP project, or create a new one. Either way, add it to the main JSON configuration file, `"projectid": "yourgcpprojectname"`. 
-
-### Per-G Suite domain Credentials Setup
-Docs coming. 
-
-### Datastore Setup
-Docs coming.
+* Setup GCP project 
+* Setup service account(s) + JSON credentials `foreach` G Suite domain including [G Suite domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation)
+* Create secrets in Secret Manager for: 
+ * G Suite domain JSON credentials
+ * API key
+ * Slack security token
+* Grant appropriate scopes to service accounts in the Admin Console
+* Setup Google Datastore
+* Setup Google Sheet template to track mobile devices
 
 ### Google Sheet Setup
 1. Make a copy of [this Google Sheet](https://update.url) and save it in Google Drive. Now get the ID of your sheet; this is the part after `https://docs.google.com/spreadsheets/d/` in the sheet's URL but before `/edit`. Add that sheet ID to the main JSON configuration file, `"sheetid": "yourgooglesheetidgoeshere"`
