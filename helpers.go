@@ -87,26 +87,6 @@ func loadConfig(config string) (GSuiteMDMConfig, error) {
 	return c, nil
 }
 
-// Load main configuration file and return a config struct
-// TODO: remove this func when all CF's have been converted to use Secret Manager
-func loadConfigFile(file string) (GSuiteMDMConfig, error) {
-
-	var c GSuiteMDMConfig
-
-	// Open the main mdmtool configuration file
-	cf, err := os.Open(file)
-	defer cf.Close()
-	if err != nil {
-		return c, err
-	}
-
-	// Decode the JSON
-	jp := json.NewDecoder(cf)
-	jp.Decode(&c)
-
-	return c, nil
-}
-
 // Helper func to track how long a func takes to execute (found on StackExchange I think!)
 func TimeTrack(start time.Time) {
 	elapsed := time.Since(start)
