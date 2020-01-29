@@ -6,7 +6,7 @@ The core components of the `gsuitemdm` system are deployed as [GCP cloud functio
 (where `$CFPREFIX` is the URL prefix of your GCP project, such as `https://us-central1-yourproject.cloudfunctions.net`.
 
 Cloud Function | What the Cloud Function Does | API Endpoint URL
---- | --- | ---
+--- | :--- | :---
  `ApproveDevice`	 | Approves a mobile device 	 | `$CFPREFIX/ApproveDevice`
  `BlockDevice` 	 | Blocks a mobile device	 | `$CFPREFIX/BlockDevice`
  `DeleteDevice`	 | Deletes a mobile device from company MDM	 | `$CFPREFIX/DeleteDevice`
