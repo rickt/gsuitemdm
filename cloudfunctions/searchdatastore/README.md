@@ -1,14 +1,56 @@
 # gsuitemdm Cloud Function `searchdatastore` #
 
-A [Cloud Function](https://cloud.google.com/functions/) component of the [gsuitemdm](https://github.com/rickt/gsuitemdm) package that searches for a mobile device in Google Datastore. 
+A [cloud Function](https://cloud.google.com/functions/) component of the [gsuitemdm](https://github.com/rickt/gsuitemdm) package that searches for a mobile device in Google Datastore. Devices can be searched using owner name or email address, IMEI/SN/phone number or device status. 
 
-## HOW-TO Deploy ##
-`$ gcloud functions deploy SearchDatastore --runtime go111 --trigger-http --env-vars-file env.yaml`
+## HOW-TO Configure `searchdatastore` ##
+`searchdatastore` uses a `.yaml` file containing several environment variables the cloud function reads during app startup. These environment variables point the app to the shared master cloud function configuration and API key that are stored as [Secret Manager secrets](https://cloud.google.com/secret-manager/docs/managing-secrets). An example `.yaml` file for `searchdatastore`:
 
-## API Examples ##
-Example test command line that searches Datastore for devices owned by 'john' (case insensitive owner name search):
+```yaml
+APPNAME: searchdatastore
+SM_APIKEY_ID: projects/12334567890/secrets/gsuitemdm_apikey
+SM_CONFIG_ID: projects/12334567890/secrets/gsuitemdm_conf
+```
+
+## HOW-TO Deploy `searchdatastore` ##
+```
+$ gcloud functions deploy SearchDatastore --runtime go111 --trigger-http \
+  --env-vars-file env_searchdatastore.yaml
+```
+
+## HOW-TO Use `searchdatastore` ##
+
+### API ###
+Example expected JSON to search for devices owned by 'john' (case insensitive owner name search):
 
 ```json
+{
+	"key": "0123456789",
+	"q": "john",
+	"qtype": "name"
+}
+```
+
+Example expected JSON to search for devices that are currently blocked:
+```json
+{
+	"key": "0123456789",
+	"q": "BLOCKED",
+	"qtype": "status"
+}
+```
+
+Example expected JSON to search for a device with an IMEI of 012345678901234:
+```json
+{
+	"key": "0123456789",
+	"q": "012345678901234",
+	"qtype": "imei"
+}
+```
+
+Example command line using `curl` to search for devices owned by 'john' (case insensitive owner name search):
+
+```
 $ curl -X POST -d '{"key": "0123456789", "qtype": "name", "q": "john"}' \
   https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastore
 [
@@ -19,10 +61,10 @@ $ curl -X POST -d '{"key": "0123456789", "qtype": "name", "q": "john"}' \
       "DeveloperMode": false,
       "Email": "johnd@foo.com",
       "IMEI": "012345678901234",
-      "Model": "iPhone XR",
+      "Model": "iPhone 11 Pro",
       "Name": "John Doe",
       "Notes": "this is John's 3rd phone",
-      "OS": "iOS 12.3.1",
+      "OS": "iOS 13.2.1",
       "OSBuild": "16F203",
       "PhoneNumber": "2135551212",
       "RAM": "64",
