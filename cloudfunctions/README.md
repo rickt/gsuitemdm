@@ -67,8 +67,14 @@ $ gcloud beta secrets create gsuitemdm_conf --replication-policy automatic \
   --data-file cloudfunctions_conf.json
 ```
 
-#### Creating the per-G Suite domain credentials secret
-Assuming we want to configure `foo.com`, `bar.com` and `xyzzy.com` in the `gsuitemdm` system, and we have downloaded the relevant G Suite domain-specific service account JSON credentials files and named them appropriately:
+#### Creating the API key ####
+All calls to any `gsuitemdm` cloud function must be authenticated by sending along the correct API key. Create the API key by use of `echo` and piping into `gcloud` and specifying STDIN (`-`) as the data file:
+```
+$ echo -n "yourkeygoeshere" | gcloud beta secrets create gsuitemdm_conf --replication-policy automatic --data-file=-
+```
+
+#### Creating the per-G Suite domain credentials secrets
+Assuming we want to configure `foo.com`, `bar.com` and `xyzzy.com` in the `gsuitemdm` system, and we have downloaded the relevant G Suite domain-specific service account JSON credentials files for `foo.com`, `bar.com` and `xyzzy.com` and named them appropriately:
 ```
 $ for DOMAIN in foo bar xyzzy
   do
