@@ -63,7 +63,8 @@ Aside from each cloud function's `.yaml`, all configuration data, API keys and c
 
 #### Creating the shared cloud function master configuration
 ```
-$ gcloud beta secrets create gsuitemdm_conf --replication-policy automatic --data-file cloudfunctions_conf.json
+$ gcloud beta secrets create gsuitemdm_conf --replication-policy automatic \
+  --data-file cloudfunctions_conf.json
 ```
 
 ### Updating configuration secrets in Secret Manager ###
