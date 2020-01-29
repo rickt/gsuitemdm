@@ -3,7 +3,7 @@
 The various GSuiteMDM cloud functions are the core components of the system. They exist to perform various mobile device-related tasks (`approve` a device, `search` for a device, `block` a device, etc), and are used extensively by `mdmtool` and of course can be called via `curl`.
 
 ## Design ##
-All of the cloud functions are designed to be lightweight and as simple as possible. All cloud functions follow the same general principles, and [hopefully!!] follow [recommended GCP cloud function design principles/best practices](https://cloud.google.com/functions/docs/bestpractices/tips). A cloud function (as used in GSuiteMDM) is a super lightweight http(s)-triggered mini-webserver. They are deployed to GCP using `gcloud`, and scale up/down as needed. A high-level overview of the basic GSuiteMDM cloud function model is:
+All of the cloud functions are designed to be lightweight and as simple as possible. All cloud functions follow the same general principles, and [hopefully!!] follow [recommended GCP cloud function design principles/best practices](https://cloud.google.com/functions/docs/bestpractices/tips). A cloud function (as used in GSuiteMDM) is a super lightweight http(s)-triggered mini-webserver. They are deployed to GCP using `gcloud`, and scale up/down as needed. Each cloud function deployment consists of a single `.go` source file and the `.yaml` file containing several environment variables pointing to a shared configuration. A high-level overview of the basic GSuiteMDM cloud function model is:
 
 1. Basic Checks
   * https listener starts up, listens for requests
