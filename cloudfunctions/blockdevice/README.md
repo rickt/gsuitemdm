@@ -2,6 +2,15 @@
 
 A [cloud Function](https://cloud.google.com/functions/) component of the [`gsuitemdm`](https://github.com/rickt/gsuitemdm) package that [blocks a mobile device](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/action) using the [Admin SDK](https://developers.google.com/admin-sdk).
 
+## HOW-TO Configure `blockdevice` ##
+`blockdevice` uses a `.yaml` file containing several environment variables the cloud function reads during app startup. These environment variables point the app to the shared master cloud function configuration and API key that are stored as [Secret Manager secrets](https://cloud.google.com/secret-manager/docs/managing-secrets). An example `.yaml` file for `blockdevice`:
+
+```yaml
+APPNAME: blockdevice
+SM_APIKEY_ID: projects/12334567890/secrets/gsuitemdm_apikey
+SM_CONFIG_ID: projects/12334567890/secrets/gsuitemdm_conf
+```
+
 ## HOW-TO Deploy `blockdevice` ##
 ```
 $ gcloud functions deploy BlockDevice --runtime go111 --trigger-http \

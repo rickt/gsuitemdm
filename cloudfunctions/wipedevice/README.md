@@ -2,6 +2,15 @@
 
 A [cloud Function](https://cloud.google.com/functions/) component of the [`gsuitemdm`](https://github.com/rickt/gsuitemdm) package that [wipes a mobile device](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/delete) using the [Admin SDK](https://developers.google.com/admin-sdk).
 
+## HOW-TO Configure `wipedevice` ##
+`wipedevice` uses a `.yaml` file containing several environment variables the cloud function reads during app startup. These environment variables point the app to the shared master cloud function configuration and API key that are stored as [Secret Manager secrets](https://cloud.google.com/secret-manager/docs/managing-secrets). An example `.yaml` file for `wipedevice`:
+
+```yaml
+APPNAME: wipedevice
+SM_APIKEY_ID: projects/12334567890/secrets/gsuitemdm_apikey
+SM_CONFIG_ID: projects/12334567890/secrets/gsuitemdm_conf
+```
+
 ## HOW-TO Deploy `wipedevice` ##
 ```
 $ gcloud functions deploy WipeDevice --runtime go111 --trigger-http \
