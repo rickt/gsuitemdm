@@ -43,4 +43,4 @@ $ gcloud functions deploy <FUNCTION_NAME> --runtime go111 --trigger-http \
 
 See the `HOW-To Deploy` section of each cloud function's `README.md` for full details. 
 
-You may find the [`deploy_all_cloudfunctions.sh`](https://github.com/rickt/gsuitemdm/blob/master/cloudfunctions/deploy_all_cloudfunctions.sh) useful.
+You may find the [`deploy_all_cloudfunctions.sh`](https://github.com/rickt/gsuitemdm/blob/master/cloudfunctions/deploy_all_cloudfunctions.sh) shell script useful.
