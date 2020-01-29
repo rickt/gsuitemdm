@@ -6,7 +6,7 @@ The core components of the `gsuitemdm` system are deployed as [GCP cloud functio
 (where `$CFPREFIX` is the URL prefix of your GCP project, such as `https://us-central1-yourproject.cloudfunctions.net`.
 
 Cloud Function | What the Cloud Function Does | API Endpoint URL
---- | :--- | :---
+:--- | :--- | :---
  `ApproveDevice`	 | Approves a mobile device 	 | `$CFPREFIX/ApproveDevice`
  `BlockDevice` 	 | Blocks a mobile device	 | `$CFPREFIX/BlockDevice`
  `DeleteDevice`	 | Deletes a mobile device from company MDM	 | `$CFPREFIX/DeleteDevice`
@@ -64,7 +64,7 @@ Aside from each cloud function's `.yaml`, all configuration data, API keys and c
 The `gsuitemdm` system requires the following Secret Manager secrets:
 
 **Secret Name** | **Purpose**
---- | ---
+:--- | :---
 `gsuitemdm_apikey` | Key used to authenticate API requests
 `gsuitemdm_conf` | Shared cloud function master configuration
 `gsuitemdm_slacktoken` | Token used to authenticate `slackdirectory` API requests from Slack
