@@ -35,7 +35,14 @@ $ curl -X POST -d '{"key": "0123456789"}' \
   https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/UpdateSheet
 ```
 
-It is recommended that Google [Cloud Scheduler](https://cloud.google.com/scheduler/) is used to schedule automatic calls to `updatesheet`, so that your ops' team can have an automatically-updated Google Sheet containing all users' mobile device infomation.
+It is recommended that Google [Cloud Scheduler](https://cloud.google.com/scheduler/) be used to schedule automatic calls to `updatesheet`, so that your ops' team can have an automatically-updated Google Sheet containing all users' mobile device infomation. For example:
+
+```
+$ gcloud scheduler jobs list
+ID                   LOCATION     SCHEDULE (TZ)                      TARGET_TYPE  STATE
+UpdateDatastore      us-central1  */1 * * * * (America/Los_Angeles)  HTTP         ENABLED
+UpdateSheet          us-central1  */5 * * * * (America/Los_Angeles)  HTTP         ENABLED
+```
 
 ### mdmtool ###
 The Google Sheet can be updated by running `mdmtool`'s `updatesheet` command:
