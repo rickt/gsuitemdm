@@ -29,18 +29,18 @@ The basic `gsuitemdm` cloud function model consists of 3 steps:
 Let's look at each step in detail:
 
 1. **Basic Checks**
-  * https listener starts up, listens for requests
-  * Verify incoming requests don't have a null body and appear to be valid JSON for our API
-  * Retrieve the GSuiteMDM API key from [Secret Manager](https://cloud.google.com/secret-manager/docs/)
-  * Verify that a valid API key was sent in the request
-  * Verify that a correct action (specific to each cloud function) was sent in the request
-  * Perform basic sanity checks on the action-specific data (specific to each cloud function) that was sent in the request
+   * https listener starts up, listens for requests
+   * Verify incoming requests don't have a null body and appear to be valid JSON for our API
+   * Retrieve the GSuiteMDM API key from [Secret Manager](https://cloud.google.com/secret-manager/docs/)
+   * Verify that a valid API key was sent in the request
+   * Verify that a correct action (specific to each cloud function) was sent in the request
+   * Perform basic sanity checks on the action-specific data (specific to each cloud function) that was sent in the request
 2. **`gsuitemdm` service startup & execution of requested action**
    * Retrieve the shared GSuiteMDM configuration from [Secret Manager](https://cloud.google.com/secret-manager/docs/)
-  * Retrieve all G Suite domain configurations from [Secret Manager](https://cloud.google.com/secret-manager/docs/)
-  * Verify that the domain specified in the request is a valid, configured domain
-  * Perform any final (specific to each cloud function) request data validation
-  * Verify that confirmation was sent in the request (not all cloud functions require a confirmation)
+   * Retrieve all G Suite domain configurations from [Secret Manager](https://cloud.google.com/secret-manager/docs/)
+   * Verify that the domain specified in the request is a valid, configured domain
+   * Perform any final (specific to each cloud function) request data validation
+   * Verify that confirmation was sent in the request (not all cloud functions require a confirmation)
   * Authenticate with and connect to any necessary GCP services ([Admin SDK](https://developers.google.com/admin-sdk), [Datastore](https://cloud.google.com/datastore), [Google Sheets](https://developers.google.com/sheets/api) etc) using domain-specific service accounts that have been granted [G Suite domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation)
   * Execute the action specific to the cloud function (approve a device, search, wipe a device, etc)
 3. **Cleanup**
