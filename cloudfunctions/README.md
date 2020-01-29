@@ -18,7 +18,7 @@ All of the cloud functions are designed to be as simple as possible, and all fol
   * Verify that the domain specified in the request is a valid, configured domain
   * Perform any final (specific to each cloud function) request data validation
   * Verify that confirmation was sent in the request (not all cloud functions require a confirmation)
-  * Authenticate with and connect to any necessary GCP services ([Admin SDK](https://developers.google.com/admin-sdk), [Datastore](https://cloud.google.com/datastore), [Google Sheets](https://developers.google.com/sheets/api) etc) using domain-specific service accounts that have been granted G Suite domain-wide delegation
+  * Authenticate with and connect to any necessary GCP services ([Admin SDK](https://developers.google.com/admin-sdk), [Datastore](https://cloud.google.com/datastore), [Google Sheets](https://developers.google.com/sheets/api) etc) using domain-specific service accounts that have been granted [G Suite domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation)
   * Execute the action specific to the cloud function (approve a device, search, wipe a device, etc)
 3. Cleanup
   * Update any documents or Datastore entities, as necessary
