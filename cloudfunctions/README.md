@@ -61,6 +61,14 @@ See the `HOW-To Configure` section of each cloud function's `README.md` for full
 ### Configuration Secrets ###
 Aside from each cloud function's `.yaml`, all configuration data, API keys and credentials are stored as secrets within Secret Manager. These must be created. 
 
+The `gsuitemdm` system requires the following Secret Manager secrets:
+
+**Secret Name** | **Purpose**
+--- | ---
+`gsuitemdm_apikey` | Key used to authenticate API requests
+`gsuitemdm_conf` | Shared cloud function master configuration
+`gsuitemdm_slacktoken` | Token used to authenticate `slackdirectory` API requests from Slack
+
 #### Creating Configuration Secrets ####
 
 ##### Creating the shared cloud function master configuration secret #####
