@@ -38,7 +38,7 @@ All `gsuitemdm` cloud functions are deployed to GCP in the same manner:
 
 ```
 $ gcloud functions deploy <FUNCTION_NAME> --runtime go111 --trigger-http \
-  --env-vars-file env_<FUNCTION_NAME>.yaml
+  --env-vars-file env_<FUNCTION>.yaml
 ```
 
 See the `HOW-To Deploy` section of each cloud function's `README.md` for full details. 
