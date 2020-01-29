@@ -40,11 +40,11 @@ Example expected JSON to search for devices that are currently blocked in the do
 }
 ```
 
-Example expected JSON to search for a device with an IMEI of 012345678901234:
+Example expected JSON to search for a device with an IMEI of 111111111111111:
 ```json
 {
 	"key": "0123456789",
-	"q": "012345678901234",
+	"q": "111111111111111",
 	"qtype": "imei"
 }
 ```
@@ -61,7 +61,7 @@ $ curl -X POST -d '{"key": "0123456789", "qtype": "name", "q": "john"}' \
       "Domain": "foo.com",
       "DeveloperMode": false,
       "Email": "johnd@foo.com",
-      "IMEI": "012345678901234",
+      "IMEI": "111111111111111",
       "Model": "iPhone 11 Pro",
       "Name": "John Doe",
       "Notes": "this is John's 3rd phone",
@@ -86,10 +86,7 @@ By way of illustration, the above same data would be returned with the following
 $ curl -X POST -d '{"key": "0123456789", "qtype": "email", "q": "johnd@foo.com"}' \
   https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastore
 
-$ curl -X POST -d '{"key": "0123456789", "qtype": "imei", "q": "012345678901234"}' \
-  https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastore
-
-$ curl -X POST -d '{"key": "0123456789", "qtype": "notes", "q": "3rd"}' \
+$ curl -X POST -d '{"key": "0123456789", "qtype": "imei", "q": "111111111111111"}' \
   https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/SearchDatastore
 
 $ curl -X POST -d '{"key": "0123456789", "qtype": "phone", "q": "2135551212"}' \

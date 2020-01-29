@@ -20,13 +20,13 @@ $ gcloud functions deploy BlockDevice --runtime go111 --trigger-http \
 ## HOW-TO Use `blockdevice` ##
 
 ### API ###
-Example expected JSON to block a device in the domain `foo.com` with IMEI `1234567890987654321`:
+Example expected JSON to block a device in the domain `foo.com` with IMEI `111111111111111`:
 ```json
 {
 	"action": "block",
 	"confirm": true,
 	"domain": "foo.com",
-	"imei": "1234567890987654321",
+	"imei": "111111111111111",
 	"key": "0123456789"
 }
 ```
@@ -37,13 +37,13 @@ Example command line using `curl` and the above JSON to block the abovementioned
 
 ```
 $ curl -X POST -d \
-  '{"key": "0123456789", "action": "block", "imei": "1234567890987654321", "domain": "foo.com", "confirm": true}' \
+  '{"key": "0123456789", "action": "block", "imei": "111111111111111", "domain": "foo.com", "confirm": true}' \
   https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/BlockDevice
 ```
 
 ### `mdmtool` ##
-Example command line using `mdmtool` to block a device in the domain `foo.com` with IMEI `1234567890987654321`:
+Example command line using `mdmtool` to block a device in the domain `foo.com` with IMEI `111111111111111`:
 ```
-$ mdmtool block -i 1234567890987654321 -d foo.com
+$ mdmtool block -i 111111111111111 -d foo.com
 WARNING: Are you sure you want to BLOCK device IMEI=1234567890987654321 in domain foo.com? [y/n]: 
 ```
