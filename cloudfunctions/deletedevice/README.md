@@ -29,7 +29,7 @@ Example command line using `curl` and the above JSON to delete the abovementione
 ```
 $ curl -X POST -d \
   '{"key": "0123456789", "action": "delete", "imei": "1234567890987654321", "domain": "foo.com", "confirm": true}' \
-  https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/ApproveDevice
+  https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/DeleteDevice
 ```
 
 ### `mdmtool` ##
