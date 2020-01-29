@@ -70,7 +70,8 @@ $ gcloud beta secrets create gsuitemdm_conf --replication-policy automatic \
 #### Creating the API key ####
 All calls to any `gsuitemdm` cloud function must be authenticated by sending along the correct API key. Create the API key by use of `echo` and piping into `gcloud` and specifying STDIN (`-`) as the data file:
 ```
-$ echo -n "yourkeygoeshere" | gcloud beta secrets create gsuitemdm_conf --replication-policy automatic --data-file=-
+$ echo -n "yourkeygoeshere" | gcloud beta secrets create gsuitemdm_conf --replication-policy automatic \
+  --data-file=-
 ```
 
 #### Creating the per-G Suite domain credentials secrets
