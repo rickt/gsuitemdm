@@ -3,7 +3,7 @@
 A [cloud Function](https://cloud.google.com/functions/) component of the [gsuitemdm](https://github.com/rickt/gsuitemdm) package that can be used to search for a phone number using name or email as a search key. This cloud function is very similar to [`directory`](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/directory) but is specifically designed to format output as expected by Slack, and as such `slackdirectory` should be used as an HTTP backend for a Slack `/slash` command such as `/dir` or `/phone` (etc).
 
 ## HOW-TO Configure `slackdirectory` ##
-`slackdirectory` uses a `.yaml` file containing several environment variables the cloud function reads during app startup. These environment variables point the app to the shared master cloud function configuration and API key that are stored as [Secret Manager secrets](https://cloud.google.com/secret-manager/docs/managing-secrets). An example `.yaml` file for `slackdirectory`:
+`slackdirectory` uses a `.yaml` file containing several environment variables the cloud function reads during app startup. These environment variables point the app to the shared master cloud function configuration and the expected token to be received in each request from  Slack that are stored as [Secret Manager secrets](https://cloud.google.com/secret-manager/docs/managing-secrets). An example `.yaml` file for `slackdirectory`:
 
 ```yaml
 APPNAME: slackdirectory
