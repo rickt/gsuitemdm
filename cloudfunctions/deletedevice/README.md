@@ -14,11 +14,11 @@ $ gcloud functions deploy DeleteDevice --runtime go111 --trigger-http \
 Example expected JSON to delete a device in the domain `foo.com` with IMEI `1234567890987654321`:
 ```json
 {
-	"key": "0123456789",
 	"action": "delete",
-	"imei": "1234567890987654321",
+	"confirm": true,
 	"domain": "foo.com",
-	"confirm": true
+	"imei": "1234567890987654321",
+	"key": "0123456789"
 }
 ```
 
