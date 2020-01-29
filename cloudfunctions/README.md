@@ -13,7 +13,7 @@ All of the cloud functions are designed to be as simple as possible, and all fol
   * Verify that a correct action (specific to each cloud function) was sent in the request
   * Perform basic sanity checks on the action-specific data (specific to each cloud function) that was sent in the request
 2. GSuiteMDM service starts
-  * Retrieve the common GSuiteMDM configuration from Secret Manager
+  * Retrieve the shared GSuiteMDM configuration from Secret Manager
   * Retrieve all G Suite domain configurations from Secret Manager
   * Verify that the domain specified in the request is a valid, configured domain
   * Perform any final (specific to each cloud function) request data validation
