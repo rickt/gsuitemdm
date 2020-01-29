@@ -52,6 +52,9 @@ Out of the box, GSuiteMDM offers 3 main things to help G Suite MDM administrator
 	* (TODO)
 2. tools (command line tool `mdmtool` and auto-updated mobile device tracking Google Sheet to manage G Suite MDM-protected mobile devices without having to use the G Suite [Admin Console](https://admin.google.com/). 
 
+## Configuration ##
+All configuration data, API keys and JSON G Suite domain credentials are stored as secrets in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/). Learn more about [`gsuitemdm` configuration](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration) or [`gsuitemdm` secrets](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration-secrets).
+
 ## Status
 READY FOR PUBLIC USE
 
