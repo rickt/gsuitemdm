@@ -58,6 +58,20 @@ From this `.yaml`, the ApproveDevice cloud function learns it's app name (`APPNA
 
 See the `HOW-To Configure` section of each cloud function's `README.md` for full details.
 
+### Configuration in Secret Manager ###
+Aside from each cloud function's `.yaml`, all configuration data, API keys and credentials are stored as secrets within Secret Manager. These must be created. 
+
+#### Creating the shared cloud function master configuration
+```
+$ gcloud beta secrets create gsuitemdm_conf --replication-policy automatic --data-file cloudfunctions_conf.json
+```
+
+### Updating configuration secrets in Secret Manager ###
+```
+$ gcloud beta secrets versions add gsuitemdm_conf --data-file cloudfunctions_conf_new.json
+```
+
+
 ## Deployment ##
 All `gsuitemdm` cloud functions are deployed to GCP in the same manner:
 
