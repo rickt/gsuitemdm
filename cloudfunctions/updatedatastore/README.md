@@ -16,3 +16,31 @@ SM_CONFIG_ID: projects/12334567890/secrets/gsuitemdm_conf
 $ gcloud functions deploy UpdateDatastore --runtime go111 --trigger-http \
   --env-vars-file env_updatedatastore.yaml 
 ```
+
+## HOW-TO Use `updatedatastore` ##
+
+### API ###
+Example expected JSON to update Google Datastore with fresh mobile device data:
+
+```json
+{
+	"key": "0123456789"
+}
+```
+
+Example command line using `curl` and the above JSON to update Google Datastore with fresh movbile device data:
+
+```
+$ curl -X POST -d '{"key": "0123456789"}' \
+  https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/UpdateDatastore
+```
+
+### mdmtool ###
+Fresh mobile device data can be downloaded and updated in Google Datastore by running `mdmtool`'s `updatedb` command:
+
+```
+$ mdmtool updatedb
+Updating Datastore...  done.
+updatedatastore Success
+```
+
