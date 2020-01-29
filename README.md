@@ -60,7 +60,9 @@ All configuration data, API keys and JSON G Suite domain credentials are stored 
 * Ready for public use
 
 
-## Setup Notes
+## Brief Setup Notes
+A full and complete installation guide to follow, but for now, some brief setup notes & requirements: 
+
 * Setup GCP project 
   * Enable the required APIs (`admin`, `cloudfunctions`, `cloudscheduler`, `datastore`, `logging`, `secretmanager`, `sheets`)
 * Setup service account(s) + JSON credentials `foreach` G Suite domain including [G Suite domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation)
