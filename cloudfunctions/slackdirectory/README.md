@@ -13,7 +13,9 @@ SM_SLACKTOKEN_ID: projects/12334567890/secrets/gsuitemdm_slacktoken
 
 ## HOW-TO Deploy `slackdirectory` ##
 ```
-$ gcloud functions deploy SlackDirectory --runtime go111 --trigger-http \
+$ gcloud functions deploy SlackDirectory \
+  --runtime go111 \
+  --trigger-http \
   --env-vars-file env_slackdirectory.yaml
 ```
 

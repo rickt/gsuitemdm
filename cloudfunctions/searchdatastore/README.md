@@ -13,7 +13,9 @@ SM_CONFIG_ID: projects/12334567890/secrets/gsuitemdm_conf
 
 ## HOW-TO Deploy `searchdatastore` ##
 ```
-$ gcloud functions deploy SearchDatastore --runtime go111 --trigger-http \
+$ gcloud functions deploy SearchDatastore \
+  --runtime go111 \
+  --trigger-http \
   --env-vars-file env_searchdatastore.yaml
 ```
 

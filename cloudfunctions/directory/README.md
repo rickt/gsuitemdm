@@ -13,8 +13,10 @@ SM_CONFIG_ID: projects/12334567890/secrets/gsuitemdm_conf
 
 ## HOW-TO Deploy `directory` ##
 ```
-$ gcloud functions deploy Directory --runtime go111 --trigger-http \
-   --env-vars-file env_directory.yaml
+$ gcloud functions deploy Directory \
+  --runtime go111 \
+  --trigger-http \
+  --env-vars-file env_directory.yaml
 ```
 
 ## HOW-TO Use `directory` ##
