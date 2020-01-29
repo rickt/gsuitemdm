@@ -1,6 +1,6 @@
 # gsuitemdm Cloud Function `approvedevice` #
 
-A [Cloud Function](https://cloud.google.com/functions/) component of the [gsuitemdm](https://github.com/rickt/gsuitemdm) package that approves a mobile device using the [Admin SDK](https://developers.google.com/admin-sdk).
+A [cloud Function](https://cloud.google.com/functions/) component of the [`gsuitemdm`](https://github.com/rickt/gsuitemdm) package that approves a mobile device using the [Admin SDK](https://developers.google.com/admin-sdk).
 
 ## HOW-TO Deploy ##
 ```
