@@ -62,12 +62,13 @@ See the `HOW-To Configure` section of each cloud function's `README.md` for full
 Aside from each cloud function's `.yaml`, all configuration data, API keys and credentials are stored as secrets within Secret Manager. These must be created. 
 
 #### Creating the shared cloud function master configuration secret
+Use the included `cloudfunctions_conf_example.json` to create your own master configuration.
 ```
 $ gcloud beta secrets create gsuitemdm_conf --replication-policy automatic \
-  --data-file cloudfunctions_conf.json
+  --data-file cloudfunctions_conf_master.json
 ```
 
-#### Creating the API key ####
+###### Creating the API key ######
 All calls to any `gsuitemdm` cloud function must be authenticated by sending along the correct API key. Create the API key by use of `echo` and piping into `gcloud` and specifying STDIN (`-`) as the data file:
 ```
 $ echo -n "yourkeygoeshere" | gcloud beta secrets create gsuitemdm_conf --replication-policy automatic \
