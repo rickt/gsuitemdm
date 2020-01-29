@@ -66,14 +66,16 @@ Aside from each cloud function's `.yaml`, all configuration data, API keys and c
 ##### Creating the shared cloud function master configuration secret #####
 Use the included `cloudfunctions_conf_example.json` to create your own master configuration.
 ```
-$ gcloud beta secrets create gsuitemdm_conf --replication-policy automatic \
+$ gcloud beta secrets create gsuitemdm_conf \
+  --replication-policy automatic \
   --data-file cloudfunctions_conf_master.json
 ```
 
 ##### Creating the API key secret #####
 All calls to any `gsuitemdm` cloud function must be authenticated by sending along the correct API key. Create the API key by use of `echo` and piping into `gcloud` and specifying STDIN (`-`) as the data file:
 ```
-$ echo -n "yourkeygoeshere" | gcloud beta secrets create gsuitemdm_conf --replication-policy automatic \
+$ echo -n "yourkeygoeshere" | gcloud beta secrets create gsuitemdm_conf \
+  --replication-policy automatic \
   --data-file=-
 ```
 
@@ -82,7 +84,8 @@ Assuming we want to configure `foo.com`, `bar.com` and `xyzzy.com` in the `gsuit
 ```
 $ for DOMAIN in foo bar xyzzy
   do
-     gcloud beta secrets create credentials_${DOMAIN} --replication-policy automatic \
+     gcloud beta secrets create credentials_${DOMAIN} \
+     --replication-policy automatic \
      --data-file credentials_${DOMAIN}.com.json
   done
 ```
@@ -90,7 +93,8 @@ $ for DOMAIN in foo bar xyzzy
 #### Creating the Slack token secret ####
 When Slack calls the `slackdirectory` cloud function API, it will send along a token. This token is checked to verify that it was indeed Slack who made the API call. Create the secret using:
 ```
-$ echo -n "yourslacktokengoeshere" | gcloud beta secrets create gsuitemdm_slacktoken --replication-policy automatic \
+$ echo -n "yourslacktokengoeshere" | gcloud beta secrets create gsuitemdm_slacktoken \
+  --replication-policy automatic \
   --data-file=-
 ```
 
