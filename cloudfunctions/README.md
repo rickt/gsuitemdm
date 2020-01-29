@@ -2,7 +2,7 @@
 
 The core components of the `gsuitemdm` system are deployed as [GCP cloud functions](https://cloud.google.com/functions/docs/). Each cloud function exists to perform a single mobile device-related task (`approve` a device, `search` for a device, `block` a device, etc), and are used extensively by the included command line tool [`mdmtool`](https://github.com/rickt/gsuitemdm/tree/master/mdmtool) as well as being able to be called via `curl` or whatever http(s) library you prefer.
 
-## List of Cloud Functions ##
+## List of `gsuitemdm` Cloud Functions ##
 (where `$CFPREFIX` is the URL prefix of your GCP project, such as `https://us-central1-yourproject.cloudfunctions.net`.
 
 Cloud Function | What the Cloud Function Does | API Endpoint URL
