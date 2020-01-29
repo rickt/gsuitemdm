@@ -37,5 +37,6 @@ From this `.yaml`, the ApproveDevice cloud function learns it's app name (`APPNA
 All `gsuitemdm` cloud functions are deployed to GCP in the same manner:
 
 ```
-$ gcloud functions deploy <FUNCTION_NAME> --runtime go111 --trigger-http --env-vars-file env_<FUNCTION_NAME>.yaml
+$ gcloud functions deploy <FUNCTION_NAME> --runtime go111 --trigger-http \
+  --env-vars-file env_<FUNCTION_NAME>.yaml
 ```
