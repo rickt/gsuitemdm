@@ -17,8 +17,8 @@ Example expected JSON to block a device in the domain `foo.com` with IMEI `12345
 	"action": "block",
 	"confirm": true,
 	"domain": "foo.com",
-	"imei": "1234567890987654321"
-	"key": "0123456789",
+	"imei": "1234567890987654321",
+	"key": "0123456789"
 }
 ```
 
