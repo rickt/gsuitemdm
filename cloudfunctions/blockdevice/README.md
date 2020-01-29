@@ -1,6 +1,6 @@
 # gsuitemdm Cloud Function `blockdevice` #
 
-A [cloud Function](https://cloud.google.com/functions/) component of the [`gsuitemdm`](https://github.com/rickt/gsuitemdm) package that blocks a mobile device using the [Admin SDK](https://developers.google.com/admin-sdk).
+A [cloud Function](https://cloud.google.com/functions/) component of the [`gsuitemdm`](https://github.com/rickt/gsuitemdm) package that [blocks a mobile device](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/action) using the [Admin SDK](https://developers.google.com/admin-sdk).
 
 ## HOW-TO Deploy `blockdevice` ##
 ```
@@ -36,5 +36,5 @@ $ curl -X POST -d \
 Example command line using `mdmtool` to block a device in the domain `foo.com` with IMEI `1234567890987654321`:
 ```
 $ mdmtool block -i 1234567890987654321 -d foo.com
-WARNING: Are you sure you want to APPROVE device IMEI=1234567890987654321 in domain foo.com? [y/n]: 
+WARNING: Are you sure you want to BLOCK device IMEI=1234567890987654321 in domain foo.com? [y/n]: 
 ```
