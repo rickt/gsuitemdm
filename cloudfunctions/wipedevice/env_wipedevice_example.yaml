@@ -1,3 +1,3 @@
 APPNAME: wipedevice
-CONFIGFILE: wipedevice_conf.json
-KEY: 0123456789
+SM_APIKEY_ID: projects/123456789000/secrets/gsuitemdm_apikey
+SM_CONFIG_ID: projects/123456789000/secrets/gsuitemdm_conf
