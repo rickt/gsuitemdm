@@ -36,7 +36,7 @@ Let's look at each step in detail:
   * Verify that a correct action (specific to each cloud function) was sent in the request
   * Perform basic sanity checks on the action-specific data (specific to each cloud function) that was sent in the request
 2. **`gsuitemdm` service startup & execution of requested action**
-  * Retrieve the shared GSuiteMDM configuration from [Secret Manager](https://cloud.google.com/secret-manager/docs/)
+   * Retrieve the shared GSuiteMDM configuration from [Secret Manager](https://cloud.google.com/secret-manager/docs/)
   * Retrieve all G Suite domain configurations from [Secret Manager](https://cloud.google.com/secret-manager/docs/)
   * Verify that the domain specified in the request is a valid, configured domain
   * Perform any final (specific to each cloud function) request data validation
