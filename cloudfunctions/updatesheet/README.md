@@ -40,7 +40,6 @@ It is recommended that Google [Cloud Scheduler](https://cloud.google.com/schedul
 ```
 $ gcloud scheduler jobs list
 ID                   LOCATION     SCHEDULE (TZ)                      TARGET_TYPE  STATE
-UpdateDatastore      us-central1  */1 * * * * (America/Los_Angeles)  HTTP         ENABLED
 UpdateSheet          us-central1  */5 * * * * (America/Los_Angeles)  HTTP         ENABLED
 ```
 

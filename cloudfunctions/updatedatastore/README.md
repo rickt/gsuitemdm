@@ -35,6 +35,14 @@ $ curl -X POST -d '{"key": "0123456789"}' \
   https://us-central1-<YOURGCPPROJECTNAME>.cloudfunctions.net/UpdateDatastore
 ```
 
+It is recommended that Google [Cloud Scheduler](https://cloud.google.com/scheduler/) be used to schedule automatic calls to `updatedatastore`, for example: 
+
+```
+$ gcloud scheduler jobs list
+ID                   LOCATION     SCHEDULE (TZ)                      TARGET_TYPE  STATE
+UpdateDatastore      us-central1  */1 * * * * (America/Los_Angeles)  HTTP         ENABLED
+```
+
 ### mdmtool ###
 Fresh mobile device data can be downloaded and updated in Google Datastore by running `mdmtool`'s `updatedb` command:
 
