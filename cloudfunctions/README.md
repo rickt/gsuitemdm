@@ -65,12 +65,12 @@ See the `HOW-To Configure` section of each cloud function's `README.md` for full
 ### Configuration Secrets ###
 The `gsuitemdm` system requires the following Secret Manager secrets:
 
-**Secret Name** | **Purpose**
-:--- | :---
-`gsuitemdm_apikey` | Key used to authenticate API requests
-`gsuitemdm_conf` | Shared cloud function master configuration
-`gsuitemdm_slacktoken` | Token used to authenticate `slackdirectory` API requests from Slack
-`credentials_DOMAINNAME` | Service account credentials JSON for each G Suite DOMAINNAME (1 per domain)
+**Secret Name** | **Purpose** | **Used By**
+:--- | :--- | :---
+`gsuitemdm_apikey` | Key used to authenticate API requests | All cloud functions, `mdmtool`
+`gsuitemdm_conf` | Shared cloud function master configuration | All cloud functions, `mdmtool`
+`gsuitemdm_slacktoken` | Token used to authenticate `slackdirectory` API requests from Slack | `slackdirectory`
+`credentials_DOMAINNAME` | Service account credentials JSON for each G Suite DOMAINNAME (1 per domain) | All cloud functions
 
 So if we had a `gsuitemdm` system configured with the domains `foo.com`, `bar.com` and `xyzzy.com`, we would expect to have the following secrets: 
 
