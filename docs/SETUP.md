@@ -44,3 +44,12 @@ do
 done
 ```
 ### 4. Create & download [service account](https://cloud.google.com/iam/docs/service-accounts) [JSON credential files](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) for all G Suite domains ###
+
+### 5. Grant [domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation) permissions to service accounts ###
+
+### 6. Grant [Directory Admin SDK API scope permissions](https://developers.google.com/admin-sdk/directory/v1/guides/authorizing) to service accounts ###
+
+### 7. Create [Secret Manager](https://cloud.google.com/secret-manager/docs/) configuration secrets ###
+
+### 8. Setup Google Sheet template for ops team mobile device tracking spreadsheet ###
+
