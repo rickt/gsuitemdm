@@ -3,7 +3,7 @@
 
 `gsuitemdm` provides:
 * Multiple, easy to use, secure mobile device management APIs deployed as [cloud functions](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/) to help you quickly manage many mobile devices 
-* A command line tool ([`mdmtool`](https://github.com/rickt/gsuitemdm/tree/master/mdmtool) allowing for easy command line mobile device management
+* A command line tool ([`mdmtool`](https://github.com/rickt/gsuitemdm/tree/master/mdmtool)) allowing for easy command line mobile device management
 * Mobile device & user data stored in [Google Datastore](https://cloud.google.com/datastore/docs/)
 * Configuration, keys & credentials stored securely as secrets in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/)
 
@@ -19,6 +19,7 @@
 * G Suite administrators managing multiple mobile devices in multiple G Suite domains spread across multiple G Suite organizational accounts
 * Programmatically perform administrative actions on G Suite MDM-protected mobile devices 
   * Generate an on-call list using the [`directory` API](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/directory)
+* Quickly and easily approve/block/wipe mobile devices in the command line without logging into the G Suite Admin Console
 
 ## Configuration ##
 All configuration data, API keys and service account domain credentials are stored as secrets in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/). Learn more about [`gsuitemdm` configuration](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration) or [`gsuitemdm` secrets](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration-secrets).
