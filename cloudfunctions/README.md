@@ -120,7 +120,7 @@ $ echo -n "yourslacktokengoeshere" | gcloud beta secrets create gsuitemdm_slackt
   --replication-policy automatic \
   --data-file=-
 ```
-You can specify the token that Slack sends to `slackdirectory` by creating/editing your own slash command like `/phone` at [`Yourslack Admin --> Manage Apps --> Custom`](https://YOURSLACK.slack.com/apps/manage/custom-integrations) `--> Slash Commands`. 
+You can specify the token that Slack sends to `slackdirectory` by creating/editing your own `/phone` slash command at [`Yourslack Admin --> Manage Apps --> Custom`](https://YOURSLACK.slack.com/apps/manage/custom-integrations) `--> Slash Commands
 
 #### Updating Configuration Secrets ####
 
