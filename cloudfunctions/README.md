@@ -114,12 +114,13 @@ $ for DOMAIN in foo bar xyzzy
 ```
 
 #### Creating the Slack token secret ####
-When Slack calls the `slackdirectory` cloud function API, it will send along a token. This token is checked to verify that it was indeed Slack who made the API call. Create the secret using:
+When Slack calls the `slackdirectory` cloud function API, it will send along a token. This token is checked to verify that it was indeed Slack who made the API call. Create the secret for that token using:
 ```
 $ echo -n "yourslacktokengoeshere" | gcloud beta secrets create gsuitemdm_slacktoken \
   --replication-policy automatic \
   --data-file=-
 ```
+You can specify the token that Slack sends to `slackdirectory` by creating/editing your own slash command like `/phone` at [`Yourslack Admin --> Manage Apps --> Custom`](https://YOURSLACK.slack.com/apps/manage/custom-integrations) `--> Slash Commands`. 
 
 #### Updating Configuration Secrets ####
 
