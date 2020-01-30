@@ -62,10 +62,11 @@ Create and download a JSON credentials file for this service account:
 $ gcloud iam service-accounts keys create credentials_foo.json \
   --iam-account=gsuitemdm@PROJECTNAME.iam.gserviceaccount.com
 ```
-
 ### 5. Grant [domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation) permissions to service accounts ###
+Docs coming.
 
 ### 6. Grant [Directory Admin SDK API scope permissions](https://developers.google.com/admin-sdk/directory/v1/guides/authorizing) to service accounts ###
+Docs coming.
 
 ### 7. Create [Secret Manager](https://cloud.google.com/secret-manager/docs/) configuration secrets ###
 #### 7.1 Create the per-G Suite service account domain credential secrets ####
@@ -100,7 +101,7 @@ $ echo -n "yourslacktokengoeshere" | gcloud beta secrets create gsuitemdm_slackt
   --data-file=-
 ```
 You can configure the token that Slack sends to `slackdirectory` when creating/editing your own `/phone` slash command at [`Yourslack Admin --> Manage Apps --> Custom`](https://YOURSLACK.slack.com/apps/manage/custom-integrations) `--> Slash Commands`
-
-
 ### 8. Setup Google Sheet template for ops team mobile device tracking spreadsheet ###
+Docs coming.
+
 
