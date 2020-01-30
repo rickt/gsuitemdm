@@ -70,7 +70,6 @@ The `gsuitemdm` system requires the following Secret Manager secrets:
 `gsuitemdm_apikey` | Key used to authenticate API requests | All cloud functions, `mdmtool`
 `gsuitemdm_conf` | Shared cloud function master configuration | All cloud functions, `mdmtool`
 `gsuitemdm_slacktoken` | Token used to authenticate requests from Slack | `slackdirectory`
-`gsuitemdm_urls` | URL configuration | `mdmtool`
 `credentials_DOMAINNAME` | Service account credentials JSON for each G Suite DOMAINNAME (1 per domain) | All cloud functions
 
 So if we had a `gsuitemdm` system configured with the domains `foo.com`, `bar.com` and `xyzzy.com`, we would expect to have the following secrets: 
@@ -84,7 +83,6 @@ credentials_xyzzy              2020-01-24T16:09:23  automatic           -
 gsuitemdm_apikey               2020-01-24T22:59:47  automatic           -
 gsuitemdm_conf                 2020-01-27T15:08:50  automatic           -
 gsuitemdm_slacktoken           2020-01-27T22:25:29  automatic           -
-gsuitemdm_urls                 2020-01-28T08:45:58  automatic           -
 
 ```
 #### Creating Configuration Secrets ####
@@ -114,14 +112,6 @@ $ for DOMAIN in foo bar xyzzy
      --replication-policy automatic \
      --data-file credentials_${DOMAIN}.com.json
   done
-```
-
-##### Creating the `gsuitemdm` URLs secret #####
-`mdmtool` retrieves the list of API endpoint URLs from the `gsuitemdm_urls` secret. Use the included [`gsuitemdm_urls_example.json`](https://github.com/rickt/gsuitemdm/blob/dev/cloudfunctions/gsuitemdm_urls_example.json) as a template to create a JSON specific to your GCP project's URLs and create the secret:
-```
-$ gcloud beta secrets create gsuitemdm_urls \
-  --replication-policy automatic \
-  --data-file gsuitemdm_urls_new.json
 ```
 
 ##### Creating the Slack token secret #####
