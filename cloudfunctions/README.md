@@ -115,7 +115,7 @@ $ for DOMAIN in foo bar xyzzy
 ```
 
 ##### Creating the `gsuitemdm` URLs secret #####
-The `mdmtool` retrieves the list of API endpoint URLs from the `gsuitemdm_urls` secret. Use the included [`gsuitemdm_urls_example.json`](https://github.com/rickt/gsuitemdm/blob/dev/cloudfunctions/gsuitemdm_urls_example.json) as a template to create a JSON specific to your GCP project's URLs and create the secret:
+`mdmtool` retrieves the list of API endpoint URLs from the `gsuitemdm_urls` secret. Use the included [`gsuitemdm_urls_example.json`](https://github.com/rickt/gsuitemdm/blob/dev/cloudfunctions/gsuitemdm_urls_example.json) as a template to create a JSON specific to your GCP project's URLs and create the secret:
 ```
 $ gcloud beta secrets create gsuitemdm_urls \
   --replication-policy automatic \
