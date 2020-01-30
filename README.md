@@ -52,15 +52,21 @@ Out of the box, GSuiteMDM offers 3 main things to help G Suite MDM administrator
 	* (TODO)
 2. tools (command line tool `mdmtool` and auto-updated mobile device tracking Google Sheet to manage G Suite MDM-protected mobile devices without having to use the G Suite [Admin Console](https://admin.google.com/). 
 
+## Data Storage ##
+* Mobile device & user data stored in [Google Datastore](https://cloud.google.com/datastore/docs/)
+* Configuration/keys stored in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/)
+* (Optional) Google Sheet for mobile device tracking
+
 ## Configuration ##
-All configuration data, API keys and JSON G Suite domain credentials are stored as secrets in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/). Learn more about [`gsuitemdm` configuration](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration) or [`gsuitemdm` secrets](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration-secrets).
+All configuration data, API keys and service account domain credentials are stored as secrets in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/). Learn more about [`gsuitemdm` configuration](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration) or [`gsuitemdm` secrets](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration-secrets).
 
 ## Status
 * In production
 * Ready for public use
+* Docs: 90%
 
 ## Pre-Requisites ##
-* 1+ G Suite domains using G Suite MDM to manage iOS/Android mobile devices
+* 1+ G Suite domain(s) using G Suite MDM to manage iOS/Android mobile devices
 * GCP project with billing setup
 
 ## Brief Setup Notes
