@@ -1,6 +1,7 @@
 # `gsuitemdm` Setup
 For these example setup instructions, we will make the following critical assumptions:
 * 3x G Suite domains (`foo.com`, `bar.com`, `xyzzy.com`) are G Suite domains under your control and all have mobile devices protected by [G Suite MDM](https://support.google.com/a/answer/1734200?hl=en)
+* We have chosen `foo.com` to be the "master" domain, mainly because that is where the [ops team mobile device tracking spreadsheet](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/updatesheet) lives
 
 ## Overview of Setup ##
 1. Setup a GCP project in your organization for `gsuitemdm`
@@ -42,4 +43,4 @@ do
    gcloud services enable ${API}.googleapis.com
 done
 ```
-
+### 4. Create & download [service account](https://cloud.google.com/iam/docs/service-accounts) [JSON credential files](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) for all G Suite domains ###
