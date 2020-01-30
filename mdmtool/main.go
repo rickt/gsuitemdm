@@ -11,9 +11,16 @@ import (
 )
 
 const (
-	appname      string = "mdmtool"
-	sm_apikey_id string = "projects/503787889752/secrets/gsuitemdm_apikey"
-	sm_urls_id   string = "projects/503787889752/secrets/gsuitemdm_urls"
+	apikey             string = "XXXX"
+	appname            string = "mdmtool"
+	approvedeviceurl   string = "https://us-central1-PROJECTID.cloudfunctions.net/ApproveDevice"
+	blockdeviceurl     string = "https://us-central1-PROJECTID.cloudfunctions.net/BlockDevice"
+	deletedeviceurl    string = "https://us-central1-PROJECTID.cloudfunctions.net/DeleteDevice"
+	directoryurl       string = "https://us-central1-PROJECTID.cloudfunctions.net/Directory"
+	searchdatastoreurl string = "https://us-central1-PROJECTID.cloudfunctions.net/SearchDatastore"
+	updatedatastoreurl string = "https://us-central1-PROJECTID.cloudfunctions.net/UpdateDatastore"
+	updatesheeturl     string = "https://us-central1-PROJECTID.cloudfunctions.net/UpdateSheet"
+	wipedeviceurl      string = "https://us-central1-PROJECTID.cloudfunctions.net/WipeDevice"
 )
 
 var (

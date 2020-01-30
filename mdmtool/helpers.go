@@ -6,8 +6,6 @@ package main
 
 import (
 	"bufio"
-	"context"
-	"encoding/json"
 	"fmt"
 	"github.com/dustin/go-humanize"
 	"github.com/rickt/gsuitemdm"
@@ -40,43 +38,18 @@ func checkUserConfirmation(s string) bool {
 	}
 }
 
-// Load MDMTool configuration from Secret Manager
+// Load MDMTool configuration
 func loadMDMToolConfig() (MDMToolConfig, error) {
-	var cfg MDMToolConfig
-	var urls MDMToolURLs
-
-	// Get a context
-	ctx := context.Background()
-
-	// Retrieve the list of GSuiteMDM URLs from Secret Manager
-	u, err := gsuitemdm.GetSecret(ctx, sm_urls_id)
-	if err != nil {
-		log.Printf("Error retrieving GSuiteMDM URLs from Secret Manager", err)
-		return cfg, err
-	}
-
-	// Decode the URLs secret into a nice struct
-	jp := json.NewDecoder(strings.NewReader(u))
-	jp.Decode(&urls)
-
-	// Retrieve the API key from Secret Manager
-	ak, err := gsuitemdm.GetSecret(ctx, sm_apikey_id)
-	if err != nil {
-		log.Printf("Error retrieving GSuiteMDM API key from Secret Manager", err)
-		return cfg, err
-	}
-
-	// Create a nice MDMTool config struct and return it
 	c := MDMToolConfig{
-		APIKey:             ak,
-		ApproveDeviceURL:   urls.ApproveDeviceURL,
-		BlockDeviceURL:     urls.BlockDeviceURL,
-		DeleteDeviceURL:    urls.DeleteDeviceURL,
-		DirectoryURL:       urls.DeleteDeviceURL,
-		SearchDatastoreURL: urls.DeleteDeviceURL,
-		UpdateDatastoreURL: urls.UpdateDatastoreURL,
-		UpdateSheetURL:     urls.UpdateSheetURL,
-		WipeDeviceURL:      urls.WipeDeviceURL,
+		APIKey:             apikey,
+		ApproveDeviceURL:   approvedeviceurl,
+		BlockDeviceURL:     blockdeviceurl,
+		DeleteDeviceURL:    deletedeviceurl,
+		DirectoryURL:       directoryurl,
+		SearchDatastoreURL: searchdatastoreurl,
+		UpdateDatastoreURL: updatedatastoreurl,
+		UpdateSheetURL:     updatesheeturl,
+		WipeDeviceURL:      wipedeviceurl,
 	}
 
 	return c, nil
