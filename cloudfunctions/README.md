@@ -85,43 +85,7 @@ gsuitemdm_conf                 2020-01-27T15:08:50  automatic           -
 gsuitemdm_slacktoken           2020-01-27T22:25:29  automatic           -
 
 ```
-#### Creating Configuration Secrets ####
-
-##### Creating the shared cloud function master configuration secret #####
-Use the included [`gsuitemdm_conf_example.json`](https://github.com/rickt/gsuitemdm/blob/dev/cloudfunctions/gsuitemdm_conf_example.json) as a template to create your own master configuration, then create the secret: 
-```
-$ gcloud beta secrets create gsuitemdm_conf \
-  --replication-policy automatic \
-  --data-file cloudfunctions_conf_new.json
-```
-
-##### Creating the API key secret #####
-All calls to any `gsuitemdm` cloud function must be authenticated by sending along the correct API key. Create the API key by use of `echo` and piping into `gcloud` and specifying STDIN (`-`) as the data file:
-```
-$ echo -n "yourkeygoeshere" | gcloud beta secrets create gsuitemdm_apikey \
-  --replication-policy automatic \
-  --data-file=-
-```
-
-##### Creating the per-G Suite domain credentials secrets #####
-Assuming we want to configure `foo.com`, `bar.com` and `xyzzy.com` in the `gsuitemdm` system, and we have downloaded the relevant G Suite domain-specific service account JSON credentials files for `foo.com`, `bar.com` and `xyzzy.com` and named them appropriately:
-```
-$ for DOMAIN in foo bar xyzzy
-  do
-     gcloud beta secrets create credentials_${DOMAIN} \
-     --replication-policy automatic \
-     --data-file credentials_${DOMAIN}.com.json
-  done
-```
-
-##### Creating the Slack token secret #####
-When Slack calls the `slackdirectory` cloud function API, it will send along a token. This token is checked to verify that it was indeed Slack who made the API call. Create the secret for that token using:
-```
-$ echo -n "yourslacktokengoeshere" | gcloud beta secrets create gsuitemdm_slacktoken \
-  --replication-policy automatic \
-  --data-file=-
-```
-You can configure the token that Slack sends to `slackdirectory` when creating/editing your own `/phone` slash command at [`Yourslack Admin --> Manage Apps --> Custom`](https://YOURSLACK.slack.com/apps/manage/custom-integrations) `--> Slash Commands`
+Full details on [setting up `gsuitemdm` secrets](https://github.com/rickt/gsuitemdm/blob/master/docs/SETUP.md#7-create-secret-manager-configuration-secrets) are in the [`gsuitemdm` setup guide](https://github.com/rickt/gsuitemdm/blob/master/docs/SETUP.md).
 
 #### Updating Configuration Secrets ####
 
