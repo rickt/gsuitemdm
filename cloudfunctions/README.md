@@ -152,3 +152,6 @@ $ gcloud functions deploy FUNCTION_NAME \
 See the `HOW-To Deploy` section of each cloud function's `README.md` for full details. 
 
 You may find the [`deploy_all_cloudfunctions.sh`](https://github.com/rickt/gsuitemdm/blob/master/cloudfunctions/deploy_all_cloudfunctions.sh) shell script useful.
+
+(c) rickt 2019, 2020
+
