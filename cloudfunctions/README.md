@@ -87,13 +87,6 @@ gsuitemdm_slacktoken           2020-01-27T22:25:29  automatic           -
 ```
 Full details on [setting up `gsuitemdm` secrets](https://github.com/rickt/gsuitemdm/blob/master/docs/SETUP.md#7-create-secret-manager-configuration-secrets) are in the [`gsuitemdm` setup guide](https://github.com/rickt/gsuitemdm/blob/master/docs/SETUP.md).
 
-#### Updating Configuration Secrets ####
-
-##### Updating configuration secrets in Secret Manager #####
-```
-$ gcloud beta secrets versions add gsuitemdm_conf \
-  --data-file cloudfunctions_conf_new.json
-```
 ## Building ##
 Example below illustrates how to build `approvedevice`:
 ```
