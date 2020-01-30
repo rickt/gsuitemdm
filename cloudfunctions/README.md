@@ -88,11 +88,11 @@ gsuitemdm_slacktoken           2020-01-27T22:25:29  automatic           -
 #### Creating Configuration Secrets ####
 
 ##### Creating the shared cloud function master configuration secret #####
-Use the included `cloudfunctions_conf_example.json` to create your own master configuration.
+Use the included [`gsuitemdm_conf_example.json`](https://github.com/rickt/gsuitemdm/blob/dev/cloudfunctions/gsuitemdm_conf_example.json) as a template to create your own master configuration, then create the secret: 
 ```
 $ gcloud beta secrets create gsuitemdm_conf \
   --replication-policy automatic \
-  --data-file cloudfunctions_conf_master.json
+  --data-file cloudfunctions_conf_new.json
 ```
 
 ##### Creating the API key secret #####
@@ -114,7 +114,15 @@ $ for DOMAIN in foo bar xyzzy
   done
 ```
 
-#### Creating the Slack token secret ####
+##### Creating the `gsuitemdm` URLs secret #####
+The `mdmtool` retrieves the list of API endpoint URLs from the `gsuitemdm_urls` secret. Use the included [`gsuitemdm_urls_example.json`](https://github.com/rickt/gsuitemdm/blob/dev/cloudfunctions/gsuitemdm_urls_example.json) as a template to create a JSON specific to your GCP project's URLs and create the secret:
+```
+$ gcloud beta secrets create gsuitemdm_urls \
+  --replication-policy automatic \
+  --data-file gsuitemdm_urls_new.json
+```
+
+##### Creating the Slack token secret #####
 When Slack calls the `slackdirectory` cloud function API, it will send along a token. This token is checked to verify that it was indeed Slack who made the API call. Create the secret for that token using:
 ```
 $ echo -n "yourslacktokengoeshere" | gcloud beta secrets create gsuitemdm_slacktoken \
