@@ -13,6 +13,8 @@ and the type of Admin SDK wipe used by `wipedevice` is configurable within the g
 "remotewipetype": "admin_account_wipe"
 ```
 
+The `wipedevice` API is used by the [`mdmtool`](#mdmtool) command line utility.
+
 ## HOW-TO Configure `wipedevice` ##
 `wipedevice` uses a `.yaml` file containing several environment variables the cloud function reads during app startup. These environment variables point the app to the shared master cloud function configuration and API key that are stored as [Secret Manager secrets](https://cloud.google.com/secret-manager/docs/managing-secrets). An example `.yaml` file for `wipedevice`:
 

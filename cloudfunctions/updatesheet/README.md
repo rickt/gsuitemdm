@@ -2,6 +2,8 @@
 
 A [cloud Function](https://cloud.google.com/functions/) component of the [gsuitemdm](https://github.com/rickt/gsuitemdm) package that updates a Google Sheet with the most recent mobile device data from [Google Datastore](https://cloud.google.com/datastore/).
 
+The `updatesheet` API is used by the [`mdmtool`](#mdmtool) command line utility.
+
 ## HOW-TO Configure `updatesheet` ##
 `updatesheet` uses a `.yaml` file containing several environment variables the cloud function reads during app startup. These environment variables point the app to the shared master cloud function configuration and API key that are stored as [Secret Manager secrets](https://cloud.google.com/secret-manager/docs/managing-secrets). An example `.yaml` file for `updatesheet`:
 

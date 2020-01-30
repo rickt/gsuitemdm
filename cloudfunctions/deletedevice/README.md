@@ -2,6 +2,8 @@
 
 A [cloud Function](https://cloud.google.com/functions/) component of the [`gsuitemdm`](https://github.com/rickt/gsuitemdm) package that [deletes a mobile device](https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices/delete) using the [Admin SDK](https://developers.google.com/admin-sdk).
 
+The `deletedevice` API is used by the [`mdmtool`](#mdmtool) command line utility.
+
 ## HOW-TO Configure `deletedevice` ##
 `deletedevice` uses a `.yaml` file containing several environment variables the cloud function reads during app startup. These environment variables point the app to the shared master cloud function configuration and API key that are stored as [Secret Manager secrets](https://cloud.google.com/secret-manager/docs/managing-secrets). An example `.yaml` file for `deletedevice`:
 
