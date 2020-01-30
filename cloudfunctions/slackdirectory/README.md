@@ -2,7 +2,7 @@
 
 A [cloud Function](https://cloud.google.com/functions/) component of the [gsuitemdm](https://github.com/rickt/gsuitemdm) package that can be used to search for a phone number using name or email as a search key. This cloud function is very similar to [`directory`](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/directory) but is specifically designed to format output as expected by Slack, and as such `slackdirectory` should be used as an HTTP backend for a Slack `/slash` command such as `/dir` or `/phone` (etc).
 
-This can be very useful for orgs whose staff all use G Suite MDM'd mobile devices. With `slackdirectory` you have an always up-to-date, automatically-updated company mobile phone directory. 
+This can be very useful for orgs whose staff all use G Suite MDM'd mobile devices. With `slackdirectory` you have an always up-to-date, automatically-updated company mobile phone directory available to anyone in your org's Slack with `/phone <name>`. 
 
 ## HOW-TO Setup the Slack `/phone` slash command ##
 Docs coming soon.
