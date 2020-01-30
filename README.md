@@ -7,6 +7,9 @@
 * Mobile device & user data stored in [Google Datastore](https://cloud.google.com/datastore/docs/)
 * Configuration, keys & credentials stored securely as secrets in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/)
 
+`gsuitemdm` gives you:
+* A more convenient API interface to the [G Suite Admin SDK](https://developers.google.com/admin-sdk)
+
 ## Additional Features ##
 * Provides additional 'quality of life' APIs such as a [phone directory](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/directory) and [Slack `/phone` command](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/directory)
 * Securely uses [GCP service accounts](https://developers.google.com/identity/protocols/OAuth2ServiceAccount), GCP [IAM roles](https://cloud.google.com/iam/docs/overview) and G Suite [domain-wide delegation authority](https://gsuite-developers.googleblog.com/2012/11/domain-wide-delegation-of-authority-and.html)
