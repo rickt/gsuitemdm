@@ -1,25 +1,24 @@
 # gsuitemdm
-`gsuitemdm` is a Go package that eases the management of iOS or Android mobile devices in multiple G Suite domains that use [G Suite MDM](https://support.google.com/a/answer/1734200?hl=en) to secure their mobile devices.
+`gsuitemdm` is a Go package that eases the management of iOS or Android mobile devices in G Suite domains that use [G Suite MDM](https://support.google.com/a/answer/1734200?hl=en) to secure their mobile devices.
 
 `gsuitemdm` provides:
 * Multiple, easy to use, secure mobile device management APIs deployed as [cloud functions](https://cloud.google.com/functions/docs/) to help you quickly manage many mobile devices 
 * A command line tool ([`mdmtool`](https://github.com/rickt/gsuitemdm/tree/master/mdmtool) allowing for easy command line mobile device management
-* Persistent data storage in Google [Datastore](https://cloud.google.com/datastore/)
-* Configuration & credentials stored securely in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/)
+* Mobile device & user data stored in [Google Datastore](https://cloud.google.com/datastore/docs/)
+* Configuration, keys & credentials stored securely as secrets in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/)
 
 ## Additional Features ##
 * Additional APIs such as a [phone directory](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/directory) and [Slack `/phone` command](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/directory)
-* Uses [GCP service accounts](https://developers.google.com/identity/protocols/OAuth2ServiceAccount) and G Suite [domain-wide delegation authority](https://gsuite-developers.googleblog.com/2012/11/domain-wide-delegation-of-authority-and.html)
-* Supports multiple G Suite domains, easy & shared configuration across all components
-* Quickly and easily Approve/Block/Delete/Wipe/Search for MDM-protected devices across multiple G Suite domains
+* Uses [GCP service accounts](https://developers.google.com/identity/protocols/OAuth2ServiceAccount), GCP [IAM roles](https://cloud.google.com/iam/docs/overview) and G Suite [domain-wide delegation authority](https://gsuite-developers.googleblog.com/2012/11/domain-wide-delegation-of-authority-and.html)
+* Supports multiple G Suite domains with easy (and shared!) configuration across all components
+  * G Suite domains do not need to be under the same G Suite account 
+* Quickly and easily perform MDM actions (Approve/Block/Delete/Wipe/Search for) on MDM-protected devices across multiple G Suite domains
 * Generate an auto-updating [Google Sheet](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/updatesheet) so your ops team can track all mobile devices across multiple G Suite domains
 
 ## Use-Cases ##
-
-## Data Storage ##
-* Mobile device & user data stored in [Google Datastore](https://cloud.google.com/datastore/docs/)
-* Configuration/keys stored in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/)
-* (Optional) Google Sheet for mobile device tracking
+* G Suite administrators managing multiple mobile devices in multiple G Suite domains spread across multiple G Suite organizational accounts
+* Programmatically perform administrative actions on G Suite MDM-protected mobile devices 
+  * Generate an on-call list using the [`directory` API](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/directory)
 
 ## Configuration ##
 All configuration data, API keys and service account domain credentials are stored as secrets in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/). Learn more about [`gsuitemdm` configuration](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration) or [`gsuitemdm` secrets](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration-secrets).
