@@ -34,7 +34,8 @@ ACCOUNT_ID            NAME                        OPEN  MASTER_ACCOUNT_ID
 ```
 Link the new GCP project to a billing account:
 ```
-$ gcloud beta billing projects link PROJECTNAME --billing-account 000000-111111-222222
+$ gcloud beta billing projects link PROJECTNAME \
+  --billing-account 000000-111111-222222
 ```
 ### 3. Enable necessary APIs in that project ###
 ```
@@ -44,6 +45,22 @@ do
 done
 ```
 ### 4. Create & download [service account](https://cloud.google.com/iam/docs/service-accounts) [JSON credential files](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) for all G Suite domains ###
+Create a service account in the new GCP project. This is the service account that the core cloud functions will "run as".
+```
+$ gcloud iam service-accounts create gsuitemdm \
+  --display-name "G Suite MDM" \
+  --description "G Suite MDM Service Account"
+```
+Get the "email address" of your new service account:
+```
+$ gcloud iam service-accounts list
+NAME                                EMAIL                                          DISABLED
+G Suite MDM                         gsuitemdm@PROJECTNAME.iam.gserviceaccount.com  False
+```
+Create and download a JSON credentials file for this service account:
+```
+$ gcloud iam service-accounts keys create credentials_foo.json --iam-account=gsuitemdm@PROJECTNAME.iam.gserviceaccount.com
+```
 
 ### 5. Grant [domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation) permissions to service accounts ###
 
