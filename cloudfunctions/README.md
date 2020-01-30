@@ -41,7 +41,7 @@ Let's look at each step in detail:
    * Verify that the domain specified in the request is a valid, configured domain
    * Perform any final (specific to each cloud function) request data validation
    * Verify that confirmation was sent in the request (not all cloud functions require a confirmation)
-   * Authenticate with and connect to any necessary GCP services ([Admin SDK](https://developers.google.com/admin-sdk), [Datastore](https://cloud.google.com/datastore), [Google Sheets](https://developers.google.com/sheets/api) etc) using domain-specific service accounts that have been granted [G Suite domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation)
+   * Authenticate with and connect to any necessary GCP services ([Admin SDK Directory API](https://developers.google.com/admin-sdk/directory/v1/guides/manage-mobile-devices), [Datastore](https://cloud.google.com/datastore), [Google Sheets](https://developers.google.com/sheets/api) etc) using domain-specific service accounts that have been granted [G Suite domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation)
    * Execute the action specific to the cloud function (approve a device, search, wipe a device, etc)
 3. **Cleanup**
    * Update any [Datastore](https://cloud.google.com/datastore/) entities, as necessary
@@ -131,7 +131,7 @@ $ echo -n "yourslacktokengoeshere" | gcloud beta secrets create gsuitemdm_slackt
   --replication-policy automatic \
   --data-file=-
 ```
-You can specify the token that Slack sends to `slackdirectory` by creating/editing your own `/phone` slash command at [`Yourslack Admin --> Manage Apps --> Custom`](https://YOURSLACK.slack.com/apps/manage/custom-integrations) `--> Slash Commands
+You can configure the token that Slack sends to `slackdirectory` when creating/editing your own `/phone` slash command at [`Yourslack Admin --> Manage Apps --> Custom`](https://YOURSLACK.slack.com/apps/manage/custom-integrations) `--> Slash Commands
 
 #### Updating Configuration Secrets ####
 

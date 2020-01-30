@@ -59,6 +59,9 @@ All configuration data, API keys and JSON G Suite domain credentials are stored 
 * In production
 * Ready for public use
 
+## Pre-Requisites ##
+* 1+ G Suite domains using G Suite MDM to manage iOS/Android mobile devices
+* GCP project with billing setup
 
 ## Brief Setup Notes
 A full and complete installation guide to follow, but for now, some brief setup notes & requirements: 
