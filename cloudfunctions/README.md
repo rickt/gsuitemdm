@@ -140,6 +140,14 @@ You can configure the token that Slack sends to `slackdirectory` when creating/e
 $ gcloud beta secrets versions add gsuitemdm_conf \
   --data-file cloudfunctions_conf_new.json
 ```
+## Building ##
+Example below illustrates how to build `approvedevice`:
+```
+$ git clone https://github.com/rickt/gsuitemdm
+$ cd gsuitemdm/cloudfunctions/approvedevice
+$ go get -u github.com/rickt/gsuitemdm
+$ go build
+```
 
 ## Deployment ##
 All `gsuitemdm` cloud functions are deployed to GCP in the same manner:
