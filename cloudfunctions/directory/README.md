@@ -2,7 +2,7 @@
 
 A [cloud Function](https://cloud.google.com/functions/) component of the [gsuitemdm](https://github.com/rickt/gsuitemdm) package providing an API used to search for phone number data (name, phone number) among all tracked/configured mobile devices using email address, name or phone number as a search key. 
 
-This API might be useful for orgs who want a handy way to search for phone numbers among their company mobile device-using staff. With `directory` you have an always up-to-date, automatically-updated restricted via-API key mobile phone directory API. 
+This API might be useful for orgs who want a handy way to search for phone numbers among their company mobile device-using staff. With `directory` you have an always up-to-date, automatically-updated mobile phone directory API. 
 
 ## HOW-TO Configure `directory` ##
 `directory` uses a `.yaml` file containing several environment variables the cloud function reads during app startup. These environment variables point the app to the shared master cloud function configuration and API key that are stored as [Secret Manager secrets](https://cloud.google.com/secret-manager/docs/managing-secrets). An example `.yaml` file for `directory`:
