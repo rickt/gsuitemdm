@@ -57,14 +57,7 @@ $ gcloud beta secrets create gsuitemdm_conf \
   --replication-policy automatic \
   --data-file cloudfunctions_conf_new.json
 ```
-#### 7.2 Create the API key secret ####
-All calls to any `gsuitemdm` cloud function must be authenticated by sending along the correct API key. Create the API key by use of `echo` and piping into `gcloud` and specifying STDIN (`-`) as the data file:
-```
-$ echo -n "yourkeygoeshere" | gcloud beta secrets create gsuitemdm_apikey \
-  --replication-policy automatic \
-  --data-file=-
-```
-#### 7.3 Create the per-G Suite service account domain credential secrets ####
+#### 7.2 Create the per-G Suite service account domain credential secrets ####
 Using the service account JSON credential files you downloaded earlier, create the secrets: 
 ```
 $ for DOMAIN in foo bar xyzzy
@@ -74,6 +67,22 @@ $ for DOMAIN in foo bar xyzzy
      --data-file credentials_${DOMAIN}.com.json
   done
 ```
+#### 7.3 Create the API key secret ####
+All calls to any `gsuitemdm` cloud function must be authenticated by sending along the correct API key. Create the API key by use of `echo` and piping into `gcloud` and specifying STDIN (`-`) as the data file:
+```
+$ echo -n "yourkeygoeshere" | gcloud beta secrets create gsuitemdm_apikey \
+  --replication-policy automatic \
+  --data-file=-
+```
+#### 7.4 Create the Slack token secret ####
+When Slack calls the `slackdirectory` cloud function API, it will send along a token. This token is checked to verify that it was indeed Slack who made the API call. Create the secret for that token using:
+```
+$ echo -n "yourslacktokengoeshere" | gcloud beta secrets create gsuitemdm_slacktoken \
+  --replication-policy automatic \
+  --data-file=-
+```
+You can configure the token that Slack sends to `slackdirectory` when creating/editing your own `/phone` slash command at [`Yourslack Admin --> Manage Apps --> Custom`](https://YOURSLACK.slack.com/apps/manage/custom-integrations) `--> Slash Commands`
+
 
 ### 8. Setup Google Sheet template for ops team mobile device tracking spreadsheet ###
 
