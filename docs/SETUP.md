@@ -21,7 +21,7 @@ $ gcloud projects create PROJECTNAME
 ```
 Set the new project as your current/configured project:
 ```
-$ gcloud config set project gsuitemdm
+$ gcloud config set project PROJECTNAME
 ```
 ### 2. Configure a billing account in that project
 List your existing billing accounts:
