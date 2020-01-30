@@ -1,0 +1,39 @@
+{
+	"actionscope": "https://www.googleapis.com/auth/admin.directory.device.mobile",
+	"apiqueryorderby": "name",
+	"datastorequeryorderby": "Domain",
+	"dsnamekey": "MobileDevice",
+	"globaldebug": false,
+	"projectid": "yourproject",
+	"remotewipetype": "admin_account_wipe",
+	"searchscope": "https://www.googleapis.com/auth/admin.directory.device.mobile.readonly",
+	"searchtype": "all",
+	"sheetcredsid": "path/to/secret/manager/credential/for/writing/google/sheet",
+	"sheetid": "yourgooglesheetidgoeshere",
+	"sheetscope": "https://www.googleapis.com/auth/spreadsheets",
+	"sheetwho": "adminuser@yourdomain.com",
+	"timezone": "America/Los_Angeles",
+	"version": "1.0",
+	"domains": [
+		{
+			"domainname": "foo.com",
+			"companyid": "A01b02c03",
+			"adminuser": "adminuser@foo.com",
+			"secretid": "path/to/secret/manager/credential/for/this/domain"
+		},
+		{
+			"domainname": "bar.com",
+			"companyid": "B01c02d03",
+			"adminuser": "adminuser@bar.com",
+			"secretid": "path/to/secret/manager/credential/for/this/domain"
+		},
+		{
+			"domainname": "xyzzy.com",
+			"companyid": "D01e02f03",
+			"adminuser": "adminuser@xyzzy.com",
+			"secretid": "path/to/secret/manager/credential/for/this/domain"
+		}
+	]
+}
+
+
