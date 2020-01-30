@@ -45,7 +45,7 @@ do
 done
 ```
 ### 4. Create & download [service account](https://cloud.google.com/iam/docs/service-accounts) [JSON credential files](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) for all G Suite domains ###
-Create a service account in the new GCP project. This is the service account that the core cloud functions will "run as".
+Create a service account in the new GCP project. This is the service account that the core cloud functions (such as updating Google Datastore) will "run as".
 ```
 $ gcloud iam service-accounts create gsuitemdm \
   --display-name "G Suite MDM" \
@@ -59,7 +59,8 @@ G Suite MDM                         gsuitemdm@PROJECTNAME.iam.gserviceaccount.co
 ```
 Create and download a JSON credentials file for this service account:
 ```
-$ gcloud iam service-accounts keys create credentials_foo.json --iam-account=gsuitemdm@PROJECTNAME.iam.gserviceaccount.com
+$ gcloud iam service-accounts keys create credentials_foo.json \
+  --iam-account=gsuitemdm@PROJECTNAME.iam.gserviceaccount.com
 ```
 
 ### 5. Grant [domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation) permissions to service accounts ###
