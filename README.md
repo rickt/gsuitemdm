@@ -21,13 +21,13 @@
   * Generate an on-call list using the [`directory` API](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/directory)
 * Quickly and easily approve/block/wipe mobile devices in the command line without logging into the G Suite Admin Console
 
-## Configuration ##
-All configuration data, API keys and service account domain credentials are stored as secrets in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/). Learn more about [`gsuitemdm` configuration](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration) or [`gsuitemdm` secrets](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration-secrets).
-
 ## Status
 * In production
 * Ready for public use
 * Docs: 90%
+
+## Configuration ##
+All configuration data, API keys and service account domain credentials are stored as secrets in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/). Learn more about [`gsuitemdm` configuration](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration) or [`gsuitemdm` secrets](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration-secrets).
 
 ## Pre-Requisites ##
 * 1+ G Suite domain(s) using G Suite MDM to manage iOS/Android mobile devices
