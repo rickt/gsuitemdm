@@ -44,7 +44,7 @@ Let's look at each step in detail:
    * Authenticate with and connect to any necessary GCP services ([Admin SDK Directory API](https://developers.google.com/admin-sdk/directory/v1/guides/manage-mobile-devices), [Datastore](https://cloud.google.com/datastore), [Google Sheets](https://developers.google.com/sheets/api) etc) using domain-specific service accounts that have been granted [G Suite domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation)
    * Execute the action specific to the cloud function (approve a device, search, wipe a device, etc)
 3. **Cleanup**
-   * Update any [Datastore](https://cloud.google.com/datastore/) entities, as necessary
+   * Update any [Datastore](https://cloud.google.com/datastore/) entities or the Google Sheet, as necessary
    * Log appropriate actions/events
 
 ## Configuration ##
