@@ -85,7 +85,6 @@ gsuitemdm_conf                 2020-01-27T15:08:50  automatic           -
 gsuitemdm_slacktoken           2020-01-27T22:25:29  automatic           -
 
 ```
-
 #### Creating Configuration Secrets ####
 
 ##### Creating the shared cloud function master configuration secret #####
