@@ -2,7 +2,7 @@
 `gsuitemdm` is a Go package that eases the management of iOS or Android mobile devices in G Suite domains that use [G Suite MDM](https://support.google.com/a/answer/1734200?hl=en) to secure their mobile devices.
 
 `gsuitemdm` provides:
-* Multiple, easy to use, secure mobile device management APIs deployed as [cloud functions](https://cloud.google.com/functions/docs/) to help you quickly manage many mobile devices 
+* Multiple, easy to use, secure mobile device management APIs deployed as [cloud functions](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/) to help you quickly manage many mobile devices 
 * A command line tool ([`mdmtool`](https://github.com/rickt/gsuitemdm/tree/master/mdmtool) allowing for easy command line mobile device management
 * Mobile device & user data stored in [Google Datastore](https://cloud.google.com/datastore/docs/)
 * Configuration, keys & credentials stored securely as secrets in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/)
