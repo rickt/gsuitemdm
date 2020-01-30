@@ -48,7 +48,7 @@ Let's look at each step in detail:
    * Log appropriate actions/events
 
 ## Configuration ##
-All `gsuitemdm` cloud functions share a single master JSON configuration stored in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/).  In order to know where to download this shared master configuration from, each cloud function has a `.yaml file that is deployed along with the source code to GCP. This `.yaml` file specifies the 2x environment variables pointing to the [Google Secret IDs](https://cloud.google.com/secret-manager/docs/managing-secrets) of the shared master configuration, and is used during cloud function app startup to download the shared master configuration. For example, the [ApproveDevice](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/approvedevice) cloud function's `.yaml` (example) configuration file looks like:
+All `gsuitemdm` cloud functions share a single master JSON configuration stored in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/).  In order to know where to download this shared master configuration from, each cloud function has a `.yaml` file that is deployed along with the source code to GCP. This `.yaml` file specifies the 2x environment variables pointing to the [Google Secret IDs](https://cloud.google.com/secret-manager/docs/managing-secrets) of the shared master configuration, and is used during cloud function app startup to download the shared master configuration. For example, the [ApproveDevice](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/approvedevice) cloud function's `.yaml` (example) configuration file looks like:
 ```
 APPNAME: approvedevice
 SM_APIKEY_ID: projects/12334567890/secrets/gsuitemdm_apikey
