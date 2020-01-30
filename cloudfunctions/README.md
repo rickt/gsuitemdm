@@ -100,7 +100,7 @@ $ gcloud beta secrets create gsuitemdm_conf \
 ##### Creating the API key secret #####
 All calls to any `gsuitemdm` cloud function must be authenticated by sending along the correct API key. Create the API key by use of `echo` and piping into `gcloud` and specifying STDIN (`-`) as the data file:
 ```
-$ echo -n "yourkeygoeshere" | gcloud beta secrets create gsuitemdm_conf \
+$ echo -n "yourkeygoeshere" | gcloud beta secrets create gsuitemdm_apikey \
   --replication-policy automatic \
   --data-file=-
 ```
