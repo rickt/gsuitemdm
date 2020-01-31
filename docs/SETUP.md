@@ -178,7 +178,9 @@ gsuitemdm_slacktoken           2020-01-27T22:25:29  automatic           -
 Docs coming.
 
 ### 7. Configure the `.yamls` ###
-`cp` and modify the `FUNCTION_env_example.yaml` files in each cloud function folder to create your own `FUNCTION_env.yaml` files that you will use to deploy the cloud functions. Be sure to modify the `SM_APIKEY_ID` and `SM_CONFIG_ID` entries to point to the IDs of the secrets you created in [step 5](https://github.com/rickt/gsuitemdm/blob/master/docs/SETUP.md#5-create-secret-manager-configuration-secrets).
+Copy and modify the `FUNCTION_env_example.yaml` files in each cloud function folder to create your own `FUNCTION_env.yaml` files that you will use to deploy the cloud functions. 
+
+Be sure to modify the `SM_APIKEY_ID` and `SM_CONFIG_ID` entries to point to the IDs of the secrets you created in [step 5](https://github.com/rickt/gsuitemdm/blob/master/docs/SETUP.md#5-create-secret-manager-configuration-secrets).
 
 ### 8. Deploy *all the things* ###
 
