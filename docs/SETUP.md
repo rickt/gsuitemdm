@@ -8,10 +8,10 @@ For these example setup instructions, we will make the following critical assump
 2. Enable necessary APIs in those projects
 3. Create & download [service account](https://cloud.google.com/iam/docs/service-accounts) [JSON credential files](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) for all G Suite domains
 4. Grant API scope permissions to service accounts 
-6. Create [Secret Manager](https://cloud.google.com/secret-manager/docs/) configuration secrets
-7. Setup Google Sheet template for ops team mobile device tracking spreadsheet
-8. Clone and configure the `gsuitemdm` repo 
-9. Deploy *all the things*
+5. Create [Secret Manager](https://cloud.google.com/secret-manager/docs/) configuration secrets
+6. Setup Google Sheet template for ops team mobile device tracking spreadsheet
+7. Clone and configure the `gsuitemdm` repo 
+8. Deploy *all the things*
 
 ## Setup Details ##
 
@@ -171,5 +171,9 @@ gsuitemdm_slacktoken           2020-01-27T22:25:29  automatic           -
 ```
 ### 6. Setup Google Sheet template for ops team mobile device tracking spreadsheet ###
 Docs coming.
+
+### 7. Clone and configure the `gsuitemdm` repo ###
+
+### 8. Deploy *all the things* ###
 
 
