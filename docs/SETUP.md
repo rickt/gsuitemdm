@@ -38,7 +38,7 @@ $ gcloud beta billing projects link PROJECTNAME \
   --billing-account 000000-111111-222222
 ```
 ### 3. Enable necessary APIs in that master project ###
-You must have setup billing in the project before attempting to enable APIs. Some APIs will fail to enable if a billing account has not been linked to your GCP project. 
+Since the master project runs all of the cloud functions and scheduled ops, more APIs must be enabled. Note that billing *must* be properly setup in the master project before attempting to enable APIs, as some APIs will fail to enable if a legit billing account has not been linked to your GCP project. 
 ```
 $ for API in admin cloudfunctions cloudscheduler datastore logging secretmanager sheets
 do
