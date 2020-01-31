@@ -66,22 +66,22 @@ $ gcloud services enable admin.googleapis.com
 Now we must create service accounts within each GCP project in each of our G Suite domains. 
 
 #### 4.1 Create the service accounts in each of the configured domains
-Unfortunately, there is no `gcloud`  command or API available to automate these steps. Some pseudo-code might help:
+Unfortunately, there is no `gcloud`  command or API available to automate the following steps, they must be performed via web. Some pseudo-code might help:
 
 `foreach DOMAIN in foo bar xyzzy`
 
 `do`
 
-* login to GCP console as user@$DOMAIN.com
-* choose `mdm-$DOMAIN` project
-* create service account as per [these Google developer docs detail](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#creatinganaccount)
+* Login to GCP console as `user@$DOMAIN.com`
+* Select `mdm-$DOMAIN` project
+* Create service account as per [these Google developer docs instructions](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#creatinganaccount)
+* Configure OAuth Consent Screen as per [these Google Support instructions](https://support.google.com/cloud/answer/6158849?hl=en)
 
 `done`
 
-If greyed out...
+Note that it is absolutely essential that you enable Domain-Wide Delegation when creating the service accounts!!! If you find that the Domain-Wide Delegation check box is not selectable, you must first [configure the OAuth Consent Screen](https://support.google.com/cloud/answer/6158849?hl=en). 
 
-#### 4.2 Create the service accounts in additional G Suite domains ####
-Now you need to create a service account in each of the additional domains we want to configure (`bar.com`, `xyzzy.com`). 
+If greyed out...
 
 ### 5. Grant [domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation) permissions to service accounts ###
 Docs coming.
