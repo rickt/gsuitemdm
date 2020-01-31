@@ -91,11 +91,11 @@ Note that it is *absolutely essential* that Domain-Wide Delegation is enabled fo
 
 At this point in our example setup, we have the following domains, projects & service accounts:
 
-G Suite Domain | GCP Project | Project Owner | Service Account | Credentials JSON
-:--- | :--- | :--- | :--- | :---
-`foo.com` | `mdm-foo` | user@foo.com | `gsuitemdm@mdm-foo.iam.gserviceaccount.com` | `credentials_foo.com.json`
-`bar.com` | `mdm-bar` | user@bar.com | `gsuitemdm@mdm-bar.iam.gserviceaccount.com` | `credentials_bar.com.json`
-`xyzzy.com` | `mdm-xyzzy` | user@xyzzy.com | `gsuitemdm@mdm-xyzzy.iam.gserviceaccount.com` | `credentials_xyzzy.com.json`
+G Suite Domain | GCP Project | Service Account | Credentials JSON
+:--- | :--- | :--- | :---
+`foo.com` | `mdm-foo` | `gsuitemdm@mdm-foo.iam.gserviceaccount.com` | `credentials_foo.com.json`
+`bar.com` | `mdm-bar` | `gsuitemdm@mdm-bar.iam.gserviceaccount.com` | `credentials_bar.com.json`
+`xyzzy.com` | `mdm-xyzzy` | `gsuitemdm@mdm-xyzzy.iam.gserviceaccount.com` | `credentials_xyzzy.com.json`
 
 ### 6. Grant [Directory Admin SDK API scope permissions](https://developers.google.com/admin-sdk/directory/v1/guides/authorizing) to service accounts ###
 Now that we have created the service accounts, they need to be access to some Google API scopes
