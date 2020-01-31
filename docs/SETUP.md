@@ -6,11 +6,12 @@ For these example setup instructions, we will make the following critical assump
 ## Overview of Setup ##
 1. Setup GCP projects 
 2. Enable necessary APIs in those projects
-4. Create & download [service account](https://cloud.google.com/iam/docs/service-accounts) [JSON credential files](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) for all G Suite domains
-5. Grant [domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation) permissions to service accounts
-6. Grant [Directory Admin SDK API scope permissions](https://developers.google.com/admin-sdk/directory/v1/guides/authorizing) to service accounts
-7. Create [Secret Manager](https://cloud.google.com/secret-manager/docs/) configuration secrets
-8. Setup Google Sheet template for ops team mobile device tracking spreadsheet
+3. Create & download [service account](https://cloud.google.com/iam/docs/service-accounts) [JSON credential files](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) for all G Suite domains
+4. Grant API scope permissions to service accounts 
+6. Create [Secret Manager](https://cloud.google.com/secret-manager/docs/) configuration secrets
+7. Setup Google Sheet template for ops team mobile device tracking spreadsheet
+8. Clone and configure the `gsuitemdm` repo 
+9. Deploy *all the things*
 
 ## Setup Details ##
 
@@ -96,7 +97,7 @@ G Suite Domain | GCP Project | Service Account | Credentials JSON
 `bar.com` | `mdm-bar` | `gsuitemdm@mdm-bar.iam.gserviceaccount.com` | `credentials_bar.com.json`
 `xyzzy.com` | `mdm-xyzzy` | `gsuitemdm@mdm-xyzzy.iam.gserviceaccount.com` | `credentials_xyzzy.com.json`
 
-### 4. Grant [Directory Admin SDK API scope permissions](https://developers.google.com/admin-sdk/directory/v1/guides/authorizing) to service accounts ###
+### 4. Grant API scope permissions to service accounts ###
 Now that we have created the service accounts, they need to be access to some Google API scopes. Following our example setup, these steps must be performed by a G Suite Super Administrator user in each of the `foo.com`, `bar.com` and `xyzzy.com` domains as per [these instructions](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#delegatingauthority), starting from the `"Then, an administrator of the G Suite domain must complete [...]"` section. 
 
 Starting with the 'master' domain, within the [Admin Console](https://admin.google.com) for `foo.com`, the Client ID of the `gsuitemdm@mdm-foo.iam.gserviceaccount.com` service account must be granted the following scopes:
