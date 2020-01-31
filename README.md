@@ -7,11 +7,12 @@
 * Mobile device & user data stored in [Google Datastore](https://cloud.google.com/datastore/docs/)
 * Configuration, keys & credentials stored securely as secrets in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/)
 
-`gsuitemdm` gives you:
-* A more convenient API interface to the [G Suite Admin SDK](https://developers.google.com/admin-sdk)
+Basically, `gsuitemdm` gives you:
+* A much more convenient API interface to the [G Suite Admin SDK](https://developers.google.com/admin-sdk)
+* Ability to script MDM operations or use a [CLI tool](https://github.com/rickt/gsuitemdm/tree/master/mdmtool) instead of the Admin Console
+* Handy 'quality of life' bits & pieces such as a [phone directory](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/directory) API and [Slack `/phone` command](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/directory)
 
 ## Additional Features ##
-* Provides additional 'quality of life' APIs such as a [phone directory](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/directory) and [Slack `/phone` command](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/directory)
 * Securely uses [GCP service accounts](https://developers.google.com/identity/protocols/OAuth2ServiceAccount), GCP [IAM roles](https://cloud.google.com/iam/docs/overview) and G Suite [domain-wide delegation authority](https://gsuite-developers.googleblog.com/2012/11/domain-wide-delegation-of-authority-and.html)
 * Supports multiple G Suite domains with easy (and shared!) configuration across all components
   * G Suite domains do not need to be under the [same G Suite account](https://support.google.com/a/answer/182081?hl=en)
