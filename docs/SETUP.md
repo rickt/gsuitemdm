@@ -46,7 +46,7 @@ do
 done
 ```
 ### 4. Create & download [service account](https://cloud.google.com/iam/docs/service-accounts) [JSON credential files](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) for all G Suite domains ###
-Create a service account in the new GCP project. This is the service account that the core cloud functions (such as updating Google Datastore) will "run as".
+Create a service account in the new `foo.com` GCP project. This is the service account that the core cloud functions (such as reading/writing to/from Google Datastore) will "run as".
 ```
 $ gcloud iam service-accounts create gsuitemdm \
   --display-name "G Suite MDM" \
