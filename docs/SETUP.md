@@ -64,7 +64,7 @@ $ gcloud services enable admin.googleapis.com
 ### 3. Create & download [service account](https://cloud.google.com/iam/docs/service-accounts) [JSON credential files](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) for all G Suite domains ###
 Now we must create service accounts within each GCP project in each of our G Suite domains. 
 
-#### 4.1 Create the service accounts in each of the configured domains
+#### 3.1 Create the service accounts in each of the configured domains
 Unfortunately, there is no `gcloud`  command or API available to automate the following steps, they must be performed via web. Some pseudo-code might help:
 
 `foreach DOMAIN in foo bar xyzzy`
@@ -101,7 +101,7 @@ Now that we have created the service accounts, they need to be access to some Go
 
 ### 5. Create [Secret Manager](https://cloud.google.com/secret-manager/docs/) configuration secrets ###
 #### 5.1 Create the per-G Suite service account domain credential secrets ####
-Using the service account JSON credential files you downloaded earlier, create the secrets: 
+Using the service account JSON credential files you [downloaded in step 3.1](https://github.com/rickt/gsuitemdm/blob/master/docs/SETUP.md#31-create-the-service-accounts-in-each-of-the-configured-domains), create the secrets: 
 ```
 $ for DOMAIN in foo bar xyzzy
   do
