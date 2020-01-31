@@ -22,11 +22,11 @@ $ gcloud auth login admin@foo.com
 ```
 Create a new project:
 ```
-$ gcloud projects create PROJECTNAME
+$ gcloud projects create mdm-foo
 ```
 Set the new project as your current/configured project:
 ```
-$ gcloud config set project PROJECTNAME
+$ gcloud config set project mdm-foo
 ```
 ### 2. Configure a billing account in that master project ###
 List your existing billing accounts:
@@ -41,34 +41,38 @@ Link the new GCP project to a billing account:
 $ gcloud beta billing projects link PROJECTNAME \
   --billing-account 000000-111111-222222
 ```
-### 3. Enable necessary APIs in that master project ###
-Since the master project runs all of the cloud functions and scheduled ops, more APIs must be enabled. Note that billing *must* be properly setup in the master project before attempting to enable APIs, as some APIs will fail to enable if a legit billing account has not been linked to your GCP project. 
+Now that `foo.com` is setup, perform the same steps for `bar.com` and `xyzzy.com` (or do it in the GCP console). 
+### 3. Enable necessary APIs in the new projects ###
+Now we need to enable some APIs in the new projects. Note that billing *must* be properly setup in the projects before attempting to enable APIs, as some APIs will fail to enable if a legit billing account has not been linked to your GCP project. 
+#### 3.1 Enable APIs in the master project ####
+The 'master domain' `foo.com` project needs more APIs enabled than other domains/projects:
 ```
+$ gcloud auth login admin@foo.com
+$ gcloud config set project mdm-foo
 $ for API in admin cloudfunctions cloudscheduler datastore logging secretmanager sheets
 do
    gcloud services enable ${API}.googleapis.com
 done
+The remaining domain's GCP projects require fewer APIs. 
+```
+$ gcloud auth login admin@bar.com
+$ gcloud config set project mdm-bar
+$ gcloud services enable admin.googleapis.com
+
+$ gcloud auth login admin@xyzzy.com
+$ gcloud config set project mdm-xyzzy
+$ gcloud services enable admin.googleapis.com
 ```
 ### 4. Create & download [service account](https://cloud.google.com/iam/docs/service-accounts) [JSON credential files](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) for all G Suite domains ###
 
-#### 4.1 Create the service account that will run the core `gsuitemdm` functions in the master domain ####
-Create a service account in the new `foo.com` GCP project. This is the service account that the core cloud functions (such as reading/writing to/from Google Datastore) will "run as".
+#### 4.1 Create the service accounts in each of the configured domains
+Unfortunately, there is no `gcloud`  command or API available to automate these steps. Some pseudo-code might help:
 ```
-$ gcloud iam service-accounts create gsuitemdm \
-  --display-name "G Suite MDM" \
-  --description "G Suite MDM Service Account"
-```
-Get the "email address" of your new service account:
-```
-$ gcloud iam service-accounts list
-NAME                                EMAIL                                          DISABLED
-G Suite MDM                         gsuitemdm@PROJECTNAME.iam.gserviceaccount.com  False
-```
-Create and download a JSON credentials file for this service account:
-```
-$ gcloud iam service-accounts keys create credentials_foo.json \
-  --iam-account=gsuitemdm@PROJECTNAME.iam.gserviceaccount.com
-```
+foreach DOMAIN in foo.com bar.com xyzzy.com
+do
+  login to GCP console as admin@$DOMAIN.com
+  choose `gsuitemdm_$DOMAIN` project
+
 #### 4.2 Create the service accounts in additional G Suite domains ####
 Now you need to create a service account in each of the additional domains we want to configure (`bar.com`, `xyzzy.com`). 
 
