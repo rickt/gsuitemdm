@@ -81,10 +81,18 @@ Unfortunately, there is no `gcloud`  command or API available to automate the fo
 
 `done`
 
-Note that it is *absolutely essential* that you enable Domain-Wide Delegation when creating the service accounts!!! If you find that the Domain-Wide Delegation check box is not selectable, you must first [configure the OAuth Consent Screen](https://support.google.com/cloud/answer/6158849?hl=en). 
+Note that it is *absolutely essential* that you enable Domain-Wide Delegation when creating the service accounts!!! If you find that the Domain-Wide Delegation check box is not selectable, you must first [configure & save the OAuth Consent Screen](https://support.google.com/cloud/answer/6158849?hl=en). The Domain-Wide Delegation check box will become selectable after this.
+
+At this point in our example setup, we have the following domains, projects & service accounts:
+
+G Suite Domain | GCP Project | Project Owner | Service Account
+--- | --- | --- | ---
+foo.com | mdm-foo | user@foo.com | foo
+bar.com | mdm-bar | user@bar.com | bar
+xyzzy.com | mdm-xyzzy | user@xyzzy.com | xyzzy
 
 ### 6. Grant [Directory Admin SDK API scope permissions](https://developers.google.com/admin-sdk/directory/v1/guides/authorizing) to service accounts ###
-Docs coming.
+Now that we have created the service accounts, they need to be access to some Google API scopes
 
 ### 7. Create [Secret Manager](https://cloud.google.com/secret-manager/docs/) configuration secrets ###
 #### 7.1 Create the per-G Suite service account domain credential secrets ####
