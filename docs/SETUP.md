@@ -4,17 +4,22 @@ For these example setup instructions, we will make the following critical assump
 * We have chosen `foo.com` to be the so-called "master domain", mainly because that is where the [ops team mobile device tracking spreadsheet](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions/updatesheet) lives
 
 ## Overview of Setup ##
+0. Clone the repo
 1. Setup GCP projects 
 2. Enable necessary APIs in those projects
 3. Create & download [service account](https://cloud.google.com/iam/docs/service-accounts) [JSON credential files](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) for all G Suite domains
 4. Grant API scope permissions to service accounts 
 5. Create [Secret Manager](https://cloud.google.com/secret-manager/docs/) configuration secrets
 6. Setup Google Sheet template for ops team mobile device tracking spreadsheet
-7. Clone and configure the `gsuitemdm` repo 
+7. Configure the `.yamls`
 8. Deploy *all the things*
 
 ## Setup Details ##
 
+### 0. Clone the `gsuitemdm` repo ###
+```
+$ git clone https://github.com/rickt/gsuitemdm`
+```
 ### 1. Setup GCP projects ###
 GCP best practices dictate that `gsuitemdm` requires a project in each G Suite domain that will be configured. 
 #### 1.1 Setup a GCP project in the 'master' domain for `gsuitemdm` ####
@@ -172,7 +177,8 @@ gsuitemdm_slacktoken           2020-01-27T22:25:29  automatic           -
 ### 6. Setup Google Sheet template for ops team mobile device tracking spreadsheet ###
 Docs coming.
 
-### 7. Clone and configure the `gsuitemdm` repo ###
+### 7. Configure the `.yamls` ###
+`cp` and modify the `FUNCTION_env_example.yaml` files in each cloud function folder to create your own `FUNCTION_env.yaml` files that you will use to deploy the cloud functions. Be sure to modify the `SM_APIKEY_ID` and `SM_CONFIG_ID` entries to point to the IDs of the secrets you created in [step 5](https://github.com/rickt/gsuitemdm/blob/master/docs/SETUP.md#5-create-secret-manager-configuration-secrets).
 
 ### 8. Deploy *all the things* ###
 
