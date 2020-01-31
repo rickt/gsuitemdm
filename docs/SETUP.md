@@ -79,7 +79,7 @@ Unfortunately, there is no `gcloud`  command or API available to automate the fo
 
 `done`
 
-Note that it is absolutely essential that you enable Domain-Wide Delegation when creating the service accounts!!! If you find that the Domain-Wide Delegation check box is not selectable, you must first [configure the OAuth Consent Screen](https://support.google.com/cloud/answer/6158849?hl=en). 
+Note that it is *absolutely essential* that you enable Domain-Wide Delegation when creating the service accounts!!! If you find that the Domain-Wide Delegation check box is not selectable, you must first [configure the OAuth Consent Screen](https://support.google.com/cloud/answer/6158849?hl=en). 
 
 If greyed out...
 
