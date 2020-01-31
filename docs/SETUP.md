@@ -18,9 +18,9 @@ For these example setup instructions, we will make the following critical assump
 ### 1. Setup GCP projects ###
 GCP best practices dictate that `gsuitemdm` requires a project in each G Suite domain that will be configured. 
 #### 1.1 Setup a GCP project in the 'master' domain for `gsuitemdm` ####
-Use `gcloud` to authenticate as an admin in the `foo.com` G Suite 'master' domain, create a new project, setup billing:
+Use `gcloud` to authenticate as an user in the `foo.com` G Suite 'master' domain, create a new project, setup billing:
 ```
-$ gcloud auth login admin@foo.com
+$ gcloud auth login user@foo.com
 $ gcloud projects create mdm-foo
 $ gcloud beta billing accounts list
 ACCOUNT_ID            NAME                        OPEN  MASTER_ACCOUNT_ID
@@ -30,12 +30,12 @@ $ gcloud beta billing projects link mdm-foo \
 ```
 #### 1.2 Setup GCP projects in other domains ####
 ```
-$ gcloud auth login admin@bar.com
+$ gcloud auth login user@bar.com
 $ gcloud projects create mdm-bar
 $ gcloud beta billing projects link mdm-bar \
   --billing-account blah-blah-blah
 
-$ gcloud auth login admin@xyzzy.com
+$ gcloud auth login user@xyzzy.com
 $ gcloud projects create mdm-xyzzy
 $ gcloud beta billing projects link mdm-xyzzy \
   --billing-account gude-gude-tama
@@ -45,7 +45,7 @@ Now we need to enable some APIs in the new projects. Note that billing *must* be
 #### 3.1 Enable APIs in the master project ####
 Since the core components of the `gsuitemdm` system will run within the `mdm-foo` GCP project in the 'master domain' `foo.com`, this project needs more APIs enabled than other domains/projects. So, we must enable the following APIs: [Admin SDK/Directory API](https://developers.google.com/admin-sdk), [Cloud Functions](https://cloud.google.com/functions/docs/reference/rest), [Cloud Scheduler](https://cloud.google.com/scheduler/docs/reference/rest/), [Datastore](https://cloud.google.com/datastore/docs/reference/data/rest/), [Stackdriver Logging](https://cloud.google.com/logging/docs/reference/v2/rest), [Secret Manager](https://cloud.google.com/secret-manager/docs/accessing-the-api), [Sheets](https://developers.google.com/sheets/api):
 ```
-$ gcloud auth login admin@foo.com
+$ gcloud auth login user@foo.com
 $ gcloud config set project mdm-foo
 $ for API in admin cloudfunctions cloudscheduler datastore logging secretmanager sheets
 do
@@ -54,11 +54,11 @@ done
 ```
 The remaining domain's GCP projects only require the [Admin SDK/Directory API](https://developers.google.com/admin-sdk) to be enabled: 
 ```
-$ gcloud auth login admin@bar.com
+$ gcloud auth login user@bar.com
 $ gcloud config set project mdm-bar
 $ gcloud services enable admin.googleapis.com
 
-$ gcloud auth login admin@xyzzy.com
+$ gcloud auth login user@xyzzy.com
 $ gcloud config set project mdm-xyzzy
 $ gcloud services enable admin.googleapis.com
 ```
@@ -70,11 +70,18 @@ Unfortunately, there is no `gcloud`  command or API available to automate these 
 ```
 foreach DOMAIN in foo bar xyzzy
 do
-  login to GCP console as admin@$DOMAIN.com
+  login to GCP console as user@$DOMAIN.com
   choose `mdm-$DOMAIN` project
   create service account as per [these Google developer docs detail](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#creatinganaccount)
 done
 ```
+`foreach DOMAIN in foo bar xyzzy`
+`do`
+* login to GCP console as user@$DOMAIN.com
+* choose `mdm-$DOMAIN` project
+* create service account as per [these Google developer docs detail](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#creatinganaccount)
+`done`
+
 If greyed out...
 
 #### 4.2 Create the service accounts in additional G Suite domains ####
