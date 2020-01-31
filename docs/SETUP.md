@@ -134,8 +134,9 @@ $ for DOMAIN in foo bar xyzzy
   done
 ```
 #### 5.2 Create the shared master configuration secret ####
-Use the included [`gsuitemdm_conf_example.json`](https://github.com/rickt/gsuitemdm/blob/master/cloudfunctions/gsuitemdm_conf_example.json) as a template to create your own master configuration, then create the secret: 
+Also within the master project, use the included [`gsuitemdm_conf_example.json`](https://github.com/rickt/gsuitemdm/blob/master/cloudfunctions/gsuitemdm_conf_example.json) as a template to create your own master configuration, then create the secret: 
 ```
+$ gcloud config set project mdm-foo
 $ gcloud beta secrets create gsuitemdm_conf \
   --replication-policy automatic \
   --data-file cloudfunctions_conf_new.json
@@ -143,6 +144,7 @@ $ gcloud beta secrets create gsuitemdm_conf \
 #### 5.3 Create the API key secret ####
 All calls to any `gsuitemdm` cloud function must be authenticated by sending along the correct API key. Create the API key by use of `echo` and piping into `gcloud` and specifying STDIN (`-`) as the data file:
 ```
+$ gcloud config set project mdm-foo
 $ echo -n "yourapikeygoeshere" | gcloud beta secrets create gsuitemdm_apikey \
   --replication-policy automatic \
   --data-file=-
@@ -150,6 +152,7 @@ $ echo -n "yourapikeygoeshere" | gcloud beta secrets create gsuitemdm_apikey \
 #### 5.4 Create the Slack token secret ####
 When Slack calls the `slackdirectory` cloud function API, it will send along a token. This token is checked to verify that it was indeed Slack who made the API call. Create the secret for that token using:
 ```
+$ gcloud config set project mdm-foo
 $ echo -n "yourslacktokengoeshere" | gcloud beta secrets create gsuitemdm_slacktoken \
   --replication-policy automatic \
   --data-file=-
@@ -158,6 +161,7 @@ You can configure the token that Slack sends to `slackdirectory` when creating/e
 
 At this point, we have the following secrets:
 ```
+$ gcloud config set project mdm-foo
 $ gcloud beta secrets list 
 NAME                           CREATED              REPLICATION_POLICY  LOCATIONS
 credentials_bar                2020-01-24T16:09:20  automatic           -
