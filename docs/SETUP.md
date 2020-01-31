@@ -45,7 +45,7 @@ Now that `foo.com` is setup, perform the same steps for `bar.com` and `xyzzy.com
 ### 3. Enable necessary APIs in the new projects ###
 Now we need to enable some APIs in the new projects. Note that billing *must* be properly setup in the projects before attempting to enable APIs, as some APIs will fail to enable if a legit billing account has not been linked to your GCP project. 
 #### 3.1 Enable APIs in the master project ####
-The 'master domain' `foo.com` GCP project needs more APIs enabled than other domains/projects since that's where all the [cloud functions](https://cloud.google.com/functions/docs/reference/rest), [Datastore](https://cloud.google.com/datastore/docs/reference/data/rest/), [Secret Manager](https://cloud.google.com/secret-manager/docs/accessing-the-api) access will happen:
+Since the core components of the `gsuitemdm` system will run within the `mdm-foo` GCP project in the 'master domain' `foo.com`, this project needs more APIs enabled than other domains/projects. So, we must enable the following APIs: [Admin SDK/Directory API](https://developers.google.com/admin-sdk), [Cloud Functions](https://cloud.google.com/functions/docs/reference/rest), [Cloud Scheduler](https://cloud.google.com/scheduler/docs/reference/rest/), [Datastore](https://cloud.google.com/datastore/docs/reference/data/rest/), [Secret Manager](https://cloud.google.com/secret-manager/docs/accessing-the-api), [Sheets](https://developers.google.com/sheets/api) [Stackdriver Logging](https://cloud.google.com/logging/docs/reference/v2/rest):
 ```
 $ gcloud auth login admin@foo.com
 $ gcloud config set project mdm-foo
@@ -54,7 +54,7 @@ do
    gcloud services enable ${API}.googleapis.com
 done
 ```
-The remaining domain's GCP projects only require the [Admin SDK API](https://developers.google.com/admin-sdk) to be enabled: 
+The remaining domain's GCP projects only require the [Admin SDK/Directory API](https://developers.google.com/admin-sdk) to be enabled: 
 ```
 $ gcloud auth login admin@bar.com
 $ gcloud config set project mdm-bar
