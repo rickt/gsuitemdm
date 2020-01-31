@@ -82,18 +82,20 @@ Unfortunately, there is no `gcloud`  command or API available to automate the fo
   * Skip roles in screen 2
   * Create & download JSON key, naming convention: `credentials_$DOMAIN.com.json`
   * More details [available here](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#creatinganaccount)
+* Enable Domain-Wide Delegation at [GCP Console](https://console.cloud.google.com/apis/credentials) `--> APIs & Services --> Credentials`
+  * Edit service account `mdm-$DOMAIN` and ENABLE `G Suite Domain-wide Delegation`
 
 `done`
 
-Note that it is *absolutely essential* that you enable Domain-Wide Delegation when creating the service accounts!!! If you find that the Domain-Wide Delegation check box is not selectable, you must first [configure & save the OAuth Consent Screen](https://support.google.com/cloud/answer/6158849?hl=en). The Domain-Wide Delegation check box will become selectable after this.
+Note that it is *absolutely essential* that Domain-Wide Delegation is enabled for all service accounts!!! If you find that the Domain-Wide Delegation check box is not selectable, just [configure & save the OAuth Consent Screen](https://support.google.com/cloud/answer/6158849?hl=en). The Domain-Wide Delegation check box will become selectable after this.
 
 At this point in our example setup, we have the following domains, projects & service accounts:
 
-G Suite Domain | GCP Project | Project Owner | Service Account
-:--- | :--- | :--- | :---
-`foo.com` | `mdm-foo` | user@foo.com | foo
-`bar.com` | `mdm-bar` | user@bar.com | bar
-`xyzzy.com` | `mdm-xyzzy` | user@xyzzy.com | xyzzy
+G Suite Domain | GCP Project | Project Owner | Service Account | Credentials JSON
+:--- | :--- | :--- | :--- | :---
+`foo.com` | `mdm-foo` | user@foo.com | `gsuitemdm@mdm-foo.iam.gserviceaccount.com` | `credentials_foo.com.json`
+`bar.com` | `mdm-bar` | user@bar.com | `gsuitemdm@mdm-bar.iam.gserviceaccount.com` | `credentials_bar.com.json`
+`xyzzy.com` | `mdm-xyzzy` | user@xyzzy.com | `gsuitemdm@mdm-xyzzy.iam.gserviceaccount.com` | `credentials_xyzzy.com.json`
 
 ### 6. Grant [Directory Admin SDK API scope permissions](https://developers.google.com/admin-sdk/directory/v1/guides/authorizing) to service accounts ###
 Now that we have created the service accounts, they need to be access to some Google API scopes
