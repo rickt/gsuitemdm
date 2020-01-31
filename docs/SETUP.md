@@ -97,16 +97,16 @@ G Suite Domain | GCP Project | Service Account | Credentials JSON
 `xyzzy.com` | `mdm-xyzzy` | `gsuitemdm@mdm-xyzzy.iam.gserviceaccount.com` | `credentials_xyzzy.com.json`
 
 ### 4. Grant [Directory Admin SDK API scope permissions](https://developers.google.com/admin-sdk/directory/v1/guides/authorizing) to service accounts ###
-Now that we have created the service accounts, they need to be access to some Google API scopes. This step must be performed by a G Suite Super Administrator user in each of the `foo.com`, `bar.com` and `xyzzy.com` domains as per [these instructions](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#delegatingauthority), starting from the `"Then, an administrator of the G Suite domain must complete [...]"` section. 
+Now that we have created the service accounts, they need to be access to some Google API scopes. Following our example setup, these steps must be performed by a G Suite Super Administrator user in each of the `foo.com`, `bar.com` and `xyzzy.com` domains as per [these instructions](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#delegatingauthority), starting from the `"Then, an administrator of the G Suite domain must complete [...]"` section. 
 
-Within the [Admin Console](https://admin.google.com) of `foo.com`, the Client ID of the `gsuitemdm@mdm-foo.iam.gserviceaccount.com` service account must be granted the following scopes:
+Starting with the 'master' domain, within the [Admin Console](https://admin.google.com) for `foo.com`, the Client ID of the `gsuitemdm@mdm-foo.iam.gserviceaccount.com` service account must be granted the following scopes:
 ```
 https://www.googleapis.com/auth/admin.directory.device.mobile
 https://www.googleapis.com/auth/admin.directory.device.mobile.action
 https://www.googleapis.com/auth/admin.directory.device.mobile.readonly
 https://www.googleapis.com/auth/spreadsheets
 ```
-Within the [Admin Console](https://admin.google.com) of `bar.com`, the Client ID of the `gsuitemdm@mdm-bar.iam.gserviceaccount.com` service account must be granted the following scopes:
+And within the [Admin Console](https://admin.google.com) for `bar.com`, the Client ID of the `gsuitemdm@mdm-bar.iam.gserviceaccount.com` service account must be granted the following scopes:
 ```
 https://www.googleapis.com/auth/admin.directory.device.mobile
 https://www.googleapis.com/auth/admin.directory.device.mobile.action
