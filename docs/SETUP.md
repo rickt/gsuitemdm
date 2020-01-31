@@ -83,9 +83,6 @@ Note that it is absolutely essential that you enable Domain-Wide Delegation when
 
 If greyed out...
 
-### 5. Grant [domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation) permissions to service accounts ###
-Docs coming.
-
 ### 6. Grant [Directory Admin SDK API scope permissions](https://developers.google.com/admin-sdk/directory/v1/guides/authorizing) to service accounts ###
 Docs coming.
 
