@@ -86,7 +86,7 @@ Note that it is *absolutely essential* that you enable Domain-Wide Delegation wh
 At this point in our example setup, we have the following domains, projects & service accounts:
 
 G Suite Domain | GCP Project | Project Owner | Service Account
---- | --- | --- | ---
+:--- | :--- | :--- | :---
 `foo.com` | `mdm-foo` | user@foo.com | foo
 `bar.com` | `mdm-bar` | user@bar.com | bar
 `xyzzy.com` | `mdm-xyzzy` | user@xyzzy.com | xyzzy
