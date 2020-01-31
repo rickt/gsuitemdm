@@ -15,7 +15,9 @@ For these example setup instructions, we will make the following critical assump
 
 ## Setup Details ##
 
-### 1. Setup a GCP 'master' project in your organization for `gsuitemdm` ###
+### 1. Setup GCP projects ###
+`gsuitemdm` needs to run within a GCP project in each G Suite domain. 
+#### 1.1 Setup a GCP 'master' project in your organization for `gsuitemdm` ####
 Use `gcloud` to authenticate as an admin in the `foo.com` G Suite 'master' domain:
 ```
 $ gcloud auth login admin@foo.com
@@ -27,6 +29,14 @@ $ gcloud projects create mdm-foo
 Set the new project as your current/configured project:
 ```
 $ gcloud config set project mdm-foo
+```
+#### 1.2 Setup GCP projects in other domains ####
+```
+$ gcloud auth login admin@bar.com
+$ gcloud projects create mdm-bar
+
+$ gcloud auth login admin@xyzzy.com
+$ gcloud projects create mdm-xyzzy
 ```
 ### 2. Configure a billing account in that master project ###
 List your existing billing accounts:
