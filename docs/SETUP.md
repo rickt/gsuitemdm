@@ -16,7 +16,7 @@ For these example setup instructions, we will make the following critical assump
 ## Setup Details ##
 
 ### 1. Setup a GCP 'master' project in your organization for `gsuitemdm` ###
-Use `gcloud` to authenticate as an admin in the `foo.com` G Suite domain:
+Use `gcloud` to authenticate as an admin in the `foo.com` G Suite 'master' domain:
 ```
 $ gcloud auth login admin@foo.com
 ```
