@@ -54,7 +54,7 @@ do
    gcloud services enable ${API}.googleapis.com
 done
 ```
-The remaining domain's GCP projects require fewer APIs:
+The remaining domain's GCP projects only require the [Admin SDK API](https://developers.google.com/admin-sdk) to be enabled: 
 ```
 $ gcloud auth login admin@bar.com
 $ gcloud config set project mdm-bar
