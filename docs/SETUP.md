@@ -118,6 +118,7 @@ https://www.googleapis.com/auth/admin.directory.device.mobile
 https://www.googleapis.com/auth/admin.directory.device.mobile.action
 https://www.googleapis.com/auth/admin.directory.device.mobile.readonly
 ```
+At this point, our service accounts have been granted the necessary authority to use the Admin SDK APIs, and the service account in the master domain `foo.com` has additionally been granted access to the Sheets API.
 
 ### 5. Create [Secret Manager](https://cloud.google.com/secret-manager/docs/) configuration secrets ###
 #### 5.1 Create the per-G Suite service account domain credential secrets ####
