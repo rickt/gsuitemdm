@@ -63,15 +63,19 @@ $ gcloud config set project mdm-xyzzy
 $ gcloud services enable admin.googleapis.com
 ```
 ### 4. Create & download [service account](https://cloud.google.com/iam/docs/service-accounts) [JSON credential files](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) for all G Suite domains ###
+Now we must create service accounts within each GCP project in each of our G Suite domains. 
 
 #### 4.1 Create the service accounts in each of the configured domains
 Unfortunately, there is no `gcloud`  command or API available to automate these steps. Some pseudo-code might help:
 ```
-foreach DOMAIN in foo.com bar.com xyzzy.com
+foreach DOMAIN in foo bar xyzzy
 do
   login to GCP console as admin@$DOMAIN.com
-  choose `gsuitemdm_$DOMAIN` project
+  choose `mdm-$DOMAIN` project
+  create service account as per [these Google developer docs detail](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#creatinganaccount)
+done
 ```
+If greyed out...
 
 #### 4.2 Create the service accounts in additional G Suite domains ####
 Now you need to create a service account in each of the additional domains we want to configure (`bar.com`, `xyzzy.com`). 
