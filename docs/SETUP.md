@@ -76,10 +76,13 @@ do
 done
 ```
 `foreach DOMAIN in foo bar xyzzy`
+
 `do`
+
 * login to GCP console as user@$DOMAIN.com
 * choose `mdm-$DOMAIN` project
 * create service account as per [these Google developer docs detail](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#creatinganaccount)
+
 `done`
 
 If greyed out...
