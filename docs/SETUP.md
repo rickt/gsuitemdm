@@ -16,42 +16,30 @@ For these example setup instructions, we will make the following critical assump
 ## Setup Details ##
 
 ### 1. Setup GCP projects ###
-`gsuitemdm` needs to run within a GCP project in each G Suite domain. 
-#### 1.1 Setup a GCP 'master' project in your organization for `gsuitemdm` ####
-Use `gcloud` to authenticate as an admin in the `foo.com` G Suite 'master' domain:
+GCP best practices dictate that `gsuitemdm` requires a project in each G Suite domain that will be configured. 
+#### 1.1 Setup a GCP project in the 'master' domain for `gsuitemdm` ####
+Use `gcloud` to authenticate as an admin in the `foo.com` G Suite 'master' domain, create a new project, setup billing:
 ```
 $ gcloud auth login admin@foo.com
-```
-Create a new project:
-```
 $ gcloud projects create mdm-foo
-```
-Set the new project as your current/configured project:
-```
-$ gcloud config set project mdm-foo
+$ gcloud beta billing accounts list
+ACCOUNT_ID            NAME                        OPEN  MASTER_ACCOUNT_ID
+000000-111111-222222  Foo Main Billing Account    True
+$ gcloud beta billing projects link mdm-foo \
+  --billing-account 000000-111111-222222
 ```
 #### 1.2 Setup GCP projects in other domains ####
 ```
 $ gcloud auth login admin@bar.com
 $ gcloud projects create mdm-bar
+$ gcloud beta billing projects link mdm-bar \
+  --billing-account blah-blah-blah
 
 $ gcloud auth login admin@xyzzy.com
 $ gcloud projects create mdm-xyzzy
+$ gcloud beta billing projects link mdm-xyzzy \
+  --billing-account 
 ```
-### 2. Configure a billing account in that master project ###
-List your existing billing accounts:
-```
-$ gcloud beta billing accounts list
-ACCOUNT_ID            NAME                        OPEN  MASTER_ACCOUNT_ID
-000000-111111-222222  Main Billing Account        True
-111111-222222-333333  Secondary Billing Account   True
-```
-Link the new GCP project to a billing account:
-```
-$ gcloud beta billing projects link PROJECTNAME \
-  --billing-account 000000-111111-222222
-```
-Now that `foo.com` is setup, perform the same steps for `bar.com` and `xyzzy.com` (or do it in the GCP console). 
 ### 3. Enable necessary APIs in the new projects ###
 Now we need to enable some APIs in the new projects. Note that billing *must* be properly setup in the projects before attempting to enable APIs, as some APIs will fail to enable if a legit billing account has not been linked to your GCP project. 
 #### 3.1 Enable APIs in the master project ####
