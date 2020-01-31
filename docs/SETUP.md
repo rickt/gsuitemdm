@@ -82,6 +82,7 @@ Unfortunately, there is no `gcloud`  command or API available to automate the fo
   * Skip roles in screen 2
   * Create & download JSON key, naming convention: `credentials_$DOMAIN.com.json`
   * More details [available here](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#creatinganaccount)
+
 `done`
 
 Note that it is *absolutely essential* that you enable Domain-Wide Delegation when creating the service accounts!!! If you find that the Domain-Wide Delegation check box is not selectable, you must first [configure & save the OAuth Consent Screen](https://support.google.com/cloud/answer/6158849?hl=en). The Domain-Wide Delegation check box will become selectable after this.
