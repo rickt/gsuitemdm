@@ -155,6 +155,18 @@ $ echo -n "yourslacktokengoeshere" | gcloud beta secrets create gsuitemdm_slackt
   --data-file=-
 ```
 You can configure the token that Slack sends to `slackdirectory` when creating/editing your own `/phone` slash command at [`Yourslack Admin --> Manage Apps --> Custom`](https://YOURSLACK.slack.com/apps/manage/custom-integrations) `--> Slash Commands`
+
+At this point, we have the following secrets:
+```
+$ gcloud beta secrets list 
+NAME                           CREATED              REPLICATION_POLICY  LOCATIONS
+credentials_bar                2020-01-24T16:09:20  automatic           -
+credentials_foo                2020-01-24T16:09:22  automatic           -
+credentials_xyzzy              2020-01-24T16:09:23  automatic           -
+gsuitemdm_apikey               2020-01-24T22:59:47  automatic           -
+gsuitemdm_conf                 2020-01-27T15:08:50  automatic           -
+gsuitemdm_slacktoken           2020-01-27T22:25:29  automatic           -
+```
 ### 6. Setup Google Sheet template for ops team mobile device tracking spreadsheet ###
 Docs coming.
 
