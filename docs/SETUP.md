@@ -87,9 +87,9 @@ At this point in our example setup, we have the following domains, projects & se
 
 G Suite Domain | GCP Project | Project Owner | Service Account
 --- | --- | --- | ---
-foo.com | mdm-foo | user@foo.com | foo
-bar.com | mdm-bar | user@bar.com | bar
-xyzzy.com | mdm-xyzzy | user@xyzzy.com | xyzzy
+`foo.com` | `mdm-foo` | user@foo.com | foo
+`bar.com` | `mdm-bar` | user@bar.com | bar
+`xyzzy.com` | `mdm-xyzzy` | user@xyzzy.com | xyzzy
 
 ### 6. Grant [Directory Admin SDK API scope permissions](https://developers.google.com/admin-sdk/directory/v1/guides/authorizing) to service accounts ###
 Now that we have created the service accounts, they need to be access to some Google API scopes
