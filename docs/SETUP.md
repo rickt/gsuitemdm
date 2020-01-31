@@ -74,7 +74,7 @@ Unfortunately, there is no `gcloud`  command or API available to automate the fo
 
 * Login to GCP console as `user@$DOMAIN.com`
 * Select `mdm-$DOMAIN` project
-* Configure OAuth Consent Screen as per [these Google Support instructions](https://support.google.com/cloud/answer/6158849?hl=en)
+* Configure OAuth Consent Screen at [GCP Console](https://console.cloud.google.com/apis/credentials) `--> APIs & Services --> OAuth Consent Screen`
   * Type: `External`, App name: `mdm-$DOMAIN`, everything else is default, click `Save`
 * Create service account as per [these Google developer docs instructions](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#creatinganaccount)
 
