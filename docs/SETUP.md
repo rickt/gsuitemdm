@@ -67,14 +67,7 @@ Now we must create service accounts within each GCP project in each of our G Sui
 
 #### 4.1 Create the service accounts in each of the configured domains
 Unfortunately, there is no `gcloud`  command or API available to automate these steps. Some pseudo-code might help:
-```
-foreach DOMAIN in foo bar xyzzy
-do
-  login to GCP console as user@$DOMAIN.com
-  choose `mdm-$DOMAIN` project
-  create service account as per [these Google developer docs detail](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#creatinganaccount)
-done
-```
+
 `foreach DOMAIN in foo bar xyzzy`
 
 `do`
