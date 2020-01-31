@@ -45,7 +45,7 @@ Now that `foo.com` is setup, perform the same steps for `bar.com` and `xyzzy.com
 ### 3. Enable necessary APIs in the new projects ###
 Now we need to enable some APIs in the new projects. Note that billing *must* be properly setup in the projects before attempting to enable APIs, as some APIs will fail to enable if a legit billing account has not been linked to your GCP project. 
 #### 3.1 Enable APIs in the master project ####
-The 'master domain' `foo.com` project needs more APIs enabled than other domains/projects:
+The 'master domain' `foo.com` GCP project needs more APIs enabled than other domains/projects since that's where all the cloud functions, Datastore & Secret Manager access will happen:
 ```
 $ gcloud auth login admin@foo.com
 $ gcloud config set project mdm-foo
@@ -53,7 +53,8 @@ $ for API in admin cloudfunctions cloudscheduler datastore logging secretmanager
 do
    gcloud services enable ${API}.googleapis.com
 done
-The remaining domain's GCP projects require fewer APIs. 
+```
+The remaining domain's GCP projects require fewer APIs:
 ```
 $ gcloud auth login admin@bar.com
 $ gcloud config set project mdm-bar
