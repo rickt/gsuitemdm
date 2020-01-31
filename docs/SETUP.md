@@ -38,7 +38,7 @@ $ gcloud beta billing projects link mdm-bar \
 $ gcloud auth login admin@xyzzy.com
 $ gcloud projects create mdm-xyzzy
 $ gcloud beta billing projects link mdm-xyzzy \
-  --billing-account 
+  --billing-account gude-gude-tama
 ```
 ### 3. Enable necessary APIs in the new projects ###
 Now we need to enable some APIs in the new projects. Note that billing *must* be properly setup in the projects before attempting to enable APIs, as some APIs will fail to enable if a legit billing account has not been linked to your GCP project. 
@@ -71,6 +71,7 @@ foreach DOMAIN in foo.com bar.com xyzzy.com
 do
   login to GCP console as admin@$DOMAIN.com
   choose `gsuitemdm_$DOMAIN` project
+```
 
 #### 4.2 Create the service accounts in additional G Suite domains ####
 Now you need to create a service account in each of the additional domains we want to configure (`bar.com`, `xyzzy.com`). 
