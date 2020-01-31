@@ -99,6 +99,26 @@ G Suite Domain | GCP Project | Service Account | Credentials JSON
 ### 4. Grant [Directory Admin SDK API scope permissions](https://developers.google.com/admin-sdk/directory/v1/guides/authorizing) to service accounts ###
 Now that we have created the service accounts, they need to be access to some Google API scopes. This step must be performed by a G Suite Super Administrator user in each of the `foo.com`, `bar.com` and `xyzzy.com` domains as per [these instructions](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#delegatingauthority), starting from the `"Then, an administrator of the G Suite domain must complete [...]"` section. 
 
+Within the [Admin Console](https://admin.google.com) of `foo.com`, the Client ID of the `gsuitemdm@mdm-foo.iam.gserviceaccount.com` service account must be granted the following scopes:
+```
+https://www.googleapis.com/auth/admin.directory.device.mobile
+https://www.googleapis.com/auth/admin.directory.device.mobile.action
+https://www.googleapis.com/auth/admin.directory.device.mobile.readonly
+https://www.googleapis.com/auth/spreadsheets
+```
+Within the [Admin Console](https://admin.google.com) of `bar.com`, the Client ID of the `gsuitemdm@mdm-bar.iam.gserviceaccount.com` service account must be granted the following scopes:
+```
+https://www.googleapis.com/auth/admin.directory.device.mobile
+https://www.googleapis.com/auth/admin.directory.device.mobile.action
+https://www.googleapis.com/auth/admin.directory.device.mobile.readonly
+```
+And finally, within the [Admin Console](https://admin.google.com) of `xyzzy.com`, the Client ID of the `gsuitemdm@mdm-xyzzy.iam.gserviceaccount.com` service account must be granted the following scopes:
+```
+https://www.googleapis.com/auth/admin.directory.device.mobile
+https://www.googleapis.com/auth/admin.directory.device.mobile.action
+https://www.googleapis.com/auth/admin.directory.device.mobile.readonly
+```
+
 ### 5. Create [Secret Manager](https://cloud.google.com/secret-manager/docs/) configuration secrets ###
 #### 5.1 Create the per-G Suite service account domain credential secrets ####
 Using the service account JSON credential files you [downloaded in step 3.1](https://github.com/rickt/gsuitemdm/blob/master/docs/SETUP.md#31-create-the-service-accounts-in-each-of-the-configured-domains), create the secrets in the master GCP project:
