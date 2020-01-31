@@ -101,20 +101,17 @@ Now that we have created the service accounts, they need to be access to some Go
 
 Starting with the 'master' domain, within the [Admin Console](https://admin.google.com) for `foo.com`, the Client ID of the `gsuitemdm@mdm-foo.iam.gserviceaccount.com` service account must be granted the following scopes:
 ```
-https://www.googleapis.com/auth/admin.directory.device.mobile
 https://www.googleapis.com/auth/admin.directory.device.mobile.action
 https://www.googleapis.com/auth/admin.directory.device.mobile.readonly
 https://www.googleapis.com/auth/spreadsheets
 ```
 And within the [Admin Console](https://admin.google.com) for `bar.com`, the Client ID of the `gsuitemdm@mdm-bar.iam.gserviceaccount.com` service account must be granted the following scopes:
 ```
-https://www.googleapis.com/auth/admin.directory.device.mobile
 https://www.googleapis.com/auth/admin.directory.device.mobile.action
 https://www.googleapis.com/auth/admin.directory.device.mobile.readonly
 ```
 And finally, within the [Admin Console](https://admin.google.com) of `xyzzy.com`, the Client ID of the `gsuitemdm@mdm-xyzzy.iam.gserviceaccount.com` service account must be granted the following scopes:
 ```
-https://www.googleapis.com/auth/admin.directory.device.mobile
 https://www.googleapis.com/auth/admin.directory.device.mobile.action
 https://www.googleapis.com/auth/admin.directory.device.mobile.readonly
 ```
