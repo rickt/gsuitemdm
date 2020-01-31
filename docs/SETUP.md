@@ -97,12 +97,14 @@ G Suite Domain | GCP Project | Service Account | Credentials JSON
 `xyzzy.com` | `mdm-xyzzy` | `gsuitemdm@mdm-xyzzy.iam.gserviceaccount.com` | `credentials_xyzzy.com.json`
 
 ### 4. Grant [Directory Admin SDK API scope permissions](https://developers.google.com/admin-sdk/directory/v1/guides/authorizing) to service accounts ###
-Now that we have created the service accounts, they need to be access to some Google API scopes
+Now that we have created the service accounts, they need to be access to some Google API scopes. This step must be performed by a G Suite Super Administrator user in each of the `foo.com`, `bar.com` and `xyzzy.com` domains as per [these instructions](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#delegatingauthority), starting from the `"Then, an administrator of the G Suite domain must complete [...]"` section. 
 
 ### 5. Create [Secret Manager](https://cloud.google.com/secret-manager/docs/) configuration secrets ###
 #### 5.1 Create the per-G Suite service account domain credential secrets ####
-Using the service account JSON credential files you [downloaded in step 3.1](https://github.com/rickt/gsuitemdm/blob/master/docs/SETUP.md#31-create-the-service-accounts-in-each-of-the-configured-domains), create the secrets: 
+Using the service account JSON credential files you [downloaded in step 3.1](https://github.com/rickt/gsuitemdm/blob/master/docs/SETUP.md#31-create-the-service-accounts-in-each-of-the-configured-domains), create the secrets in the master GCP project:
 ```
+$ gcloud auth login user@foo.com
+$ gcloud config set project mdm-foo
 $ for DOMAIN in foo bar xyzzy
   do
      gcloud beta secrets create credentials_${DOMAIN} \
@@ -120,7 +122,7 @@ $ gcloud beta secrets create gsuitemdm_conf \
 #### 5.3 Create the API key secret ####
 All calls to any `gsuitemdm` cloud function must be authenticated by sending along the correct API key. Create the API key by use of `echo` and piping into `gcloud` and specifying STDIN (`-`) as the data file:
 ```
-$ echo -n "yourkeygoeshere" | gcloud beta secrets create gsuitemdm_apikey \
+$ echo -n "yourapikeygoeshere" | gcloud beta secrets create gsuitemdm_apikey \
   --replication-policy automatic \
   --data-file=-
 ```
