@@ -15,7 +15,7 @@ For these example setup instructions, we will make the following critical assump
 
 ## Setup Details ##
 
-### 1. Setup a GCP project in your organization for `gsuitemdm` ###
+### 1. Setup a GCP 'master' project in your organization for `gsuitemdm` ###
 Create a new project:
 ```
 $ gcloud projects create PROJECTNAME
@@ -24,7 +24,7 @@ Set the new project as your current/configured project:
 ```
 $ gcloud config set project PROJECTNAME
 ```
-### 2. Configure a billing account in that project
+### 2. Configure a billing account in that master project ###
 List your existing billing accounts:
 ```
 $ gcloud beta billing accounts list
@@ -37,7 +37,7 @@ Link the new GCP project to a billing account:
 $ gcloud beta billing projects link PROJECTNAME \
   --billing-account 000000-111111-222222
 ```
-### 3. Enable necessary APIs in that project ###
+### 3. Enable necessary APIs in that master project ###
 You must have setup billing in the project before attempting to enable APIs. Some APIs will fail to enable if a billing account has not been linked to your GCP project. 
 ```
 $ for API in admin cloudfunctions cloudscheduler datastore logging secretmanager sheets
@@ -65,6 +65,9 @@ Create and download a JSON credentials file for this service account:
 $ gcloud iam service-accounts keys create credentials_foo.json \
   --iam-account=gsuitemdm@PROJECTNAME.iam.gserviceaccount.com
 ```
+#### 4.2 Create the service accounts in additional G Suite domains ####
+Now you need to create a service account in each of the additional domains we want to configure (`bar.com`, `xyzzy.com`). 
+
 ### 5. Grant [domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation) permissions to service accounts ###
 Docs coming.
 
