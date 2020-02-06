@@ -62,11 +62,13 @@ func (mdms *GSuiteMDMService) ConvertSDKDeviceToDatastore(device *admin.MobileDe
 	d.DeveloperMode = device.DeveloperOptionsStatus
 	d.Domain = getEmailDomain(device.Email[0])
 	d.Email = device.Email[0]
+	d.EncryptionStatus = device.EncryptionStatus
 	d.IMEI = strings.Replace(device.Imei, " ", "", -1)
 	d.Model = device.Model
 	d.Name = device.Name[0]
 	d.OS = device.Os
 	d.OSBuild = device.BuildNumber
+	d.PasswordStatus = device.DevicePasswordStatus
 	d.ResourceId = device.ResourceId
 	d.SN = strings.Replace(device.SerialNumber, " ", "", -1)
 	d.Status = device.Status
