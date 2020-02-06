@@ -100,6 +100,7 @@ func printDeviceData(device gsuitemdm.DatastoreMobileDevice, verbose bool) {
 		fmt.Printf("           First Sync: %s\n", humanize.Time(fts))
 		fmt.Printf("            Last Sync: %s\n", humanize.Time(lts))
 		fmt.Printf("   Compromised Status: %s\n", device.CompromisedStatus)
+		fmt.Printf("    Encryption Status: %s\n", device.EncryptionStatus)
 		fmt.Printf("           OS Options: Developer mode (%v), Allow Unknown Sources (%v), USB Debugging (%v)\n", device.DeveloperMode, device.UnknownSources, device.USBADB)
 		fmt.Printf("            --- Notes: ---\n%s\n            --- Notes: ---\n", device.Notes)
 
