@@ -5,7 +5,7 @@ package gsuitemdm
 //
 
 import (
-  "context"
+	"context"
 	"errors"
 	"fmt"
 	"github.com/Iwark/spreadsheet"
@@ -22,7 +22,7 @@ import (
 // Read all mobile device data from the Google Sheet
 func (mdms *GSuiteMDMService) GetSheetData() error {
 	var err error
-	
+
 	// We need to get the credentials to read the Google Sheet from Secret Manager
 	ctx := context.Background()
 
@@ -112,12 +112,14 @@ func (mdms *GSuiteMDMService) MergeDatastoreAndSheetData() []DatastoreMobileDevi
 		d.Domain = dsv.Domain
 		d.DeveloperMode = dsv.DeveloperMode
 		d.Email = dsv.Email
+		d.EncryptionStatus = dsv.EncryptionStatus
 		d.IMEI = strings.Replace(dsv.IMEI, " ", "", -1)
 		d.Model = dsv.Model
 		d.Name = dsv.Name
 		d.Notes = dsv.Notes
 		d.OS = dsv.OS
 		d.OSBuild = dsv.OSBuild
+		d.PasswordStatus = dsv.PasswordStatus
 		d.PhoneNumber = strings.Replace(dsv.PhoneNumber, " ", "", -1)
 		d.RAM = dsv.RAM
 		d.ResourceId = dsv.ResourceId
