@@ -64,7 +64,7 @@ func buildhtmlemail(cu, ncu Users) []byte {
 		body = body + fmt.Sprintf("&nbsp;&nbsp;&nbsp;%s (<a href=\"%s=%s\">@%s</a> &lt;%s&gt;)<br>", x.SlackUserName, os.Getenv("SLACKURL"), x.SlackUserId, x.SlackName, x.SlackEmail)
 	}
 	body = body + "</p>"
-	body = body + fmt.Sprintf("<p><br>This email generated & sent every weekday at 06:45PST by %s.<br>", os.Getenv("APPNAME"))
+	body = body + fmt.Sprintf("<p><br>This email generated & sent by %s.<br>", os.Getenv("APPNAME"))
 	body = body + fmt.Sprintf("Source code available <a href=\"%s\">here</a>.<br>", os.Getenv("SRCURL"))
 	body = body + "</p>"
 
