@@ -4,19 +4,22 @@ package gsuitemdm
 // GSuiteMDM types for Datastore
 //
 
-// A single mobile device
+// A single mobile device type, stored in Datastore.
+// Based on https://developers.google.com/admin-sdk/directory/v1/reference/mobiledevices#resource
 type DatastoreMobileDevice struct {
 	Color             string // Color of device
 	CompromisedStatus string // Is the device compromised?
 	Domain            string // G Suite domain
 	DeveloperMode     bool   // Is the device in developer mode?
 	Email             string // Email address of device owner
+	EncryptionStatus  string // Is the device encrypted?
 	IMEI              string // IMEI
 	Model             string // Model
 	Name              string // Full Name of device owner
 	Notes             string // Notes
 	OS                string // Operating System
 	OSBuild           string // OS Build
+	PasswordStatus    string // Password status
 	PhoneNumber       string // Telephone number of the device
 	RAM               string // RAM in GB
 	ResourceId        string // MDM ID for device
