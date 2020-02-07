@@ -201,3 +201,5 @@ Add the new domain into the domains array in your local copy of the core `gsuite
 $ cloud beta secrets versions add gsuitemdm_conf --data-file gsuitemdm_conf.json
 ```
 
+#### 9.3 Add 'accessors' role for secret reading ####
+Add the `Secret Manager Secret Accessor` role to the master project service account (in the example case, `gsuitemdm@mdm-foo.iam.gserviceaccount.com`).
