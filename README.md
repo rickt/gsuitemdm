@@ -52,6 +52,10 @@ A full and complete installation guide to follow, but for now, some brief setup 
 * Setup Google Datastore
 * Setup Google Sheet template to track mobile devices
 
+## TO-DO ##
+* Add a `showdomains` cloud function that will show all configured domains
+* Add accompanying `mdmtool showdomains` command to `mdmtool`
+
 ### Google Sheet Setup
 1. Make a copy of [this Google Sheet](https://update.url) and save it in Google Drive. Now get the ID of your sheet; this is the part after `https://docs.google.com/spreadsheets/d/` in the sheet's URL but before `/edit`. Add that sheet ID to the main JSON configuration file, `"sheetid": "yourgooglesheetidgoeshere"`
 2. Add the email address of the G Suite user who you wish to update the Google sheet as, to the main JSON configuration file, `"sheetwho": "username@yourgsuitedomain.com"`
