@@ -45,6 +45,11 @@ type SearchCommand struct {
 	Verbose bool
 }
 
+// ShowDomainsCommand ..
+type ShowDomainsCommand struct {
+	Verbose bool
+}
+
 // UpdateSheetCommand ...
 type UpdateSheetCommand struct {
 	Verbose bool

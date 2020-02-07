@@ -11,13 +11,14 @@ import (
 )
 
 const (
-	apikey             string = "XXXX"
+	apikey             string = "YOURKEYGOESHERE"
 	appname            string = "mdmtool"
 	approvedeviceurl   string = "https://us-central1-PROJECTID.cloudfunctions.net/ApproveDevice"
 	blockdeviceurl     string = "https://us-central1-PROJECTID.cloudfunctions.net/BlockDevice"
 	deletedeviceurl    string = "https://us-central1-PROJECTID.cloudfunctions.net/DeleteDevice"
 	directoryurl       string = "https://us-central1-PROJECTID.cloudfunctions.net/Directory"
 	searchdatastoreurl string = "https://us-central1-PROJECTID.cloudfunctions.net/SearchDatastore"
+	showdomainsurl     string = "https://us-central1-PROJECTID.cloudfunctions.net/ShowDomains"
 	updatedatastoreurl string = "https://us-central1-PROJECTID.cloudfunctions.net/UpdateDatastore"
 	updatesheeturl     string = "https://us-central1-PROJECTID.cloudfunctions.net/UpdateSheet"
 	wipedeviceurl      string = "https://us-central1-PROJECTID.cloudfunctions.net/WipeDevice"
@@ -45,6 +46,7 @@ func main() {
 	addDeleteCommand(mdmtool)          // delete
 	addDirectoryCommand(mdmtool)       // directory
 	addSearchCommand(mdmtool)          // search
+	addShowDomainsCommand(mdmtool)     // showdomains
 	addUpdateDatastoreCommand(mdmtool) // updatedb
 	addUpdateSheetCommand(mdmtool)     // updatesheet
 	addWipeCommand(mdmtool)            // wipe

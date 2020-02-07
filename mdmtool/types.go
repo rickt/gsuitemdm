@@ -18,6 +18,7 @@ type MDMToolConfig struct {
 	DeleteDeviceURL    string `json:"deletedeviceurl"`    // URL of Delete Device cloud function
 	DirectoryURL       string `json:"directoryurl"`       // URL of Directory cloud function
 	SearchDatastoreURL string `json:"searchdatastoreurl"` // URL of Search Device cloud function
+	ShowDomainsURL     string `json:"showdomainsurl"`     // URL of Show Domains cloud function
 	UpdateDatastoreURL string `json:"updatedatastoreurl"` // URL of Update Datastore cloud function
 	UpdateSheetURL     string `json:"updatesheeturl"`     // URL of Update Sheet cloud function
 	WipeDeviceURL      string `json:"wipedeviceurl"`      // URL of Wipe Device cloud function

@@ -270,6 +270,56 @@ func (dc *DeleteCommand) run(c *kingpin.ParseContext) error {
 }
 
 //
+// SHOWDOMAINS
+//
+
+// Add the "showdomains" command
+func addShowDomainsCommand(mdmtool *kingpin.Application) {
+	c := &ShowDomainsCommand{}
+	sd := mdmtool.Command("showdomains", "Show all configured domains").Action(c.run)
+	sd.Flag("verbose", "Enable verbose mode").Short('v').BoolVar(&c.Verbose)
+}
+
+// Setup the "showdomains" command
+func (shc *ShowDomainsCommand) run(c *kingpin.ParseContext) error {
+	var rb gsuitemdm.ActionRequest
+
+	// Setup the request body
+	rb.Key = m.Config.APIKey
+	rb.Action = "showdomains"
+
+	// Marshal the JSON
+	js, err := json.Marshal(rb)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Build the http request
+	req, err := http.NewRequest("POST", m.Config.ShowDomainsURL, bytes.NewBuffer(js))
+	if err != nil {
+		log.Fatal(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	// Create an http client
+	client := &http.Client{}
+
+	// Send the request and get a nice response
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+
+	return nil
+
+	return nil
+}
+
+//
 // WIPE
 //
 

@@ -47,6 +47,7 @@ func loadMDMToolConfig() (MDMToolConfig, error) {
 		DeleteDeviceURL:    deletedeviceurl,
 		DirectoryURL:       directoryurl,
 		SearchDatastoreURL: searchdatastoreurl,
+		ShowDomainsURL:     showdomainsurl,
 		UpdateDatastoreURL: updatedatastoreurl,
 		UpdateSheetURL:     updatesheeturl,
 		WipeDeviceURL:      wipedeviceurl,
