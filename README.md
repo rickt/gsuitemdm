@@ -52,7 +52,7 @@ A full and complete installation guide to follow, but for now, some brief setup 
 * Setup Google Datastore
 * Setup Google Sheet template to track mobile devices
 
-## TO-DO ##
+## TODO ##
 * Add a `showdomains` cloud function that will show all configured domains
 * Add accompanying `mdmtool showdomains` command to `mdmtool`
 
