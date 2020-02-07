@@ -1,0 +1,3 @@
+APPNAME: approvedevice
+SM_APIKEY_ID: projects/12334567890/secrets/gsuitemdm_apikey
+SM_CONFIG_ID: projects/12334567890/secrets/gsuitemdm_conf
