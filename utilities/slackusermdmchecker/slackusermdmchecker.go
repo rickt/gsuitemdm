@@ -85,16 +85,18 @@ func caseinsensitivecontains(a, b string) bool {
 func getmdmstatus(email string) bool {
 	var mr MDMRequest
 
+	// Build the request to send to the gsuitemdm search API
 	mr.Key = os.Getenv("GSUITEMDMTOKEN")
 	mr.QType = "email"
 	mr.Q = email
 
+	// Marshal the request into JSON
 	req, err := json.Marshal(mr)
 	if err != nil {
 		log.Fatal("error: %s", err)
 	}
 
-	// Create the request
+	// Send the request
 	resp, err := http.Post(mdmstatusurl, "application/json", bytes.NewBuffer(req))
 	if err != nil {
 		log.Fatal("error: %s", err)
@@ -238,14 +240,20 @@ func SlackUserMDMChecker(w http.ResponseWriter, r *http.Request) {
 	sort.Sort(ncu)
 
 	// Print out a report
-	fmt.Fprintf(w, "(%d) Active GIGANIK Slack staff using a personal phone or company phone with no MDM to login to Slack.\n", len(ncu))
+	fmt.Fprintf(w, "(%d) Active Slack staff using a personal phone or company phone with no MDM to login to Slack.\n", len(ncu))
 	fmt.Fprintf(w, "\n")
-	fmt.Fprintf(w, "(%d) Active GIGANIK Slack staff using an MDM-protected company phone to login to Slack\n", len(cu))
+	fmt.Fprintf(w, "(%d) Active Slack staff using an MDM-protected company phone to login to Slack\n", len(cu))
 
-	// Send email
-	sendemail(cu, ncu)
-	fmt.Fprintf(w, "\n")
-	fmt.Fprintf(w, "Email sent.\n")
+	// Send an email? Check the ?sendemail parameter. If ?sendemail=yes was
+	// not sent, do not send the email.
+	sendit := r.URL.Query().Get("sendemail")
+	if sendit == "yes" {
+		// Send email
+		sendemail(cu, ncu)
+		fmt.Fprintf(w, "\n")
+		fmt.Fprintf(w, "Email sent.\n")
+	}
+
 	fmt.Fprintf(w, "\n")
 	fmt.Fprintf(w, "%s Success\n", os.Getenv("APPNAME"))
 
