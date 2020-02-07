@@ -184,4 +184,20 @@ Be sure to modify the `SM_APIKEY_ID` and `SM_CONFIG_ID` entries to point to the 
 
 ### 8. Deploy *all the things* ###
 
+### 9. Adding new Domains ###
+To add new G Suite domains to `gsuitemdm`:
+
+#### 9.1 Add domain-specific credentials as Secret Manager secrets ####
+Assuming your new domain is `foobarbaz.com`, add the JSON credentials file for the service account in the MDM project for your new domain into Secret Manager:
+```
+$ gcloud beta secrets create credentials_foobarbaz \
+  --replication-policy automatic \
+  --data-file credentials_foobarbaz.com.json
+```
+
+#### 9.2 Modify core `gsuitemdm_conf.json` and update in Secret Manager ####
+Add the new domain into the domains array in your local copy of the core `gsuitemdm` configuration file and add it as a new version into Secret Manager:
+```
+$ cloud beta secrets versions add gsuitemdm_conf --data-file gsuitemdm_conf.json
+```
 
