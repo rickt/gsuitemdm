@@ -102,7 +102,6 @@ func ShowDomains(w http.ResponseWriter, r *http.Request) {
 	// Finished, write a log entry
 	log.Printf("")
 	sl.Log(logging.Entry{Severity: logging.Notice, Payload: appname + " Success: RemoteIP=" + gsuitemdm.GetIP(r)})
-	fmt.Fprintf(w, "%s Success\n", appname)
 
 	return
 }
