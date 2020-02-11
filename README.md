@@ -29,34 +29,19 @@ Basically, `gsuitemdm` gives you:
 ## Status
 * In production
 * Ready for public use
-* Docs: 90%
+* Docs: 95%
 
 ## Configuration ##
 All configuration data, API keys and service account domain credentials are stored as secrets in Google [Secret Manager](https://cloud.google.com/secret-manager/docs/). Learn more about [`gsuitemdm` configuration](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration) or [`gsuitemdm` secrets](https://github.com/rickt/gsuitemdm/tree/master/cloudfunctions#configuration-secrets).
+
+Read all about configuration in the [`gsuitemdm` setup docs](https://github.com/rickt/gsuitemdm/blob/master/docs/SETUP.md).
 
 ## Pre-Requisites ##
 * 1+ G Suite domain(s) using G Suite MDM to manage iOS/Android mobile devices
 * GCP project with billing setup
 
 ## Brief Setup Notes
-A full and complete installation guide to follow, but for now, some brief setup notes & requirements: 
-
-* Setup GCP project 
-  * Enable the required APIs (`admin`, `cloudfunctions`, `cloudscheduler`, `datastore`, `logging`, `secretmanager`, `sheets`)
-* Setup service account(s) + JSON credentials `foreach` G Suite domain including [G Suite domain-wide delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation)
-* Create secrets in Secret Manager for: 
-  * G Suite domain JSON credentials
-  * API key
-  * Slack security token
-* Grant appropriate scopes to service accounts in the Admin Console
-* Setup Google Datastore
-* Setup Google Sheet template to track mobile devices
+Full setup documenation is [available here](https://github.com/rickt/gsuitemdm/blob/master/docs/SETUP.md).
 
 ## TODO ##
-* Add a `showdomains` cloud function that will show all configured domains
-* Add accompanying `mdmtool showdomains` command to `mdmtool`
-
-### Google Sheet Setup
-1. Make a copy of [this Google Sheet](https://update.url) and save it in Google Drive. Now get the ID of your sheet; this is the part after `https://docs.google.com/spreadsheets/d/` in the sheet's URL but before `/edit`. Add that sheet ID to the main JSON configuration file, `"sheetid": "yourgooglesheetidgoeshere"`
-2. Add the email address of the G Suite user who you wish to update the Google sheet as, to the main JSON configuration file, `"sheetwho": "username@yourgsuitedomain.com"`
 

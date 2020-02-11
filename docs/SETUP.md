@@ -175,7 +175,8 @@ gsuitemdm_conf                 2020-01-27T15:08:50  automatic           -
 gsuitemdm_slacktoken           2020-01-27T22:25:29  automatic           -
 ```
 ### 6. Setup Google Sheet template for ops team mobile device tracking spreadsheet ###
-Docs coming.
+1. Make a copy of [this Google Sheet](https://update.url) and save it in Google Drive. Now get the ID of your sheet; this is the part after `https://docs.google.com/spreadsheets/d/` in the sheet's URL but before `/edit`. Add that sheet ID to the main JSON configuration file, `"sheetid": "yourgooglesheetidgoeshere"`
+2. Add the email address of the G Suite user who you wish to update the Google sheet as, to the main JSON configuration file, `"sheetwho": "username@yourgsuitedomain.com"`
 
 ### 7. Configure the `.yamls` ###
 Copy and modify the `FUNCTION_env_example.yaml` files in each cloud function folder to create your own `FUNCTION_env.yaml` files that you will use to deploy the cloud functions. 
