@@ -183,7 +183,10 @@ Copy and modify the `FUNCTION_env_example.yaml` files in each cloud function fol
 
 Be sure to modify the `SM_APIKEY_ID` and `SM_CONFIG_ID` entries to point to the IDs of the secrets you created in [step 5](https://github.com/rickt/gsuitemdm/blob/master/docs/SETUP.md#5-create-secret-manager-configuration-secrets).
 
-### 8. Deploy *all the things* ###
+### 8. Deploy & test *all the things* ###
+Now that everything is in place, update the [`deploy_all_cloudfunctions.sh`](https://github.com/rickt/gsuitemdm/blob/master/cloudfunctions/deploy_all_cloudfunctions.sh) script to suit your environment/project/folders/etc, and then run it! 
+
+Once all the cloud functions are deployed, you can test using `mdmtool` or use `curl` directly.
 
 ### 9. Adding new Domains ###
 To add new G Suite domains to `gsuitemdm`:
