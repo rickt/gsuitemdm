@@ -131,7 +131,7 @@ $ gcloud auth login user@foo.com
 $ gcloud config set project mdm-foo
 $ for DOMAIN in foo bar xyzzy
   do
-     gcloud beta secrets create credentials_${DOMAIN} \
+     gcloud secrets create credentials_${DOMAIN} \
      --replication-policy automatic \
      --data-file credentials_${DOMAIN}.com.json
   done
@@ -140,7 +140,7 @@ $ for DOMAIN in foo bar xyzzy
 Also within the master project, use the included [`gsuitemdm_conf_example.json`](https://github.com/rickt/gsuitemdm/blob/master/cloudfunctions/gsuitemdm_conf_example.json) as a template to create your own master configuration, then create the secret: 
 ```
 $ gcloud config set project mdm-foo
-$ gcloud beta secrets create gsuitemdm_conf \
+$ gcloud secrets create gsuitemdm_conf \
   --replication-policy automatic \
   --data-file cloudfunctions_conf_new.json
 ```
@@ -148,7 +148,7 @@ $ gcloud beta secrets create gsuitemdm_conf \
 All calls to any `gsuitemdm` cloud function must be authenticated by sending along the correct API key. Create the API key by use of `echo` and piping into `gcloud` and specifying STDIN (`-`) as the data file:
 ```
 $ gcloud config set project mdm-foo
-$ echo -n "yourapikeygoeshere" | gcloud beta secrets create gsuitemdm_apikey \
+$ echo -n "yourapikeygoeshere" | gcloud secrets create gsuitemdm_apikey \
   --replication-policy automatic \
   --data-file=-
 ```
@@ -156,7 +156,7 @@ $ echo -n "yourapikeygoeshere" | gcloud beta secrets create gsuitemdm_apikey \
 When Slack calls the `slackdirectory` cloud function API, it will send along a token. This token is checked to verify that it was indeed Slack who made the API call. Create the secret for that token using:
 ```
 $ gcloud config set project mdm-foo
-$ echo -n "yourslacktokengoeshere" | gcloud beta secrets create gsuitemdm_slacktoken \
+$ echo -n "yourslacktokengoeshere" | gcloud secrets create gsuitemdm_slacktoken \
   --replication-policy automatic \
   --data-file=-
 ```
@@ -165,7 +165,7 @@ You can configure the token that Slack sends to `slackdirectory` when creating/e
 At this point, we have the following secrets:
 ```
 $ gcloud config set project mdm-foo
-$ gcloud beta secrets list 
+$ gcloud secrets list 
 NAME                           CREATED              REPLICATION_POLICY  LOCATIONS
 credentials_bar                2020-01-24T16:09:20  automatic           -
 credentials_foo                2020-01-24T16:09:22  automatic           -
@@ -194,7 +194,7 @@ To add new G Suite domains to `gsuitemdm`:
 #### 9.1 Add domain-specific credentials as Secret Manager secrets ####
 Assuming your new domain is `foobarbaz.com`, add the JSON credentials file for the service account in the MDM project for your new domain into Secret Manager:
 ```
-$ gcloud beta secrets create credentials_foobarbaz \
+$ gcloud secrets create credentials_foobarbaz \
   --replication-policy automatic \
   --data-file credentials_foobarbaz.com.json
 ```
@@ -202,7 +202,7 @@ $ gcloud beta secrets create credentials_foobarbaz \
 #### 9.2 Modify core `gsuitemdm_conf.json` and update in Secret Manager ####
 Add the new domain into the domains array in your local copy of the core `gsuitemdm` configuration file and add it as a new version into Secret Manager:
 ```
-$ cloud beta secrets versions add gsuitemdm_conf --data-file gsuitemdm_conf.json
+$ cloud secrets versions add gsuitemdm_conf --data-file gsuitemdm_conf.json
 ```
 
 #### 9.3 Add 'accessors' role for secret reading ####

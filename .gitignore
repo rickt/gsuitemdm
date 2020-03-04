@@ -20,3 +20,6 @@ mdmtool.exe
 mdmtool_conf.json
 NOTES.txt
 
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
